@@ -2,7 +2,21 @@
 
 Parking lot for crate, tagging, and hardware ideas. Ordered checklist: `docs/TODO.md`. Agents: read both, then stop unless David asks to act. Off-repo tools and library paths stay off git.
 
-Last update: 2026-09-10. **Milestone:** Music → Traktor → Rekordbox rebuilt. DJ Sets **230** in Rekordbox (was empty). IndustryStems artist **0**. `favorites` still recording (TODO 41); reviews **2026-09-16** / **2026-10-09**. Hardware next: Maschine A/B/C (11a), FLX10 CH2 digital (40). Floor **10** parked. Toolkit: README. How/why: `docs/crate.md`.
+Last update: 2026-09-15. **Alkalurop bridge:** public ixamal repos mirrored into [github.com/alkalurop](https://github.com/alkalurop) (org profile is the main bridge). Monthly 15th 15:00 local. `favorites` still recording (TODO 41); reviews **2026-09-16** / **2026-10-09**. Hardware next: Maschine A/B/C (11a), FLX10 CH2 digital (40). Floor **10** parked. Toolkit: README. How/why: `docs/crate.md`.
+
+## Alkalurop org bridge (2026-09-15)
+
+Org [alkalurop](https://github.com/alkalurop) is the main bridge (profile: [alkalurop/.github](https://github.com/alkalurop/.github)). First mirror of current ixamal `main`:
+
+| alkalurop | matches ixamal `main` |
+| --- | --- |
+| [ix](https://github.com/alkalurop/ix) | `6ec577f` |
+| [stems](https://github.com/alkalurop/stems) | `40069a1` |
+| [ix_bangers](https://github.com/alkalurop/ix_bangers) | `f257be1` |
+| [blackhole](https://github.com/alkalurop/blackhole) | `17700c3` |
+| [music_migration](https://github.com/alkalurop/music_migration) | `0a4735f` |
+
+`github.com/alkalurop/ix` used to 301 to ixamal/ix (old transfer redirect). Re-created the org repo so the name lives on the org. Script: `docs/examples/alkalurop-bridge.sh`. Plist: `ai.ixamal.alkalurop-bridge` — 15th 15:00 local. No tokens in git.
 
 ## Crate status
 

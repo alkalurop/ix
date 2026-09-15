@@ -78,3 +78,18 @@ npm run runtime      # OSC 127.0.0.1:9000 + health :9100
 4. Expose Age / Explicit Time and density on a Blueprint; map `/rekordbox/bpm`, `/rekordbox/fader`, `/rekordbox/beat_phase`.
 
 Global MCP lives in `~/.cursor/mcp.json`, not in this workspace.
+
+## Alkalurop org bridge (monthly 15th)
+
+Public [ixamal](https://github.com/ixamal) originals are mirrored into the [alkalurop](https://github.com/alkalurop) org. The org section landing page is [`alkalurop/.github`](https://github.com/alkalurop/.github) (`profile/README.md`). Day-to-day work stays on ixamal.
+
+```bash
+# First / manual run (uses local `gh` as org admin; no tokens in git)
+~/github/ixamal/ix/docs/examples/alkalurop-bridge.sh
+
+# Load the 15th-of-month 15:00 job
+cp ~/github/ixamal/ix/docs/examples/ai.ixamal.alkalurop-bridge.plist ~/Library/LaunchAgents/
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/ai.ixamal.alkalurop-bridge.plist
+```
+
+Log: `/tmp/ix-alkalurop-bridge.log`. `alkalurop/ix` cannot use GitHub’s transfer redirect from the old path — the script checks `owner.login` is `alkalurop` before it treats the dest as present.
