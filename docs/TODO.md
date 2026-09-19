@@ -2,13 +2,13 @@
 
 Hit these in order. Stop on the first **doable** open item. Detail: `docs/notes.md`. Off-repo tools and library paths stay off git.
 
-Last update: 2026-09-19. **16ch Channel D + 11a live.** **11b parked** (FLX10 stays native `DDJ-FLX10`). 2ch rollback: `~/Music/blackhole_2ch/`. Next hardware: **13**, **40**. IndustryStems folder stays. Rock STEMIT first **300** queued in 100s. Reviews **2026-09-16** / **2026-10-09**. Floor **10** parked.
+Last update: 2026-09-19. **16ch Channel D + 11a live.** **11b parked** (FLX10 stays native `DDJ-FLX10`). **13 on hold** (S8 pads → S88). 2ch rollback: `~/Music/blackhole_2ch/`. **Next: Floor 10.** Hardware leftover: **40**. IndustryStems folder stays. Rock STEMIT first **300** queued in 100s. Reviews **2026-09-16** / **2026-10-09**.
 
 ## Now
 
 Crate is path-stable. Music.app, Traktor, and Rekordbox are playable from the same files. Sync Library Off. STEMIT + Music folders are in the xml sidecar and imported.
 
-**Next:** 11 + 11a proven. **11b parked** (FLX10 native device; do not select the 2ch aggregate in Rekordbox). Hardware leftover: **13**, **40**. If 16ch fails, **Aggregate Device Maschine** + `~/Music/blackhole_2ch/`. Crate leftover: reload Rekordbox xml (`<>`) / analyze DJ Sets, or STEMIT Alternative **1–3** (TODO 17) when David names it. Never write Apple Music from the factory. Never stem **Acapella**. Floor 10 when David asks. Do not farm 35k to the cloud. Do not Discogs-blast.
+**Next:** **Floor 10** (Rekordbox/Traktor OSC → UE). 11 + 11a proven. **11b parked** (FLX10 native device; do not select the 2ch aggregate in Rekordbox). **13 on hold** (S8 pads → S88). Hardware leftover: **40**. If 16ch fails, **Aggregate Device Maschine** + `~/Music/blackhole_2ch/`. Crate leftover: reload Rekordbox xml (`<>`) / analyze DJ Sets, or STEMIT Alternative **1–3** (TODO 17) when David names it. Never write Apple Music from the factory. Never stem **Acapella**. Do not farm 35k to the cloud. Do not Discogs-blast.
 
 ## Crate (done)
 
@@ -64,21 +64,21 @@ Crate is path-stable. Music.app, Traktor, and Rekordbox are playable from the sa
 - [x] 16b. **STEMIT proved.** `Never Forget 50th v01`, 21 tracks: 21 `.stem.m4a`, 20 full Rekordbox pairs, 1 correct pair drop, 0 fail. 78 min. Detail in item 23.
 - [ ] 17. **Alternative, tracks 1–3 only.** Same STEMIT path, genre batch instead of a playlist. Skip existing `stems_audio` Artist/Album/Title. Never stem Acapella.
 
-## Floor / Elysium (parked)
+## Floor / Elysium (next)
 
 - [ ] 10. Rekordbox/Traktor OSC on `127.0.0.1:9000` (`/rekordbox/bpm`, `/fader`, `/beat_phase`) into UE. No ID3, no library convert.
 - [ ] 10a. Enable UE OSC plugin. Listen `127.0.0.1:9000`.
 - [ ] 10b. Niagara Grid 3D Gas/Smoke. Record 15s sim cache.
 - [ ] 10c. Bind `/rekordbox/bpm` and `/rekordbox/fader` to cache Explicit Time / density.
 
-## NI / Maschine (after Floor)
+## NI / Maschine (13 on hold)
 
 Parked in [ixamal/blackhole](https://github.com/ixamal/blackhole). Session opened **2026-09-19**. 2ch archived at `~/Music/blackhole_2ch/`.
 
 - [x] 11. Port BlackHole **2ch Channel D** onto **16ch**. 2026-09-19: Traktor **Traktor S8 + BlackHole**, D = **11/12** (`In 10`/`In 11`), A/B/C + FX Send disconnected. Maschine **BlackHole 16ch** Out 1 = 0/1, Out 2+ disconnected. Tone + sound check. First flip had D on In 11/12 (right-only); corrected. Rollback: `~/Music/blackhole_2ch/`.
 - [x] 11a. **Sample Traktor A / B / C into Maschine.** 2026-09-19: Internal Record **7/8** (`Out 6`/`Out 7`) → Maschine In 2 → S88 → D. A, B, and C all check. KK out. Link is clock. Did not flip External. Never Record **5/6**.
 - [ ] 12. Convert NI/Traktor material to WAV or AIFF only if file samples are needed. `~/local_tools`.
-- [ ] 13. S8 pads → S88 sample slots. After 11.
+- [ ] 13. **On hold.** S8 pads → S88 sample slots. After Floor.
 
 ## FLX10 / Traktor feed
 
