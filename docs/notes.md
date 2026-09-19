@@ -8,7 +8,9 @@ Last update: 2026-09-19. **16ch Channel D + 11a live.** A/B/C sample into Maschi
 
 Org [alkalurop](https://github.com/alkalurop) is the main bridge (profile: [alkalurop/.github](https://github.com/alkalurop/.github)). First mirror of current ixamal `main`:
 
-| alkalurop | matches ixamal `main` |
+First mirror of then-current ixamal `main` (2026-09-15):
+
+| alkalurop | then `main` |
 | --- | --- |
 | [ix](https://github.com/alkalurop/ix) | `6ec577f` |
 | [stems](https://github.com/alkalurop/stems) | `40069a1` |
