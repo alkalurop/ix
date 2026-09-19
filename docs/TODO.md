@@ -2,13 +2,13 @@
 
 Hit these in order. Stop on the first **doable** open item. Detail: `docs/notes.md`. Off-repo tools and library paths stay off git.
 
-Last update: 2026-09-10. **MUSIC ingest:** DJ Sets 230 in Rekordbox (was 0). IndustryStems artist **0** on NML + xml. `crates` Music → Traktor → Rekordbox **111** playlists. Reviews **2026-09-16** and **2026-10-09**. Floor **10** parked. Next hardware: Maschine A/B/C (11a), FLX10 CH2 digital (40).
+Last update: 2026-09-19. **MUSIC ingest:** DJ Sets 230 in Rekordbox (was 0). IndustryStems artist **0** on NML + xml. `crates` Music → Traktor → Rekordbox **111** playlists. Reviews **2026-09-16** and **2026-10-09**. Floor **10** parked; DCC/UE order is Unreal first, then Maya, Blender, Houdini last. Next hardware: Maschine A/B/C (11a), FLX10 CH2 digital (40).
 
 ## Now
 
 Crate is path-stable. Music.app, Traktor, and Rekordbox are playable from the same files. Sync Library Off. STEMIT + Music folders are in the xml sidecar and imported.
 
-**Next:** Reload Rekordbox xml (`<>`) and reopen Traktor if not already — analyze new DJ Sets rows. Then leftover same-title copies in STEMIT, Alternative stems **1–3** (TODO 17), or another STEMIT playlist when David names one. Never write Apple Music from the factory. Never stem **Acapella**. Floor 10 when David asks. Do not wire **11 / 11a** until a dedicated blackhole session. Do not farm 35k to the cloud. Do not Discogs-blast.
+**Next:** Reload Rekordbox xml (`<>`) and reopen Traktor if not already — analyze new DJ Sets rows. Then leftover same-title copies in STEMIT, Alternative stems **1–3** (TODO 17), or another STEMIT playlist when David names one. Never write Apple Music from the factory. Never stem **Acapella**. Floor / DCC when David asks — Unreal MCP + PCG + OSC PoC first; do not start Blender before Unreal/Maya. Do not wire **11 / 11a** until a dedicated blackhole session. Do not farm 35k to the cloud. Do not Discogs-blast.
 
 ## Crate (done)
 
@@ -63,12 +63,45 @@ Crate is path-stable. Music.app, Traktor, and Rekordbox are playable from the sa
 - [x] 16b. **STEMIT proved.** `Never Forget 50th v01`, 21 tracks: 21 `.stem.m4a`, 20 full Rekordbox pairs, 1 correct pair drop, 0 fail. 78 min. Detail in item 23.
 - [ ] 17. **Alternative, tracks 1–3 only.** Same STEMIT path, genre batch instead of a playlist. Skip existing `stems_audio` Artist/Album/Title. Never stem Acapella.
 
-## Floor / Elysium (parked)
+## Floor / Elysium — DCC / Unreal pipeline (parked)
 
-- [ ] 10. Rekordbox/Traktor OSC on `127.0.0.1:9000` (`/rekordbox/bpm`, `/fader`, `/beat_phase`) into UE. No ID3, no library convert.
-- [ ] 10a. Enable UE OSC plugin. Listen `127.0.0.1:9000`.
-- [ ] 10b. Niagara Grid 3D Gas/Smoke. Record 15s sim cache.
-- [ ] 10c. Bind `/rekordbox/bpm` and `/rekordbox/fader` to cache Explicit Time / density.
+Notes only — priorities for work on the Ix machine. Do not install software or implement from this list. Drive with **Grok/Gemini** via Cursor / Grok Bot; Claude CLI is optional and **not required** for DCC MCP.
+
+Licenses available: Unreal Engine, Maya, Blender.
+
+Hit these in this order when Floor opens. Existing 10 / 10a–c stay the live Niagara slice; they sit inside the Unreal-first PoC.
+
+### Priority order
+
+1. **Unreal MCP + PCG + OSC PoC first** (simplest platform pipe)
+   - [ ] 10. Rekordbox/Traktor OSC on `127.0.0.1:9000` (`/rekordbox/bpm`, `/fader`, `/beat_phase`) into UE. No ID3, no library convert.
+   - [ ] 10a. Enable UE OSC plugin. Listen `127.0.0.1:9000`.
+   - [ ] 10b. Niagara Grid 3D Gas/Smoke. Record 15s sim cache.
+   - [ ] 10c. Bind `/rekordbox/bpm` and `/rekordbox/fader` to cache Explicit Time / density.
+   - [ ] 10d. **Unreal MCP** (global `~/.cursor/mcp.json`, adapters off-repo).
+   - [ ] 10e. **PCG** in the same Unreal project as the OSC / Niagara PoC.
+   - [ ] 10f. OSC **Router** + shared **param bus** (one bus for DJ live path and MCP-driven params).
+   - [ ] 10g. Smoke test driven by Grok/Gemini (not Claude-required).
+
+2. **Maya second**
+   - [ ] 42. Modeling / character animation → cached or static content for Unreal. Not live in the beat loop.
+
+3. **Blender third / later**
+   - [ ] 43. Same content role as Maya (cached/static for UE). User knows Maya/Blender best; still do not start Blender before Unreal/Maya.
+
+4. **Houdini last to wire** (desired future, not v1)
+   - [ ] 44. Procedural + MCP + HDA-in-UE. Niagara cache remains the v1 live path; no Houdini required for the first slice.
+
+### Cross-cutting
+
+- [ ] 10h. **Rekordbox + Traktor → OSC/MIDI** into the same shared Unreal param bus. Live path. **No LLM** in the beat loop.
+- [ ] 45. Shared **dcc-mcp gateway** as the multi-DCC backbone when more than one DCC is needed. Not a substitute for the Unreal-first PoC.
+
+### Explicit non-goals for now
+
+- Do not put an LLM in the live DJ → Unreal beat loop.
+- Do not assume Claude is required for Houdini / Maya / Blender MCP.
+- Do not start Blender before Unreal / Maya per this order.
 
 ## NI / Maschine (after Floor)
 
