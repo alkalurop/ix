@@ -4,11 +4,7 @@ Cursor desktop chats do not sync to the iPhone app. Cloud Agent threads do. Long
 
 ## On Ix now (2026-09-22)
 
-**Merge PR #6** into `main`: https://github.com/ixamal/ix/pull/6
-
-Branch `cursor/ix-dcc-unreal-todo-bf77`. Notes-only `docs/TODO.md` — Floor DCC/Unreal pipeline + RedefineFX Chaos & Niagara Destruction learning session. After merge, pull `main` and delete `.cursor/rules/merge-pr-6.mdc`.
-
-Open in Cursor: https://cursor.com/link/prompt?text=On+Ix%2C+merge+GitHub+PR+6+into+main.+Repo+is+~%2Fgithub%2Fixamal%2Fix.+Branch+is+cursor%2Fix-dcc-unreal-todo-bf77.+PR%3A+https%3A%2F%2Fgithub.com%2Fixamal%2Fix%2Fpull%2F6.+Notes-only+docs%2FTODO.md%3A+Floor+DCC%2FUnreal+pipeline+plus+RedefineFX+Chaos+and+Niagara+Destruction+learning+session.+After+merge%2C+checkout+main%2C+pull+origin+main%2C+and+delete+.cursor%2Frules%2Fmerge-pr-6.mdc.
+Floor TODO is on `main` ([PR #6](https://github.com/ixamal/ix/pull/6)): Unreal MCP + PCG + OSC first, then Maya, Blender, Houdini last. RedefineFX Chaos & Niagara Destruction is the learning track. Notes only.
 
 Source: Gemini architecture conversation, 2026-08-24, brought into ix by the first Valhalla cloud agent.
 
@@ -37,6 +33,4 @@ Unknown Album dump **executed**. Inbox catalog + Ollama (`qwen2.5:7b`) **execute
 - Do not rely on desktop Composer history. Rely on these markdown files.
 
 ## Deeplink to continue on desktop
-Merge PR #6 first: https://cursor.com/link/prompt?text=On+Ix%2C+merge+GitHub+PR+6+into+main.+Repo+is+~%2Fgithub%2Fixamal%2Fix.+Branch+is+cursor%2Fix-dcc-unreal-todo-bf77.+PR%3A+https%3A%2F%2Fgithub.com%2Fixamal%2Fix%2Fpull%2F6.+Notes-only+docs%2FTODO.md%3A+Floor+DCC%2FUnreal+pipeline+plus+RedefineFX+Chaos+and+Niagara+Destruction+learning+session.+After+merge%2C+checkout+main%2C+pull+origin+main%2C+and+delete+.cursor%2Frules%2Fmerge-pr-6.mdc.
-
-Then the live-visuals slice: https://cursor.com/link/prompt?text=Read%20.cursor/context.md%20and%20docs/architecture.md.%20Continue%20the%20IX%20Valhalla%20rig%3A%20wire%20UE5%20OSC%20on%20127.0.0.1%3A9000%20to%20a%2015s%20Niagara%20sim%20cache.
+https://cursor.com/link/prompt?text=Read%20.cursor/context.md%20and%20docs/architecture.md.%20Continue%20the%20IX%20Valhalla%20rig%3A%20wire%20UE5%20OSC%20on%20127.0.0.1%3A9000%20to%20a%2015s%20Niagara%20sim%20cache.
