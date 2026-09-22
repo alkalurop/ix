@@ -5,7 +5,9 @@ Hardlink the mix into ``~/Music/stems_audio/Artist/Album/``, then run
 (Mel pair + ``.stem.m4a``) with the Aqua HUD (``py.utils.progress``).
 
 Never writes Apple Music ``Media.localized``. Acapellas stay in
-``stems_audio`` — they are not pushed back to Music.app. ``--sync-playlists``
+``stems_audio`` — they are not pushed back to Music.app. ``--genre`` takes
+exact Music.app genre in library order; ``--limit`` caps that list (or a
+``--playlist``). ``--sync-playlists``
 rewrites Traktor and Rekordbox crates from ``stems_audio`` in any state
 (factory or not): Mixes / Stems / Acapellas / Instrumentals. Files not
 yet imported get a collection location row. Analyze stays in-app.
@@ -35,7 +37,7 @@ from typing import Any
 from ix_crate.families import is_role_file
 from ix_crate.identify import sanitize
 from ix_crate.music_dupes import MusicDupesError
-from ix_crate.music_fix import dump_playlist
+from ix_crate.music_fix import dump_genre, dump_playlist
 from ix_crate.music_repair import RepairRow, SKIP_SUFFIX
 from ix_crate.paths import REPORTS, STEMS_AUDIO
 from ix_crate.safety import CrateSafetyError, assert_under_stems
@@ -201,7 +203,12 @@ def execute_links(payload: dict[str, Any]) -> dict[str, Any]:
     for job in payload["jobs"]:
         if job["action"] != "stem":
             continue
-        result = hardlink_mix(Path(job["source"]), Path(job["dest"]))
+        try:
+            result = hardlink_mix(Path(job["source"]), Path(job["dest"]))
+        except CrateSafetyError as exc:
+            job["action"] = "skip"
+            job["reason"] = str(exc)
+            continue
         job["link"] = result
         linked += 1
     payload["linked"] = linked
@@ -213,7 +220,24 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--playlist",
         default="",
-        help="Music.app playlist name (exact). Required unless --sync-playlists, --fix-role-titles, --fix-titles, --fix-industry-artists, --genres, --dedupe, or --drop-copies.",
+        help="Music.app playlist name (exact). Required unless --genre, --sync-playlists, --fix-role-titles, --fix-titles, --fix-industry-artists, --genres, --dedupe, or --drop-copies.",
+    )
+    parser.add_argument(
+        "--genre",
+        default="",
+        help="Music.app genre (exact). First tracks in library order. Use with --limit.",
+    )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=0,
+        help="Cap source tracks from --playlist or --genre (0 = all).",
+    )
+    parser.add_argument(
+        "--offset",
+        type=int,
+        default=0,
+        help="Skip this many source tracks (library order). Use with --limit for the next page.",
     )
     parser.add_argument(
         "--execute",
@@ -530,14 +554,24 @@ def main(argv: list[str] | None = None) -> int:
             print("wrote STEMIT playlists. Quit/reopen Traktor. Refresh rekordbox xml.", flush=True)
         return 0
 
-    if not args.playlist:
+    if args.genre and args.playlist:
+        parser.error("use --playlist or --genre, not both")
+    if not args.playlist and not args.genre:
         parser.error(
-            "--playlist is required unless you pass --sync-playlists, --fix-role-titles, "
+            "--playlist or --genre is required unless you pass --sync-playlists, --fix-role-titles, "
             "--fix-titles, --fix-industry-artists, --genres, --dedupe, or --drop-copies"
         )
 
     try:
-        payload = plan_playlist(args.playlist)
+        if args.genre:
+            rows = dump_genre(args.genre, limit=args.limit, offset=args.offset)
+            payload = plan_playlist(f"genre:{args.genre}", rows=rows)
+        else:
+            rows = dump_playlist(args.playlist)
+            start = max(args.offset, 0)
+            end = start + args.limit if args.limit > 0 else None
+            rows = rows[start:end]
+            payload = plan_playlist(args.playlist, rows=rows)
     except MusicDupesError as exc:
         print(exc, file=sys.stderr)
         return 2
@@ -562,7 +596,7 @@ def main(argv: list[str] | None = None) -> int:
         print(exc, file=sys.stderr)
         return 2
 
-    queue = write_queue(payload["jobs"], playlist=args.playlist)
+    queue = write_queue(payload["jobs"], playlist=payload["playlist"])
     payload["queue"] = str(queue)
     payload["execute"] = True
     write_stemit_report(payload)

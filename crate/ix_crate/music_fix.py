@@ -99,6 +99,32 @@ def salvage_title(row: RepairRow, path: Path) -> str:
     return f"{album} {suffix}".strip()
 
 
+def _parse_repair_rows(text: str) -> list[RepairRow]:
+    rows: list[RepairRow] = []
+    for line in text.splitlines():
+        if not line.strip():
+            continue
+        parts = line.split("\t")
+        if len(parts) < 8:
+            parts = parts + [""] * (8 - len(parts))
+        pid, dbid, artist, album, name, genre, duration, location = parts[:8]
+        if not pid.strip():
+            continue
+        rows.append(
+            RepairRow(
+                persistent_id=pid.strip(),
+                database_id=_parse_int(dbid),
+                artist=_clean_field(artist),
+                album=_clean_field(album),
+                name=_clean_field(name),
+                genre=_clean_field(genre),
+                duration=float(_parse_int(duration)),
+                location=location.strip(),
+            )
+        )
+    return rows
+
+
 def dump_playlist(name: str) -> list[RepairRow]:
     if not music_running():
         raise MusicDupesError("Music.app is not running. Open it and retry.")
@@ -131,30 +157,45 @@ tell application "Music"
   return out
 end tell
 '''
-    text = _run_osascript(script, timeout=180)
-    rows: list[RepairRow] = []
-    for line in text.splitlines():
-        if not line.strip():
-            continue
-        parts = line.split("\t")
-        if len(parts) < 8:
-            parts = parts + [""] * (8 - len(parts))
-        pid, dbid, artist, album, name, genre, duration, location = parts[:8]
-        if not pid.strip():
-            continue
-        rows.append(
-            RepairRow(
-                persistent_id=pid.strip(),
-                database_id=_parse_int(dbid),
-                artist=_clean_field(artist),
-                album=_clean_field(album),
-                name=_clean_field(name),
-                genre=_clean_field(genre),
-                duration=float(_parse_int(duration)),
-                location=location.strip(),
-            )
+    return _parse_repair_rows(_run_osascript(script, timeout=180))
+
+
+def dump_genre(genre: str, *, limit: int = 0, offset: int = 0) -> list[RepairRow]:
+    """Library file tracks whose genre matches exactly, in library order."""
+    if not music_running():
+        raise MusicDupesError("Music.app is not running. Open it and retry.")
+    quoted = genre.replace("\\", "\\\\").replace('"', '\\"')
+    skip = max(int(offset), 0)
+    cap = max(int(limit), 0)
+    start = skip + 1
+    if cap:
+        end_line = (
+            f"set endIndex to {skip + cap}\n"
+            f"  if endIndex > n then set endIndex to n"
         )
-    return rows
+    else:
+        end_line = "set endIndex to n"
+    script = f'''
+tell application "Music"
+  set hits to every file track of library playlist 1 whose genre is "{quoted}"
+  set n to count of hits
+  if n is 0 then return ""
+  set startIndex to {start}
+  {end_line}
+  if startIndex > n then return ""
+  set out to ""
+  repeat with i from startIndex to endIndex
+    set t to item i of hits
+    set locText to ""
+    try
+      set locText to POSIX path of (location of t as alias)
+    end try
+    set out to out & (persistent ID of t as text) & tab & (database ID of t as text) & tab & (artist of t as text) & tab & (album of t as text) & tab & (name of t as text) & tab & (genre of t as text) & tab & (duration of t as text) & tab & locText & linefeed
+  end repeat
+  return out
+end tell
+'''
+    return _parse_repair_rows(_run_osascript(script, timeout=300))
 
 
 def dump_various_artists() -> list[RepairRow]:
@@ -174,30 +215,7 @@ tell application "Music"
   return out
 end tell
 '''
-    text = _run_osascript(script, timeout=180)
-    rows: list[RepairRow] = []
-    for line in text.splitlines():
-        if not line.strip():
-            continue
-        parts = line.split("\t")
-        if len(parts) < 8:
-            parts = parts + [""] * (8 - len(parts))
-        pid, dbid, artist, album, name, genre, duration, location = parts[:8]
-        if not pid.strip():
-            continue
-        rows.append(
-            RepairRow(
-                persistent_id=pid.strip(),
-                database_id=_parse_int(dbid),
-                artist=_clean_field(artist),
-                album=_clean_field(album),
-                name=_clean_field(name),
-                genre=_clean_field(genre),
-                duration=float(_parse_int(duration)),
-                location=location.strip(),
-            )
-        )
-    return rows
+    return _parse_repair_rows(_run_osascript(script, timeout=180))
 
 
 def choose_album(row_album: str, proposed: str, artist: str) -> str:

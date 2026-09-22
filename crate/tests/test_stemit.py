@@ -4,7 +4,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from ix_crate.music_repair import RepairRow
-from ix_crate.stemit import dest_mix, factory_env, skip_reason
+from ix_crate.stemit import dest_mix, factory_env, plan_playlist, skip_reason
 
 
 def _row(
@@ -79,6 +79,20 @@ class StemitPlanTests(unittest.TestCase):
             src.write_bytes(b"x")
             row = _row("Stream", location=str(src))
             self.assertEqual(skip_reason(row, stems_root=Path(tmp) / "stems"), "skip stem or m4p")
+
+    def test_plan_uses_supplied_rows(self) -> None:
+        with TemporaryDirectory() as tmp:
+            src = Path(tmp) / "mix.mp3"
+            src.write_bytes(b"x")
+            rows = [
+                _row("One", location=str(src)),
+                _row("Two", location=str(src)),
+                _row("Three", location=str(src)),
+            ]
+            payload = plan_playlist("genre:Rock", rows=rows[:2], stems_root=Path(tmp) / "stems")
+            self.assertEqual(payload["playlist"], "genre:Rock")
+            self.assertEqual(payload["tracks"], 2)
+            self.assertEqual([job["name"] for job in payload["jobs"]], ["One", "Two"])
 
     def test_factory_env_puts_venv_bin_first(self) -> None:
         env = factory_env()

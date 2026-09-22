@@ -138,6 +138,9 @@ class ParserTest(unittest.TestCase):
         self.assertIn("--fix-titles", text)
         self.assertIn("--drop-copies", text)
         self.assertIn("--genres", text)
+        self.assertIn("--genre", text)
+        self.assertIn("--limit", text)
+        self.assertIn("--offset", text)
 
 
 if __name__ == "__main__":
