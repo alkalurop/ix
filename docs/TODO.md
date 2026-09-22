@@ -2,13 +2,13 @@
 
 Hit these in order. Stop on the first **doable** open item. Detail: `docs/notes.md`. Off-repo tools and library paths stay off git.
 
-Last update: 2026-09-19. **MUSIC ingest:** DJ Sets 230 in Rekordbox (was 0). IndustryStems artist **0** on NML + xml. `crates` Music → Traktor → Rekordbox **111** playlists. Reviews **2026-09-16** and **2026-10-09**. Floor **10** parked; DCC/UE order is Unreal first, then Maya, Blender, Houdini last. Next hardware: Maschine A/B/C (11a), FLX10 CH2 digital (40).
+Last update: 2026-09-22. **16ch Channel D + 11a live.** **11b parked** (FLX10 stays native `DDJ-FLX10`). **13 on hold** (S8 pads → S88). 2ch rollback: `~/Music/blackhole_2ch/`. **Next: Floor 10.** DCC/UE order is Unreal first, then Maya, Blender, Houdini last. Hardware leftover: **40**. IndustryStems folder stays. Rock STEMIT first **300** queued in 100s. Reviews **2026-09-16** / **2026-10-09**.
 
 ## Now
 
 Crate is path-stable. Music.app, Traktor, and Rekordbox are playable from the same files. Sync Library Off. STEMIT + Music folders are in the xml sidecar and imported.
 
-**Next:** Reload Rekordbox xml (`<>`) and reopen Traktor if not already — analyze new DJ Sets rows. Then leftover same-title copies in STEMIT, Alternative stems **1–3** (TODO 17), or another STEMIT playlist when David names one. Never write Apple Music from the factory. Never stem **Acapella**. Floor / DCC when David asks — Unreal MCP + PCG + OSC PoC first; do not start Blender before Unreal/Maya. Do not wire **11 / 11a** until a dedicated blackhole session. Do not farm 35k to the cloud. Do not Discogs-blast.
+**Next:** **Floor 10** (Rekordbox/Traktor OSC → UE). Unreal MCP + PCG + OSC PoC first; RedefineFX Chaos & Niagara Destruction is the performant-effects learning track; do not start Blender before Unreal/Maya. 11 + 11a proven. **11b parked** (FLX10 native device; do not select the 2ch aggregate in Rekordbox). **13 on hold** (S8 pads → S88). Hardware leftover: **40**. If 16ch fails, **Aggregate Device Maschine** + `~/Music/blackhole_2ch/`. Crate leftover: reload Rekordbox xml (`<>`) / analyze DJ Sets, or STEMIT Alternative **1–3** (TODO 17) when David names it. Never write Apple Music from the factory. Never stem **Acapella**. Do not farm 35k to the cloud. Do not Discogs-blast.
 
 ## Crate (done)
 
@@ -42,6 +42,7 @@ Crate is path-stable. Music.app, Traktor, and Rekordbox are playable from the sa
 - [x] 37. **Playlist membership bridge.** `crates --from music|nml|xml --to music|nml|xml`. Music → `rekordbox.xml/MUSIC/`, NML → `rekordbox.xml/TRAKTOR/`. Path + hardlink match. Collection cues / energy / comments stay. Unmatched tracks skipped, not stubbed. STEMIT stays `stemit --genres`. DJCU2 for cues on tracks Rekordbox does not have. How/why: `docs/crate.md`.
 - [x] 38. **Crate night (2026-09-08).** `music-genre --xml --execute`: **10,457** TRACK Genre rows (`EDM, …` leftover **0**). `crates --from music --to xml --all --execute`: **107** Music.app playlists under `MUSIC/` — **House** 14, **Origin Stories** 90, root DJ Sets / Front to Back / Never Forget 50th v01. **5,131** keys matched; **5,961** Music-only files skipped (not stubbed). Rekordbox imported MUSIC into collection. David playing in Rekordbox + Traktor. Import log skipped **21** files: **16** stale/missing paths, **4** Apple `.m4p` DRM. `<>` reload; Don't ask again + No on tag overwrite.
 - [x] 39. **Empty MUSIC crates + IndustryStems listen (2026-09-10).** `crates` now ingests missing files that exist on disk (Location row, not a 0.00 BPM stub). Skip `.m4p`. Music → NML + xml `--all --execute`: **111** playlists. **DJ Sets 0 → 230** (236 in Music; 6 DRM skipped). MUSIC empties **28 → 5** (empty or DRM-only in Music). `stemit --fix-industry-artists`: **209/209** packs (crate 201 + prefix 4 + MusicBrainz 2 + Shazam 2). NML IndustryStems artist **0**. xml artist **968 → 0** (831 live + 133 dead-path ghosts by pack folder). Music.app already **0**. Played / NPBS now under MUSIC/ on both decks. Analyze new DJ Sets rows in-app. How/why: `docs/notes.md`.
+- [x] 39a. **IndustryStems folder kept (2026-09-19).** `~/Music/stems_audio/IndustryStems/` is the official 4-WAV crate (**209** packs, **835** wav, **44 GB**). Artists named (31 / 39). Not factory-stemmed, not moved, not hardlinked elsewhere. Live: Traktor 4.5.1 **1251** path hits, rekordbox.xml **968** Location rows. Looks like a leftover dump; it is organized and playable. **Do not delete.**
 
 ## Tagging
 
@@ -56,20 +57,20 @@ Crate is path-stable. Music.app, Traktor, and Rekordbox are playable from the sa
 
 ## Stems (STEMIT)
 
-**STEMIT** = Music.app playlist → hardlink mix into `~/Music/stems_audio` → [ixamal/stems](https://github.com/ixamal/stems) `py.exec.separate` (HUD: `py.utils.progress`). Skip if that Artist/Album/Title already has a `.stem.m4a`. ~3.8 min/track on this Mac. `PYTHONPATH=crate python3 -m ix_crate stemit --playlist "…"`. How/why: `docs/crate.md`.
+**STEMIT** = Music.app playlist → hardlink mix into `~/Music/stems_audio` → [ixamal/stems](https://github.com/ixamal/stems) `py.exec.separate` (HUD: `py.utils.progress`). Skip if that Artist/Album/Title already has a `.stem.m4a`. ~3.8 min/track on this Mac. `PYTHONPATH=crate python3 -m ix_crate stemit --playlist "…"`. Genre batch (library order, exact Music.app genre): `--genre Rock --limit 100`. Aqua HUD (`py.utils.progress`) shows elapsed + ETA. How/why: `docs/crate.md`.
 
 - [x] 14. **Acapella — do not stem.** Sources already *are* the vocal. Let It Go and I Get Deep already have `.stem.m4a`. Music.app extras have no local file.
 - [x] 15. **Afro House.** Dialed In already had stem + pair. Local factory wrote Roots, Koma Kobache, Iris (hardlink mix in `stems_audio`, then Mel pair + `.stem.m4a`). Never wrote Media.localized.
 - [x] 16b. **STEMIT proved.** `Never Forget 50th v01`, 21 tracks: 21 `.stem.m4a`, 20 full Rekordbox pairs, 1 correct pair drop, 0 fail. 78 min. Detail in item 23.
 - [ ] 17. **Alternative, tracks 1–3 only.** Same STEMIT path, genre batch instead of a playlist. Skip existing `stems_audio` Artist/Album/Title. Never stem Acapella.
 
-## Floor / Elysium — DCC / Unreal pipeline (parked)
+## Floor / Elysium — DCC / Unreal pipeline (next)
 
-Notes only — priorities for work on the Ix machine. Do not install software or implement from this list. Drive with **Grok/Gemini** via Cursor / Grok Bot; Claude CLI is optional and **not required** for DCC MCP.
+Notes only — priorities for work on the Ix machine. Do not install software, enroll in courses, or implement from this list. Drive with **Grok/Gemini** via Cursor / Grok Bot; Claude CLI is optional and **not required** for DCC MCP.
 
 Licenses available: Unreal Engine, Maya, Blender.
 
-Hit these in this order when Floor opens. Existing 10 / 10a–c stay the live Niagara slice; they sit inside the Unreal-first PoC.
+Hit these in this order when Floor opens. Existing 10 / 10a–c stay the live Niagara slice; they sit inside the Unreal-first PoC. RedefineFX Chaos & Niagara Destruction is the learning-session track for performant Chaos + Niagara effects.
 
 ### Priority order
 
@@ -82,6 +83,9 @@ Hit these in this order when Floor opens. Existing 10 / 10a–c stay the live Ni
    - [ ] 10e. **PCG** in the same Unreal project as the OSC / Niagara PoC.
    - [ ] 10f. OSC **Router** + shared **param bus** (one bus for DJ live path and MCP-driven params).
    - [ ] 10g. Smoke test driven by Grok/Gemini (not Claude-required).
+
+   Learning sessions (Unreal performant effects; notes only — do not enroll or install from this list):
+   - [ ] 10i. **RedefineFX Chaos & Niagara Destruction** ([redefinefx.com](https://redefinefx.com) / [Chaos & Niagara Destruction](https://redefinefx.com/chaos/)). Learning sessions for Unreal performant effects (Chaos destruction + Niagara). Sits with Floor Unreal / Niagara work (10 / 10a–c); not a substitute for the live OSC → sim-cache slice.
 
 2. **Maya second**
    - [ ] 42. Modeling / character animation → cached or static content for Unreal. Not live in the beat loop.
@@ -102,18 +106,20 @@ Hit these in this order when Floor opens. Existing 10 / 10a–c stay the live Ni
 - Do not put an LLM in the live DJ → Unreal beat loop.
 - Do not assume Claude is required for Houdini / Maya / Blender MCP.
 - Do not start Blender before Unreal / Maya per this order.
+- Do not enroll in RedefineFX or install course materials from this list.
 
-## NI / Maschine (after Floor)
+## NI / Maschine (13 on hold)
 
-Parked in [ixamal/blackhole](https://github.com/ixamal/blackhole). Do not start while Floor is open. David queued **11a** 2026-09-08 — still a dedicated session, not tonight.
+Parked in [ixamal/blackhole](https://github.com/ixamal/blackhole). Session opened **2026-09-19**. 2ch archived at `~/Music/blackhole_2ch/`.
 
-- [ ] 11. Port BlackHole **2ch Channel D** onto **16ch**. Prove tone, Traktor A, and S88-only-on-D. Commit in blackhole after this works.
-- [ ] 11a. **Sample Traktor A / B / C into Maschine.** Play pads on the S88. KK out — KK does not sample live decks. Ableton Link is clock, not audio. Internal Traktor may not offer three independent deck outs; 16ch alone does not invent them. Do not record the master into BlackHole while Channel D is up (feedback).
+- [x] 11. Port BlackHole **2ch Channel D** onto **16ch**. 2026-09-19: Traktor **Traktor S8 + BlackHole**, D = **11/12** (`In 10`/`In 11`), A/B/C + FX Send disconnected. Maschine **BlackHole 16ch** Out 1 = 0/1, Out 2+ disconnected. Tone + sound check. First flip had D on In 11/12 (right-only); corrected. Rollback: `~/Music/blackhole_2ch/`.
+- [x] 11a. **Sample Traktor A / B / C into Maschine.** 2026-09-19: Internal Record **7/8** (`Out 6`/`Out 7`) → Maschine In 2 → S88 → D. A, B, and C all check. KK out. Link is clock. Did not flip External. Never Record **5/6**.
 - [ ] 12. Convert NI/Traktor material to WAV or AIFF only if file samples are needed. `~/local_tools`.
-- [ ] 13. S8 pads → S88 sample slots. After 11.
+- [ ] 13. **On hold.** S8 pads → S88 sample slots. After Floor.
 
 ## FLX10 / Traktor feed
 
+- [ ] 11b. **FLX10 → Maschine In 3.** Parked 2026-09-19. Aggregate-as-Rekordbox-device broke FLX10 master / booth / receiver. Next try: native **DDJ-FLX10** + **PC MASTER OUT** → `MASTER + BlackHole 2ch` (never 16ch). Scripts stay; box destroyed. Not **40**.
 - [ ] 40. **Traktor → DDJ-FLX10 Channel 2 digital.** Today CH2 is analog from Traktor master out. Investigate a USB / Pro DJ Link / audio-interface feed so Rekordbox CH2 is not that analog insert. Leftover hum after the iFi iDefender Max USB-C (Bloom Audio order 52738, 2026-05-08) — that gadget already kills most USB ground-loop / power hum and is worth keeping. Detail: `docs/notes.md`.
 
 ## Play history (parked)

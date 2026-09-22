@@ -6,6 +6,8 @@ Public git: [github.com/ixamal/ix](https://github.com/ixamal/ix)
 
 Mac clone path: `~/github/ixamal/ix`
 
+**Vibe coding.** Cursor and Codex only. Git commits are David — no Cursor or Codex co-author trailers.
+
 ## Where we are
 
 If you DJ, or you have been collecting longer than you have been DJing, you already know this mess. Twenty thousand files. Mix CDs tagged as the DJ who mixed them. iTunes calling everything `EDM, House`. The same record twice because Apple named the second copy `Track 1`. A USB drive that *was* the crate until you unplugged it and half of Songs grew a `!`. You cannot play what you cannot find. You cannot stem what has no name. You cannot migrate playlists if the path is a lie.

@@ -2,13 +2,15 @@
 
 Parking lot for crate, tagging, and hardware ideas. Ordered checklist: `docs/TODO.md`. Agents: read both, then stop unless David asks to act. Off-repo tools and library paths stay off git.
 
-Last update: 2026-09-15. **Alkalurop bridge:** public ixamal repos mirrored into [github.com/alkalurop](https://github.com/alkalurop) (org profile is the main bridge). Monthly 15th 15:00 local. `favorites` still recording (TODO 41); reviews **2026-09-16** / **2026-10-09**. Hardware next: Maschine A/B/C (11a), FLX10 CH2 digital (40). Floor **10** parked. Toolkit: README. How/why: `docs/crate.md`.
+Last update: 2026-09-19. **16ch Channel D + 11a live.** A/B/C sample into Maschine → S88 → D. **11b parked** (FLX10 native). **13 on hold** (S8 pads). **Next: Floor 10.** Hardware leftover: **40**. 2ch rollback: `~/Music/blackhole_2ch/`. Alkalurop bridge monthly 15th 15:00 local. `favorites` still recording (TODO 41); reviews **2026-09-16** / **2026-10-09**. Toolkit: README. How/why: `docs/crate.md`.
 
 ## Alkalurop org bridge (2026-09-15)
 
 Org [alkalurop](https://github.com/alkalurop) is the main bridge (profile: [alkalurop/.github](https://github.com/alkalurop/.github)). First mirror of current ixamal `main`:
 
-| alkalurop | matches ixamal `main` |
+First mirror of then-current ixamal `main` (2026-09-15):
+
+| alkalurop | then `main` |
 | --- | --- |
 | [ix](https://github.com/alkalurop/ix) | `6ec577f` |
 | [stems](https://github.com/alkalurop/stems) | `40069a1` |
@@ -17,6 +19,8 @@ Org [alkalurop](https://github.com/alkalurop) is the main bridge (profile: [alka
 | [music_migration](https://github.com/alkalurop/music_migration) | `0a4735f` |
 
 `github.com/alkalurop/ix` used to 301 to ixamal/ix (old transfer redirect). Re-created the org repo so the name lives on the org. Script: `docs/examples/alkalurop-bridge.sh`. Plist: `ai.ixamal.alkalurop-bridge` — 15th 15:00 local. No tokens in git.
+
+**2026-09-19 refresh:** mirrored current ixamal `main` onto alkalurop (David-only authorship, Floor next, **13** on hold).
 
 ## Crate status
 
@@ -52,13 +56,17 @@ PYTHONPATH=crate python3 -m ix_crate crates --from music --to xml --all --execut
 - Played / NPBS Favorites / Neglected / Random now under **MUSIC/** on both decks.
 - New collection rows have no grid until Rekordbox Analyze (or DJCU2 later). Reload xml `<>`. Don't ask again + **No** on tag overwrite.
 
+### IndustryStems folder kept (2026-09-19)
+
+The `IndustryStems/` tree is not unfinished work. Official `drums/bass/other/vocals.wav` packs stay there. `--fix-industry-artists` only named them. `--dedupe` keeps those WAVs. Checked 2026-09-19: **209** folders, **835** wav, **44 GB**, `nlink` 1. Traktor 4.5.1 **1251** path hits; rekordbox.xml **968** Locations (artist already clean). A factory mix of the same song under Artist/Album is a different file. David asked to leave it. Do not delete.
+
 ### Resume next
 
 1. Reload Rekordbox xml (`<>`) and reopen Traktor if needed — analyze new DJ Sets rows. First glance 2026-09-10 was good.
 2. Leftover same-title copies in STEMIT. Alternative stems 1–3 (TODO 17) unless David names another playlist.
-3. **11 / 11a** when David opens a blackhole session: 16ch, then Traktor A/B/C → Maschine sampler → S88.
-4. **40** Investigate Traktor → FLX10 Channel 2 as a digital feed (today: analog master).
-5. Floor **10** parked until David asks.
+3. **11 + 11a done.** 16ch Channel D. A, B, and C sample into Maschine, S88 on D. **11b parked** (FLX10). **13 on hold** (S8 pads → S88).
+4. **40** Investigate Traktor → FLX10 Channel 2 as a digital feed (today: analog master). Leftover after Floor.
+5. **Next: Floor 10.** OSC `127.0.0.1:9000` → UE Niagara.
 6. **41** Played / Not Played But Should — harvest + patterns live; crates via `--playlists`. Load the 5am LaunchAgent only when David asks. Quarterly `--snapshot` into git, not nightly. Reviews **2026-09-16**, **2026-10-09**.
 7. Items 5 / 5b / 6 stay omitted. Do not Discogs-blast. Targeted one-album Discogs from a screenshot is OK (TODO 22 / `docs/crate.md`).
 
@@ -128,18 +136,22 @@ ix Floor stays live OSC (`/rekordbox/bpm`, `/fader`, `/beat_phase`). It does not
 
 Crate is path-stable and playable (TODO 3 + 38). David queued **11a** 2026-09-08: sample Traktor **A / B / C into Maschine**. Execution lives in [ixamal/blackhole](https://github.com/ixamal/blackhole), not this repo. Dedicated session — do not wire during crate or Floor work.
 
-Working rig (2026-08-22): S88 keys (Light Guide) into Komplete Kontrol or Maschine, down **BlackHole 2ch**, into Traktor Channel D, out the S8 fader. KK and Maschine share one D fader. Leave Maschine Input off BlackHole (loop). Leave S8 unchecked in Maschine MIDI. Close KK when Maschine needs the S88.
+Working rig (2026-09-19): S88 keys into Komplete Kontrol or Maschine, down **BlackHole 16ch 1–2**, into Traktor Channel D on **Traktor S8 + BlackHole**, out the S8 fader. KK and Maschine share one D fader. Leave Maschine Input off BlackHole (loop). Leave S8 unchecked in Maschine MIDI. Close KK when Maschine needs the S88.
 
-**Next session (blackhole, in this order):**
+**2ch rollback (2026-09-19):** `~/Music/blackhole_2ch/`. **16ch post-quit archive:** `~/Music/blackhole_16ch_2026_09_19_0755/` (TSI = Traktor S8 + BlackHole; Maschine = BH 16ch). Off git.
 
-1. Port the working 2ch Channel D graph onto **BlackHole 16ch**. Prove tone, Traktor A, and S88-only-on-D still behave. Commit there only after this works.
-2. Then tap Traktor **A/B/C into the Maschine sampler**, play pads on the **S88**. KK out — KK does not sample live decks. Ableton Link is clock, not audio. Open question: Internal Traktor may not offer three independent deck outs; 16ch alone does not invent them. Do not record the master into BlackHole while Channel D is up (feedback).
-3. Convert Traktor / NI material to WAV or AIFF for Maschine + S88 only if file samples are needed. Off-repo under `~/local_tools`.
-4. **Idea to try:** can **Traktor Kontrol S8** pads drive **S88** sample slots (Maschine / Komplete Kontrol S88)? MIDI/bridge after 1–2.
+**This session (blackhole):**
 
-Keep converters and MIDI maps in `~/local_tools`, not in this public repo. Keep Rekordbox shut during the 16ch / sampler graph so FLX10 USB is not in the same fight.
+1. **Done.** 16ch Channel D. Traktor `Traktor S8 + BlackHole`, D = In 10/11. First try In 11/12 was right-only. Maschine BH 16ch Out 1 only. Sound checks.
+2. **11a done.** A, B, and C all check. Internal Record **7/8** → Maschine In 2 → S88 → D.
+3. **11b parked.** Selecting `FLX10 + BlackHole 2ch` as the Rekordbox device broke FLX10 master / booth / receiver. Native **DDJ-FLX10** is required. Next try: **PC MASTER OUT** → `MASTER + BlackHole 2ch` (never 16ch). Aggregate destroyed; scripts remain in blackhole.
+4. **13 on hold.** S8 pads → S88 slots after Floor. Convert to WAV/AIFF only if file samples are needed (`~/local_tools`).
+
+Keep converters and MIDI maps in `~/local_tools`, not in this public repo. Rekordbox audio device stays **DDJ-FLX10**. Leftover S8/S88 MIDI maps stay unused.
 
 ## FLX10 Channel 2 + USB noise
+
+**11b barrier (2026-09-19):** Rekordbox must use native **`DDJ-FLX10`**. Pointing Audio at `FLX10 + BlackHole 2ch` (or moving Master off FLX10 USB 0/1) broke master, booth, and the receiver. Booth is analog RCAs, not a USB pair. Next digital tap: **PC MASTER OUT** → `DDJ-FLX10 : MASTER + BlackHole 2ch` (never 16ch). Not the same job as **40**.
 
 Rekordbox **DDJ-FLX10 Channel 2** is analog from Traktor master out today. TODO **40**: see whether Traktor can feed CH2 digitally (USB audio / interface / Link) so that insert is not the analog master.
 
@@ -147,7 +159,7 @@ USB ground-loop / 5 V power hum on this rig: **iFi iDefender Max** (USB-C). Boug
 
 ## Parked in siblings (not this repo)
 
-- [ixamal/blackhole](https://github.com/ixamal/blackhole) — 2ch Channel D works. Next: 16ch, then A/B/C → Maschine → S88.
+- [ixamal/blackhole](https://github.com/ixamal/blackhole) — 16ch Channel D + 11a live. 2ch archive: `~/Music/blackhole_2ch/`. **11b parked** (FLX10 native). **13 on hold.** Next work is Floor on this repo.
 - [ixamal/ix_bangers](https://github.com/ixamal/ix_bangers) — Bangers MCP catalog (stems, Music, Rekordbox, Traktor). Dry mode until David says commit. Not native Traktor.
 - [ixamal/stems](https://github.com/ixamal/stems) — factory idle after the first `stems_audio` pass. Parked there: dump the crate to JSON + a spreadsheet webpage. Not now.
 
