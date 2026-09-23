@@ -197,13 +197,27 @@ Links:
 
 **Room (2026-09-23).** The FLX10 is the hub. Master goes to the **Sony STR-AN1000**. That master is split with **AudioQuest** plus a sub controller into an **SVS** sub. Booth is a **KRK Rokit 5**. S8 master out and S8 booth out should sit idle. Serials, and the exact SVS / AudioQuest / sub-controller models, come later (State Farm). Rekordbox device stays native **DDJ-FLX10**.
 
-**Target (TODO 40).** Whatever the S8 is doing (Traktor’s whole mix) should arrive on **FLX10 channel 2 with the input switch on B**. **LINE** on that same switch stays the analog tester. The S8 master cable can stay plugged for that test. Daily position is **B**.
+**Target (TODO 40).** David wants the whole S8/Traktor mix on FLX10 channel 2 without the analog master cable. Afternoon conclusion below: **LINE stays the working feed.** The switch cannot be aimed at BlackHole.
 
 **B is the second USB port**, not a Rekordbox checkbox. The channel switch is USB **A** / **LINE** / USB **B** (Serato quickstart; the FLX10 manual calls A and B “a track loaded onto a deck”). This Mac is on one USB port, so Rekordbox owns **A**. **B** is the other USB socket, meant for a second computer. With nothing on that socket, CH2 on B is silent. LINE is the only position that hears the S8 master cable.
 
-2026-09-19 silence of the Sony was a reboot (David, 2026-09-23), so a digital feed into Rekordbox is still open. Do not add the FLX10 to `Traktor S8 + BlackHole` (44.1 vs 48 kHz). The second USB port still has no channel-2 bus.
+Do not add the FLX10 to `Traktor S8 + BlackHole` (44.1 vs 48 kHz). The second USB port has no channel-2 bus.
 
-**Second cable, 2026-09-23.** David plugged this Mac into the other FLX10 USB port. CoreAudio shows two `DDJ-FLX10` devices, both 44.1 kHz, 10 in / 4 out. Rekordbox is on `…:2100000:1,2` (running). The free port is `…:EEMP004232CC:1,2` (idle). Its only output format is 4 channels at 44.1: **Out 0 / Out 1** master, **Out 2 / Out 3** phones. There is no channel-2 deck bus for a bridge to write. Switch **B** plays a deck from DJ software on that port, not a CoreAudio copy of Traktor. Do not play BlackHole into Out 0 / Out 1. That is PC-B master and can reach the Sony. CH2 on **B** with nothing playing a deck there stays silent. **LINE** remains the analog tester. **A** remains Rekordbox.
+**Second cable, 2026-09-23.** David plugged this Mac into the other FLX10 USB port. CoreAudio shows two `DDJ-FLX10` devices, both 44.1 kHz, 10 in / 4 out. Rekordbox is on `…:2100000:1,2` (running). The free port is `…:EEMP004232CC:1,2` (idle). Its only output format is 4 channels at 44.1: **Out 0 / Out 1** master, **Out 2 / Out 3** phones. There is no channel-2 deck bus for a bridge to write. Switch **B** plays a deck from DJ software on that port, not a CoreAudio copy of Traktor. Do not play BlackHole into Out 0 / Out 1. That is PC-B master and can reach the Sony. CH2 on **B** with nothing playing a deck there stays silent. **LINE** remains the S8 feed. **A** remains Rekordbox.
+
+**LINE is not Channel D (2026-09-23 afternoon).** David asked to make CH2 digital, including calling it MIDI, then asked whether LINE can take the S8 the way BlackHole feeds S8 Channel D. It cannot. Nothing was rerouted. Rekordbox stayed on **DDJ-FLX10**. Traktor stayed on **Traktor S8 + BlackHole**. No bridge was started.
+
+S8 Channel D works because Traktor is the mixer for that channel. Mixing mode is Internal. Deck D’s header is **Live Input**. Input routing is aggregate **In 10 / In 11** (the first BlackHole pair). The channel button is **TRAKTOR**, so the hardware channel plays that software deck. Maschine writes BlackHole **Out 0 / Out 1**. Traktor hears it.
+
+FLX10 CH2 **LINE** selects the rear RCA. The manual calls that a line-level device on the LINE terminals, mixed in the hardware with no computer in the path. There is no device menu that assigns LINE to BlackHole, the S8, or any CoreAudio input.
+
+FLX10 CH2 **A** or **B** plays a track loaded on a deck in the DJ app on that USB port. Rekordbox decks play a library track. They have no Traktor Live Input, so they will not play the S8 mix that is already on the Traktor record tap. Rekordbox already owns USB A and will not run a second copy on USB B. Pointing Traktor’s audio device at the FLX10 drops S8 phones and Channel D.
+
+CoreAudio on this Mac, one `DDJ-FLX10`: **10 in / 4 out**, 44.1 kHz. Those four outputs are master and phones. Writing them reaches the Sony or the headphone jack and skips the channel fader. MIDI on the FLX10 is faders, pads, and the switch. The mix is audio.
+
+DDJ-FLX10 Setting Utility labels such as **CH2 Control Tone DIGITAL** and **Pre/Post CH fader** are the recording direction, mixer into the computer. Rekordbox Input Deck 1–4 are the same RCAs, computer-bound. **PC MASTER OUT** copies the rekordbox master to a computer device and still lands on the master bus, not on the CH2 fader.
+
+The S8 mix is already digital on Traktor record **7/8**. The channel strip accepts it through the RCA on **LINE**. iDefender stays.
 
 USB ground-loop / 5 V power hum on this rig: **iFi iDefender Max** (USB-C). Bought from [Bloom Audio](https://bloomaudio.com/) 2026-05-08, order **52738**. It sits on the USB path and strips host power so the interface is not sharing a dirty 5 V rail. David: it works pretty well. Leftover noise after that insert is why CH2 digital is on the list — do not rip the iDefender out while chasing 40. Note for anyone cloning the hall: try the iDefender Max before buying another mixer or a new interface.
 

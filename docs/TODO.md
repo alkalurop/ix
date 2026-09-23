@@ -120,7 +120,7 @@ Parked in [ixamal/blackhole](https://github.com/ixamal/blackhole). Session opene
 ## FLX10 / Traktor feed
 
 - [ ] 11b. **FLX10 → Maschine In 3.** Parked 2026-09-19. Aggregate silenced the Sony, booth, and master; David (2026-09-23): that needed a reboot, not a ban. Scripts stay; box was destroyed. Not **40**.
-- [ ] 40. **Traktor mix → FLX10 CH2 USB B.** 2026-09-23: FLX10 is the room hub (Sony STR-AN1000 master, AudioQuest + sub controller → SVS sub, KRK Rokit 5 booth). S8 master and booth jacks should sit idle. CH2 switch **B** is the digital home for the whole S8/Traktor mix. **LINE** stays the analog tester. B is the FLX10’s second USB port, not a Rekordbox checkbox. The 2026-09-19 Sony silence was a reboot, so a digital Rekordbox input is still open. Serials later. iFi iDefender Max stays (Bloom Audio 52738, 2026-05-08). Detail: `docs/notes.md`.
+- [ ] 40. **Traktor mix → FLX10 CH2.** 2026-09-23 afternoon: LINE cannot take BlackHole the way S8 Channel D does. LINE is the rear RCA. A/B play a DJ-software deck; Rekordbox has no Live Input. CoreAudio outs are master and phones (skip the fader; can hit the Sony). Working feed stays the S8 RCA on **LINE**. Room hub: Sony STR-AN1000, AudioQuest + sub controller → SVS, KRK Rokit 5 booth. Serials later. iFi iDefender Max stays (Bloom Audio 52738, 2026-05-08). Detail: `docs/notes.md`.
 
 ## Play history (parked)
 
