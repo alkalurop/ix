@@ -2,7 +2,9 @@
 
 Hit these in order. Stop on the first **doable** open item. Detail: `docs/notes.md`. Off-repo tools and library paths stay off git.
 
-Last update: 2026-09-22. **16ch Channel D + 11a live.** **11b parked** (Sony silence was a reboot). **13 on hold** (S8 pads → S88). 2ch rollback: `~/Music/blackhole_2ch/`. **Next: Floor 10.** DCC/UE order is Unreal first, then Maya, Blender, Houdini last. Hardware leftover: **40**. IndustryStems folder stays. Rock STEMIT first **300** queued in 100s. Reviews **2026-09-16** / **2026-10-09**.
+**Tracker:** open work is also on [GitHub Issues + milestones](https://github.com/ixamal/ix/milestones?state=all) (ixamal). How this splits from docs: `docs/tracker.md`. Alkalurop mirrors the git docs, not the issue metadata.
+
+Last update: 2026-09-23. **16ch Channel D + 11a live.** **11b parked.** **13 on hold.** **Next: Floor 10** ([#9](https://github.com/ixamal/ix/issues/9)). Hardware leftover: **40** ([#10](https://github.com/ixamal/ix/issues/10)). Play history **41** ([#13](https://github.com/ixamal/ix/issues/13)). Rock STEMIT still running. Reviews **2026-09-16** / **2026-10-09**.
 
 ## Now
 
@@ -30,7 +32,7 @@ Crate is path-stable. Music.app, Traktor, and Rekordbox are playable from the sa
 - [x] 25. **Cull remaining `!` / invalid media.** Terrarum search closed. `music-cull` dropped **425** Music.app rows (424 empty location, 1 `.itlp`). **0** corrupt WAV/AIFF. Library **21,824** file tracks, leftover drop **0**. Valid files stayed. How/why: `docs/crate.md`.
 - [x] 26. **Disk names from Music.app metadata.** `music-organize` files `Media.localized` as Artist / Album / `NN Title` from the Songs row. Playlist Fix is gone. Compilations stay unless album artist is the DJ; split compilations stay together. `Media.localized/Music/` folder moves are locked (Music.app restores them). `--placeholders-only` executed **17** `Track 01` renames. Second pass: **606** artist-root tracks now under `Music/Artist/Album`; **472** Music-tree files stayed. How/why: `docs/crate.md`.
 - [x] 27. **STEMIT crate playlists.** `--sync-playlists` walks `stems_audio` in any state and writes Traktor + Rekordbox **Mixes / Stems / Acapellas / Instrumentals**. 2026-09-06 execute: 8,785 on disk; Traktor +3,904 rows; Rekordbox XML +7,823 rows. Never push acapellas back to Apple Music. Analyze stays in-app.
-- [ ] 28. **Role titles (`vocals`).** Disk tags written 2026-09-07. NML patched **4,709** titles (Traktor quit). Reopen Traktor, confirm All Tracks, then **DJCU2** to Rekordbox. Do not rewrite rekordbox.xml. OneTagger Beatport is dead; do not Discogs-blast.
+- [ ] 28. **Role titles (`vocals`).** [#7](https://github.com/ixamal/ix/issues/7). Disk tags written 2026-09-07. NML patched **4,709** titles (Traktor quit). Reopen Traktor, confirm All Tracks, then **DJCU2** to Rekordbox. Do not rewrite rekordbox.xml. OneTagger Beatport is dead; do not Discogs-blast.
 - [x] 29. **Traktor playlist dupes + artwork.** 2026-09-07: dropped **237** duplicate PRIMARYKEY rows (Humid chills 86, stems_audio 94, 2024 Alive 29, …). Copied **3,512** sibling COVERARTIDs (8 broken pointers replaced). Backup `collection.nml.pre-nml-repair-20260907T133704Z`. Mix/stem/vocals are not copies. Reopen Traktor. Then DJCU2.
 - [x] 30. **STEMIT copy-twins.** Mixes was listing `.stem (2).m4a` and `vocals (2).wav` next to the real files. Dropped **186** Finder copies after mutagen length + decoded-audio match (WAV/mp3). STEMIT crates rebuilt from disk; numbered `(2)` files are not listed. 889 stem `(2)` files kept on disk (size/head differ — not the same bytes). Reopen Traktor. Then DJCU2.
 - [x] 30a. **STEMIT looked empty.** ElementTree `clear()` stripped `TYPE="LIST"` / `UUID`; rewrite also left empty name-only playlist shells first. Traktor shows the first node. Fixed 2026-09-07: four crates Mixes 1403 / Stems 1896 / Acapellas 2032 / Instrumentals 1749, each `TYPE=LIST`. Reopen Traktor.
@@ -62,7 +64,7 @@ Crate is path-stable. Music.app, Traktor, and Rekordbox are playable from the sa
 - [x] 14. **Acapella — do not stem.** Sources already *are* the vocal. Let It Go and I Get Deep already have `.stem.m4a`. Music.app extras have no local file.
 - [x] 15. **Afro House.** Dialed In already had stem + pair. Local factory wrote Roots, Koma Kobache, Iris (hardlink mix in `stems_audio`, then Mel pair + `.stem.m4a`). Never wrote Media.localized.
 - [x] 16b. **STEMIT proved.** `Never Forget 50th v01`, 21 tracks: 21 `.stem.m4a`, 20 full Rekordbox pairs, 1 correct pair drop, 0 fail. 78 min. Detail in item 23.
-- [ ] 17. **Alternative, tracks 1–3 only.** Same STEMIT path, genre batch instead of a playlist. Skip existing `stems_audio` Artist/Album/Title. Never stem Acapella.
+- [ ] 17. **Alternative, tracks 1–3 only.** [#8](https://github.com/ixamal/ix/issues/8). Same STEMIT path, genre batch instead of a playlist. Skip existing `stems_audio` Artist/Album/Title. Never stem Acapella.
 
 ## Floor / Elysium — DCC / Unreal pipeline (next)
 
@@ -75,7 +77,7 @@ Hit these in this order when Floor opens. Existing 10 / 10a–c stay the live Ni
 ### Priority order
 
 1. **Unreal MCP + PCG + OSC PoC first** (simplest platform pipe)
-   - [ ] 10. Rekordbox/Traktor OSC on `127.0.0.1:9000` (`/rekordbox/bpm`, `/fader`, `/beat_phase`) into UE. No ID3, no library convert.
+   - [ ] 10. Rekordbox/Traktor OSC on `127.0.0.1:9000` (`/rekordbox/bpm`, `/fader`, `/beat_phase`) into UE. No ID3, no library convert. Parent issue: [#9](https://github.com/ixamal/ix/issues/9).
    - [ ] 10a. Enable UE OSC plugin. Listen `127.0.0.1:9000`.
    - [ ] 10b. Niagara Grid 3D Gas/Smoke. Record 15s sim cache.
    - [ ] 10c. Bind `/rekordbox/bpm` and `/rekordbox/fader` to cache Explicit Time / density.
@@ -115,13 +117,13 @@ Parked in [ixamal/blackhole](https://github.com/ixamal/blackhole). Session opene
 - [x] 11. Port BlackHole **2ch Channel D** onto **16ch**. 2026-09-19: Traktor **Traktor S8 + BlackHole**, D = **11/12** (`In 10`/`In 11`), A/B/C + FX Send disconnected. Maschine **BlackHole 16ch** Out 1 = 0/1, Out 2+ disconnected. Tone + sound check. First flip had D on In 11/12 (right-only); corrected. Rollback: `~/Music/blackhole_2ch/`.
 - [x] 11a. **Sample Traktor A / B / C into Maschine.** 2026-09-19: Internal Record **7/8** (`Out 6`/`Out 7`) → Maschine In 2 → S88 → D. A, B, and C all check. KK out. Link is clock. Did not flip External. Never Record **5/6**.
 - [ ] 12. Convert NI/Traktor material to WAV or AIFF only if file samples are needed. `~/local_tools`.
-- [ ] 13. **On hold.** S8 pads → S88 sample slots. After Floor.
+- [ ] 13. **On hold.** [#11](https://github.com/ixamal/ix/issues/11). S8 pads → S88 sample slots. After Floor.
 
 ## FLX10 / Traktor feed
 
-- [ ] 11b. **FLX10 → Maschine In 3.** Parked 2026-09-19. Aggregate silenced the Sony, booth, and master; David (2026-09-23): that needed a reboot, not a ban. Scripts stay; box was destroyed. Not **40**.
-- [ ] 40. **Traktor mix → FLX10 CH2.** 2026-09-23 afternoon: LINE cannot take BlackHole the way S8 Channel D does. LINE is the rear RCA. A/B play a DJ-software deck; Rekordbox has no Live Input. CoreAudio outs are master and phones (skip the fader; can hit the Sony). Working feed stays the S8 RCA on **LINE**. Room hub: Sony STR-AN1000, AudioQuest + sub controller → SVS, KRK Rokit 5 booth. Serials later. iFi iDefender Max stays (Bloom Audio 52738, 2026-05-08). Detail: `docs/notes.md`.
+- [ ] 11b. **FLX10 → Maschine In 3.** [#12](https://github.com/ixamal/ix/issues/12). Parked 2026-09-19. Aggregate silenced the Sony, booth, and master; David (2026-09-23): that needed a reboot, not a ban. Scripts stay; box was destroyed. Not **40**.
+- [ ] 40. **Traktor mix → FLX10 CH2.** [#10](https://github.com/ixamal/ix/issues/10). 2026-09-23 afternoon: LINE cannot take BlackHole the way S8 Channel D does. LINE is the rear RCA. A/B play a DJ-software deck; Rekordbox has no Live Input. CoreAudio outs are master and phones (skip the fader; can hit the Sony). Working feed stays the S8 RCA on **LINE**. Room hub: Sony STR-AN1000, AudioQuest + sub controller → SVS, KRK Rokit 5 booth. Serials later. iFi iDefender Max stays (Bloom Audio 52738, 2026-05-08). Detail: `docs/notes.md`.
 
 ## Play history (parked)
 
-- [ ] 41. **Played / Not Played But Should.** `favorites` harvests plays + genre/BPM/energy/vibe (MiK `Energy N` comments). Live JSON gitignored; `favorites --snapshot` is the quarterly git copy (`configs/quarterly/*-2026Q3.json` is the first draft). `Played` = 100 most recent. Daily `Not Played But Should` / Neglected genres / Random / Favorites (12 each); library acapella titles stay out of those picks; skip crates if the play fingerprint is unchanged. `--playlists` also writes `MUSIC/GENRES/<Genre>` and `MUSIC/ACAPELLAS/<Genre>` (`library_genres`, `acapella_crates`). No Untagged playlist; leftovers use `follow_unmatched()` (MusicBrainz, then Shazam). Local LLM reads `play-patterns.json` on `127.0.0.1`. Own-repo the model quarterly if it outgrows crate. Reviews: **2026-09-16**, **2026-10-09**. Nightly 5am: `docs/examples/favorites-nightly.sh` (not loaded). Process: `docs/crate.md`.
+- [ ] 41. **Played / Not Played But Should.** [#13](https://github.com/ixamal/ix/issues/13). `favorites` harvests plays + genre/BPM/energy/vibe (MiK `Energy N` comments). Live JSON gitignored; `favorites --snapshot` is the quarterly git copy (`configs/quarterly/*-2026Q3.json` is the first draft). `Played` = 100 most recent. Daily `Not Played But Should` / Neglected genres / Random / Favorites (12 each); library acapella titles stay out of those picks; skip crates if the play fingerprint is unchanged. `--playlists` also writes `MUSIC/GENRES/<Genre>` and `MUSIC/ACAPELLAS/<Genre>` (`library_genres`, `acapella_crates`). No Untagged playlist; leftovers use `follow_unmatched()` (MusicBrainz, then Shazam). Local LLM reads `play-patterns.json` on `127.0.0.1`. Own-repo the model quarterly if it outgrows crate. Reviews: **2026-09-16**, **2026-10-09**. Nightly 5am: `docs/examples/favorites-nightly.sh` (not loaded). Process: `docs/crate.md`.

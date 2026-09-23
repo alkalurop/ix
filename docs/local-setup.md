@@ -83,6 +83,8 @@ Global MCP lives in `~/.cursor/mcp.json`, not in this workspace.
 
 Public [ixamal](https://github.com/ixamal) originals are mirrored into the [alkalurop](https://github.com/alkalurop) org. The org section landing page is [`alkalurop/.github`](https://github.com/alkalurop/.github) (`profile/README.md`). Day-to-day work stays on ixamal.
 
+**Tracker.** Issues, milestones, and labels live on **ixamal**. The bridge copies git (code + docs). It does not copy GitHub issue metadata. See `docs/tracker.md`. Skip the Agents tab.
+
 ```bash
 # First / manual run (uses local `gh` as org admin; no tokens in git)
 ~/github/ixamal/ix/docs/examples/alkalurop-bridge.sh

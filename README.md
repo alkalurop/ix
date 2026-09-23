@@ -173,7 +173,8 @@ Point Cursor Models at `http://127.0.0.1:11434/v1`. Full steps: `docs/local-setu
 - `docs/djcu2.md` — Traktor ↔ Rekordbox via [ATGR DJCU2](https://atgr.nl/)
 - `docs/onetagger.md` — genre pass (files + Music.app); not an LLM
 - `docs/examples/music-set-genre.applescript` — generic Music.app `set genre` specimen (do not run)
-- `docs/TODO.md` — ordered checklist (crate, tagging, Floor, NI)
+- `docs/TODO.md` — ordered checklist (crate, tagging, Floor, NI); links to GitHub issues
+- `docs/tracker.md` — ixamal Issues + milestones (alkalurop gets the git docs only)
 - `docs/notes.md` — crate / tagging / hardware parking lot (do not execute from it)
 - [ixamal/blackhole](https://github.com/ixamal/blackhole) — S8 / S88 / BlackHole routing (off this repo)
 - [ixamal/ix_bangers](https://github.com/ixamal/ix_bangers) — Bangers MCP catalog, dry mode (off this repo)
