@@ -144,18 +144,79 @@ Working rig (2026-09-19): S88 keys into Komplete Kontrol or Maschine, down **Bla
 
 1. **Done.** 16ch Channel D. Traktor `Traktor S8 + BlackHole`, D = In 10/11. First try In 11/12 was right-only. Maschine BH 16ch Out 1 only. Sound checks.
 2. **11a done.** A, B, and C all check. Internal Record **7/8** → Maschine In 2 → S88 → D.
-3. **11b parked.** Selecting `FLX10 + BlackHole 2ch` as the Rekordbox device broke FLX10 master / booth / receiver. Native **DDJ-FLX10** is required. Next try: **PC MASTER OUT** → `MASTER + BlackHole 2ch` (never 16ch). Aggregate destroyed; scripts remain in blackhole.
+3. **11b parked.** 2026-09-19: Rekordbox on `FLX10 + BlackHole 2ch` silenced the Sony, booth, and master. David, 2026-09-23: that silence needed a reboot, same class as the S8 power cycle. It is not a ban on a digital feed. Aggregate was destroyed that day; scripts remain. Native **DDJ-FLX10** is what is selected now.
 4. **13 on hold.** S8 pads → S88 slots after Floor. Convert to WAV/AIFF only if file samples are needed (`~/local_tools`).
 
 Keep converters and MIDI maps in `~/local_tools`, not in this public repo. Rekordbox audio device stays **DDJ-FLX10**. Leftover S8/S88 MIDI maps stay unused.
 
+## FLX10 tempo range (2026-09-23)
+
+Looked up for a live slide parked at **125 BPM**, wanting the tempo fader capped at **±1**, **±5**, or **±30 BPM**. Rekordbox on the DDJ-FLX10 does not have BPM brackets. The fader throw is a percent of the track’s original BPM, and there are four stops only: **±6% → ±10% → ±16% → WIDE (±100%)**.
+
+On the deck: hold **SHIFT** and press **TEMPO RESET** (the button beside the tempo fader). Each press advances one stop. The jog display and the **±%** under the BPM show the current stop. Clicking that **±%** in Performance mode cycles the same four. Range is per deck.
+
+TEMPO RESET alone snaps playback back to the original BPM and ignores the fader until you press it again.
+
+At a **125.00** original:
+
+| Stop | Full throw | Floor–ceiling |
+| --- | --- | --- |
+| ±6% | ±7.50 BPM | 117.50–132.50 |
+| ±10% | ±12.50 BPM | 112.50–137.50 |
+| ±16% | ±20.00 BPM | 105.00–145.00 |
+| WIDE | ±125 BPM | 0–250 (track stops at −100%) |
+
+So the three asked caps do not exist as stops:
+
+- **±1 BPM** (±0.8%) and **±5 BPM** (±4%): tightest stop is **±6%** (±7.5 BPM). That is the live slide to use when the goal is staying near 125. Center of the fader is 0%. On-screen tempo steps at ±6% are 0.02% (0.025 BPM at 125), so a small move off center is the ±1 zone, but the fader can still reach ±7.5 if you shove it.
+- **±30 BPM** (±24%, 95–155): **±16%** stops at ±20 (105–145). **WIDE** is the only stop that can reach ±30, and the same throw continues out to 0–250, so the fader is no longer isolated inside ±30.
+
+Pitch bend (jog side, Vinyl off) nudges without moving the tempo fader, so the chosen bracket stays put. Long-press **KEY SYNC** (no SHIFT; the dash on the hardware diagram means hold) toggles **Master Tempo** so the slide changes BPM and leaves the key alone. **MT** shows on the jog display. SHIFT + KEY SYNC is key reset, a different function.
+
+Default for CDJ/XDJ export is Preferences → **DJ System** → **My Settings** → **Tempo Range**, then apply to the device. That file only stores ±6 / ±10 / ±16 / WIDE. It does not add a custom BPM cap. Live FLX10 sessions still follow SHIFT + TEMPO RESET on the deck.
+
+Links:
+
+- [DDJ-FLX10 instruction manual](https://support.pioneerdj.com/hc/en-us/articles/16716272919193) — rekordbox section: SHIFT + TEMPO RESET cycles ±6 / ±10 / ±16 / WIDE.
+- [Rekordbox hardware diagram](https://downloads.support.alphatheta.com/software_info/dj-controllers/DDJ-FLX10/DDJ-FLX10_HardwareDiagram_rekordbox_E1.pdf) — TEMPO RESET = tempo reset / tempo range; KEY SYNC long-press = Master Tempo.
+- [EVERY button explained — Pioneer DDJ FLX10](https://www.youtube.com/watch?v=Ji8Tpzj21Sc) — tempo fader, TEMPO RESET, then SHIFT + TEMPO RESET through ±6 / ±10 / ±16 / WIDE. No shorter clip turned up that is only this control.
+
 ## FLX10 Channel 2 + USB noise
 
-**11b barrier (2026-09-19):** Rekordbox must use native **`DDJ-FLX10`**. Pointing Audio at `FLX10 + BlackHole 2ch` (or moving Master off FLX10 USB 0/1) broke master, booth, and the receiver. Booth is analog RCAs, not a USB pair. Next digital tap: **PC MASTER OUT** → `DDJ-FLX10 : MASTER + BlackHole 2ch` (never 16ch). Not the same job as **40**.
+**11b (2026-09-19, corrected 2026-09-23).** Rekordbox on `FLX10 + BlackHole 2ch` silenced master, booth, and the Sony. David: that was a reboot, not a broken route. The aggregate was destroyed that day. Rekordbox is on native **DDJ-FLX10** until the digital try is on purpose. Booth stays the FLX10’s analog RCAs to the KRK. Not the same job as **40**.
 
-Rekordbox **DDJ-FLX10 Channel 2** is analog from Traktor master out today. TODO **40**: see whether Traktor can feed CH2 digitally (USB audio / interface / Link) so that insert is not the analog master.
+**Room (2026-09-23).** The FLX10 is the hub. Master goes to the **Sony STR-AN1000**. That master is split with **AudioQuest** plus a sub controller into an **SVS** sub. Booth is a **KRK Rokit 5**. S8 master out and S8 booth out should sit idle. Serials, and the exact SVS / AudioQuest / sub-controller models, come later (State Farm). Rekordbox device stays native **DDJ-FLX10**.
+
+**Target (TODO 40).** Whatever the S8 is doing (Traktor’s whole mix) should arrive on **FLX10 channel 2 with the input switch on B**. **LINE** on that same switch stays the analog tester. The S8 master cable can stay plugged for that test. Daily position is **B**.
+
+**B is the second USB port**, not a Rekordbox checkbox. The channel switch is USB **A** / **LINE** / USB **B** (Serato quickstart; the FLX10 manual calls A and B “a track loaded onto a deck”). This Mac is on one USB port, so Rekordbox owns **A**. **B** is the other USB socket, meant for a second computer. With nothing on that socket, CH2 on B is silent. LINE is the only position that hears the S8 master cable.
+
+2026-09-19 silence of the Sony was a reboot (David, 2026-09-23), so a digital feed into Rekordbox is still open. Do not add the FLX10 to `Traktor S8 + BlackHole` (44.1 vs 48 kHz). The second USB port still has no channel-2 bus.
+
+**Second cable, 2026-09-23.** David plugged this Mac into the other FLX10 USB port. CoreAudio shows two `DDJ-FLX10` devices, both 44.1 kHz, 10 in / 4 out. Rekordbox is on `…:2100000:1,2` (running). The free port is `…:EEMP004232CC:1,2` (idle). Its only output format is 4 channels at 44.1: **Out 0 / Out 1** master, **Out 2 / Out 3** phones. There is no channel-2 deck bus for a bridge to write. Switch **B** plays a deck from DJ software on that port, not a CoreAudio copy of Traktor. Do not play BlackHole into Out 0 / Out 1. That is PC-B master and can reach the Sony. CH2 on **B** with nothing playing a deck there stays silent. **LINE** remains the analog tester. **A** remains Rekordbox.
 
 USB ground-loop / 5 V power hum on this rig: **iFi iDefender Max** (USB-C). Bought from [Bloom Audio](https://bloomaudio.com/) 2026-05-08, order **52738**. It sits on the USB path and strips host power so the interface is not sharing a dirty 5 V rail. David: it works pretty well. Leftover noise after that insert is why CH2 digital is on the list — do not rip the iDefender out while chasing 40. Note for anyone cloning the hall: try the iDefender Max before buying another mixer or a new interface.
+
+## Shutdown hum + Channel D (2026-09-23)
+
+Prefs were already the live rig (Traktor `Traktor S8 + BlackHole`, D = In 10/11, Maschine BH 16ch Out 1 = Out 0/1, Rekordbox native `DDJ-FLX10`). S8 phones were silent and FLX10 CH2 had no S8 master. David powered down: **Maschine, Traktor, S88, S8.**
+
+1. **Maschine quit first.** S88 reverb became audible on **S8 Channel D**. Traktor was still open. The BlackHole → Deck D path was alive. Maschine in front was the piece that had been keeping that reverb off D. KK and Maschine share the one D fader; KK stays quit when Maschine should own the S88.
+2. **Traktor quit, then S88 off, then S8 off.** Killing the S8 left an analog hum on the FLX10. The **Sony STR-AN1000** volume was cranked, which is why it showed up. That hum was not heard while the S8 was still on. FLX10 CH2 is the analog insert from the S8 master jacks, so an S8 that has just lost power is an open line input.
+
+**Repair when isolating (not done yet):**
+
+- Sony down, and FLX10 CH2 **TRIM** down, before the S8 loses power. Switch CH2 off **LINE** if the S8 will stay off. An open LINE input plus a cranked receiver is this hum.
+- Leave the **iFi iDefender Max** in place. If the hum is still there with the S8 on, master meters moving, and the Sony at a normal level, that is TODO **40**, not this shutdown.
+- Prove Channel D again before Maschine opens: S88 key, D fader up, Traktor already on `Traktor S8 + BlackHole`. The reverb tail already showed that path. Then open Maschine (KK quit) and play a key with Out 1 on BlackHole **Out 0 / Out 1**. If D goes quiet only while Maschine is in front, the gap is Maschine’s level or which sound is selected, not the aggregate.
+
+**Power up (proven 2026-09-23):** Sony down and FLX10 CH2 TRIM down. **S8** (wait until it enumerates), **S88** (direct USB + wall wart), **Traktor**, prove phones (monitor **3 / 4**) and a deck, prove D with Maschine still quit, then CH2 **LINE** and bring the Sony up. **Maschine last.** KK stays quit. David ran **S8 → S88 → Traktor → Maschine** and the rig came back.
+
+## Functioning checkpoint (2026-09-23 13:11 CDT)
+
+This is the working rig. Archive (off git): `~/Music/blackhole_16ch_2026-09-23_1311/`. Traktor, Maschine, and Rekordbox were open. On-disk TSI already says **Traktor S8 + BlackHole**. Maschine plist already says **BlackHole 16ch**.
+
+Traktor: 48 kHz, buffer 512, Internal, master **1/2**, phones **3/4**, record **7/8**, Deck D **In 10/In 11**. Maschine: Out 1 = **Out 0/Out 1**, In 1 off, In 2 = **In 2/In 3**, In 3 = **In 4/In 5**. Rekordbox: native **DDJ-FLX10**, 44.1 kHz, PC MASTER OUT off, master and phones on the FLX10, booth empty. One FLX10 was in Core Audio. Mac default output was External Headphones. Channel 2 **LINE** is still the S8 RCA. Boot: **S8 → S88 → Traktor → Maschine**.
 
 ## Parked in siblings (not this repo)
 

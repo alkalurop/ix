@@ -2,13 +2,13 @@
 
 Hit these in order. Stop on the first **doable** open item. Detail: `docs/notes.md`. Off-repo tools and library paths stay off git.
 
-Last update: 2026-09-22. **16ch Channel D + 11a live.** **11b parked** (FLX10 stays native `DDJ-FLX10`). **13 on hold** (S8 pads → S88). 2ch rollback: `~/Music/blackhole_2ch/`. **Next: Floor 10.** DCC/UE order is Unreal first, then Maya, Blender, Houdini last. Hardware leftover: **40**. IndustryStems folder stays. Rock STEMIT first **300** queued in 100s. Reviews **2026-09-16** / **2026-10-09**.
+Last update: 2026-09-22. **16ch Channel D + 11a live.** **11b parked** (Sony silence was a reboot). **13 on hold** (S8 pads → S88). 2ch rollback: `~/Music/blackhole_2ch/`. **Next: Floor 10.** DCC/UE order is Unreal first, then Maya, Blender, Houdini last. Hardware leftover: **40**. IndustryStems folder stays. Rock STEMIT first **300** queued in 100s. Reviews **2026-09-16** / **2026-10-09**.
 
 ## Now
 
 Crate is path-stable. Music.app, Traktor, and Rekordbox are playable from the same files. Sync Library Off. STEMIT + Music folders are in the xml sidecar and imported.
 
-**Next:** **Floor 10** (Rekordbox/Traktor OSC → UE). Unreal MCP + PCG + OSC PoC first; RedefineFX Chaos & Niagara Destruction is the performant-effects learning track; do not start Blender before Unreal/Maya. 11 + 11a proven. **11b parked** (FLX10 native device; do not select the 2ch aggregate in Rekordbox). **13 on hold** (S8 pads → S88). Hardware leftover: **40**. If 16ch fails, **Aggregate Device Maschine** + `~/Music/blackhole_2ch/`. Crate leftover: reload Rekordbox xml (`<>`) / analyze DJ Sets, or STEMIT Alternative **1–3** (TODO 17) when David names it. Never write Apple Music from the factory. Never stem **Acapella**. Do not farm 35k to the cloud. Do not Discogs-blast.
+**Next:** **Floor 10** (Rekordbox/Traktor OSC → UE). Unreal MCP + PCG + OSC PoC first; RedefineFX Chaos & Niagara Destruction is the performant-effects learning track; do not start Blender before Unreal/Maya. 11 + 11a proven. **11b parked** (FLX10 aggregate silenced the Sony until a reboot, 2026-09-23 correction). **13 on hold** (S8 pads → S88). Hardware leftover: **40**. If 16ch fails, **Aggregate Device Maschine** + `~/Music/blackhole_2ch/`. Crate leftover: reload Rekordbox xml (`<>`) / analyze DJ Sets, or STEMIT Alternative **1–3** (TODO 17) when David names it. Never write Apple Music from the factory. Never stem **Acapella**. Do not farm 35k to the cloud. Do not Discogs-blast.
 
 ## Crate (done)
 
@@ -119,8 +119,8 @@ Parked in [ixamal/blackhole](https://github.com/ixamal/blackhole). Session opene
 
 ## FLX10 / Traktor feed
 
-- [ ] 11b. **FLX10 → Maschine In 3.** Parked 2026-09-19. Aggregate-as-Rekordbox-device broke FLX10 master / booth / receiver. Next try: native **DDJ-FLX10** + **PC MASTER OUT** → `MASTER + BlackHole 2ch` (never 16ch). Scripts stay; box destroyed. Not **40**.
-- [ ] 40. **Traktor → DDJ-FLX10 Channel 2 digital.** Today CH2 is analog from Traktor master out. Investigate a USB / Pro DJ Link / audio-interface feed so Rekordbox CH2 is not that analog insert. Leftover hum after the iFi iDefender Max USB-C (Bloom Audio order 52738, 2026-05-08) — that gadget already kills most USB ground-loop / power hum and is worth keeping. Detail: `docs/notes.md`.
+- [ ] 11b. **FLX10 → Maschine In 3.** Parked 2026-09-19. Aggregate silenced the Sony, booth, and master; David (2026-09-23): that needed a reboot, not a ban. Scripts stay; box was destroyed. Not **40**.
+- [ ] 40. **Traktor mix → FLX10 CH2 USB B.** 2026-09-23: FLX10 is the room hub (Sony STR-AN1000 master, AudioQuest + sub controller → SVS sub, KRK Rokit 5 booth). S8 master and booth jacks should sit idle. CH2 switch **B** is the digital home for the whole S8/Traktor mix. **LINE** stays the analog tester. B is the FLX10’s second USB port, not a Rekordbox checkbox. The 2026-09-19 Sony silence was a reboot, so a digital Rekordbox input is still open. Serials later. iFi iDefender Max stays (Bloom Audio 52738, 2026-05-08). Detail: `docs/notes.md`.
 
 ## Play history (parked)
 
