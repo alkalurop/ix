@@ -2,7 +2,7 @@
 
 Parking lot for crate, tagging, and hardware ideas. Ordered checklist: `docs/TODO.md`. Agents: read both, then stop unless David asks to act. Off-repo tools and library paths stay off git.
 
-Last update: 2026-09-19. **16ch Channel D + 11a live.** A/B/C sample into Maschine → S88 → D. **11b parked** (FLX10 native). **13 on hold** (S8 pads). **Next: Floor 10.** Hardware leftover: **40**. 2ch rollback: `~/Music/blackhole_2ch/`. Alkalurop bridge monthly 15th 15:00 local. `favorites` still recording (TODO 41); reviews **2026-09-16** / **2026-10-09**. Toolkit: README. How/why: `docs/crate.md`.
+Last update: 2026-09-23. **16ch Channel D + 11a live.** A/B/C sample into Maschine → S88 → D. **11b parked** (FLX10 native). **13 on hold** (S8 pads). **Next: Floor 10.** Hardware leftover: **40**. 2ch rollback: `~/Music/blackhole_2ch/`. Alkalurop bridge monthly 15th 15:00 local; benchmark mirror this afternoon. `favorites` still recording (TODO 41); reviews **2026-09-16** / **2026-10-09**. Toolkit: README. How/why: `docs/crate.md`.
 
 ## Alkalurop org bridge (2026-09-15)
 
@@ -21,6 +21,16 @@ First mirror of then-current ixamal `main` (2026-09-15):
 `github.com/alkalurop/ix` used to 301 to ixamal/ix (old transfer redirect). Re-created the org repo so the name lives on the org. Script: `docs/examples/alkalurop-bridge.sh`. Plist: `ai.ixamal.alkalurop-bridge` — 15th 15:00 local. No tokens in git.
 
 **2026-09-19 refresh:** mirrored current ixamal `main` onto alkalurop (David-only authorship, Floor next, **13** on hold).
+
+**2026-09-23 benchmark.** Functioning rig is the 13:11 CDT checkpoint (archive off git). Same afternoon: stems HUD ETA, and `ix_bangers` `scripts/speak.mjs` (dry read of Rekordbox, one Apple album, one Traktor file). Then a full ixamal → [alkalurop](https://github.com/alkalurop) mirror, ahead of the monthly 15th. Org profile: [alkalurop/.github](https://github.com/alkalurop/.github). SHAs are the ixamal `main` tips mirrored that run:
+
+| alkalurop | 2026-09-23 `main` |
+| --- | --- |
+| [ix](https://github.com/alkalurop/ix) | this note |
+| [stems](https://github.com/alkalurop/stems) | `8a16432` |
+| [ix_bangers](https://github.com/alkalurop/ix_bangers) | `8b17f46` |
+| [blackhole](https://github.com/alkalurop/blackhole) | `83cf17a` |
+| [music_migration](https://github.com/alkalurop/music_migration) | `7e8768c` |
 
 ## Crate status
 
