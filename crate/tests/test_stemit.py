@@ -73,6 +73,13 @@ class StemitPlanTests(unittest.TestCase):
             dest.with_name(f"{dest.stem}.stem.m4a").write_bytes(b"stem")
             self.assertEqual(skip_reason(row, stems_root=dest_root), "already has .stem.m4a")
 
+    def test_skips_apple_drm(self) -> None:
+        with TemporaryDirectory() as tmp:
+            src = Path(tmp) / "protected.m4a"
+            src.write_bytes(b"ftypM4A " + b"drms" + b"\x00" * 16)
+            row = _row("Wish Upon a Dog Star", location=str(src))
+            self.assertEqual(skip_reason(row, stems_root=Path(tmp) / "stems"), "apple drm")
+
     def test_skips_m4p(self) -> None:
         with TemporaryDirectory() as tmp:
             src = Path(tmp) / "stream.m4p"

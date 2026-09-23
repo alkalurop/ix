@@ -8,7 +8,12 @@ from collection.nml. heard_s is play_count × track length.
 Also writes a compact play-patterns file (genre / BPM / energy / vibe)
 for the local LLM. Played crate is the 100 most recent. Daily
 ``Not Played But Should`` has three subcrates: neglected genres, random,
-and favorites-match. Skips playlist writes when nothing new was played.
+and favorites-match. Library tracks whose genre or title says acapella
+stay out of those picks. The same ``--playlists`` write adds
+``MUSIC/GENRES/<genre>`` for the Apple Music library and
+``MUSIC/ACAPELLAS/<genre>`` for STEMIT vocals matched to that library
+(``library_genres`` / ``acapella_crates``). Skips playlist writes when
+nothing new was played.
 
 Live JSON stays off nightly git. ``--snapshot`` copies a quarterly file
 into ``configs/quarterly/``. Dry-run default.
@@ -50,6 +55,11 @@ NPBS_FOLDER = "Not Played But Should"
 NEGLECTED = "Neglected genres"
 RANDOM = "Random"
 FAVORITES_MATCH = "Favorites"
+ACAPELLA_NAME = "Acapella"
+ACAPELLA_GENRES = frozenset(
+    {"acapella", "accapella", "a cappella", "a capella", "acapela"}
+)
+ACAPELLA_TITLE = re.compile(r"\b(?:a\s*c+ap+ella|acapella|cappella)\b", re.I)
 ENERGY_RE = re.compile(r"Energy\s+(\d{1,2})", re.I)
 CAMELOT_RE = re.compile(r"\b(\d{1,2}[ABab])\b")
 HEX_COMMENT = re.compile(r"^\s*[0-9A-Fa-f]{8}\s+[0-9A-Fa-f]{8}")
@@ -543,14 +553,33 @@ def favorites_match_rows(
     return _take(pool, used, SUGGEST_EACH)
 
 
+def is_acapella_track(row: PlayRow) -> bool:
+    if (row.genre or "").strip().lower() in ACAPELLA_GENRES:
+        return True
+    return bool(ACAPELLA_TITLE.search(row.title or ""))
+
+
+def acapella_rows(rows: dict[str, PlayRow]) -> list[PlayRow]:
+    found = [row for row in rows.values() if is_acapella_track(row)]
+    found.sort(key=lambda row: (row.artist.lower(), row.title.lower()))
+    return found
+
+
 def suggest_playlists(rows: dict[str, PlayRow], fingerprint: str) -> dict[str, list[PlayRow]]:
     played, not_played = split_rows(rows)
+    acapella_keys = {
+        track_key(row.artist, row.title) for row in rows.values() if is_acapella_track(row)
+    }
+    not_played = [
+        row for row in not_played if track_key(row.artist, row.title) not in acapella_keys
+    ]
     used: set[str] = set()
     return {
         PLAYED_NAME: recent_played(played, PLAYED_LIMIT),
         NEGLECTED: neglected_rows(played, not_played, used),
         FAVORITES_MATCH: favorites_match_rows(played, not_played, used),
         RANDOM: random_rows(not_played, used, fingerprint),
+        ACAPELLA_NAME: acapella_rows(rows),
     }
 
 
@@ -586,17 +615,52 @@ def crates_plan(suggestions: dict[str, list[PlayRow]], dest: str):
 def write_app_playlists(suggestions: dict[str, list[PlayRow]], *, nml: Path, xml: Path) -> list[str]:
     import plistlib
 
-    from ix_crate.crates import apply_nml, apply_xml, itunes_library_xml, set_music_playlist
+    from ix_crate.crates import (
+        apply_nml,
+        apply_xml,
+        itunes_library_xml,
+        nml_path_index,
+        set_music_playlist,
+        xml_path_index,
+    )
     from ix_crate.music_dupes import music_running
 
+    from ix_crate.acapella_crates import (
+        clear_acapella_playlists,
+        format_groups,
+        group_acapellas,
+        playlist_plans,
+    )
+    from ix_crate.library_genres import (
+        build_catalog,
+        format_genre_plans,
+        library_genre_plans,
+        load_library,
+    )
+
+    catalog = build_catalog(load_library())
+    groups = group_acapellas(catalog=catalog)
+    print(format_groups(groups), flush=True)
     written: list[str] = []
     if xml.is_file() and not rekordbox_is_running():
-        apply_xml(crates_plan(suggestions, "xml"), xml)
+        clear_acapella_playlists(xml, kind="xml")
+        genre_plans = library_genre_plans(catalog, dest="xml", index=xml_path_index(xml))
+        print("xml\n" + format_genre_plans(genre_plans), flush=True)
+        plan = crates_plan(suggestions, "xml")
+        plan.playlists.extend(genre_plans)
+        plan.playlists.extend(playlist_plans(groups, dest="xml", xml=xml))
+        apply_xml(plan, xml)
         written.append("xml")
     elif rekordbox_is_running():
         written.append("xml-skipped-open")
     if nml.is_file() and not traktor_is_running():
-        apply_nml(crates_plan(suggestions, "nml"), nml)
+        clear_acapella_playlists(nml, kind="nml")
+        genre_plans = library_genre_plans(catalog, dest="nml", index=nml_path_index(nml))
+        print("nml\n" + format_genre_plans(genre_plans), flush=True)
+        plan = crates_plan(suggestions, "nml")
+        plan.playlists.extend(genre_plans)
+        plan.playlists.extend(playlist_plans(groups, dest="nml", nml=nml))
+        apply_nml(plan, nml)
         written.append("nml")
     elif traktor_is_running():
         written.append("nml-skipped-open")
@@ -728,7 +792,8 @@ def format_plan(payload: dict, suggestions: dict[str, list[PlayRow]] | None = No
             f"  crates  {PLAYED_NAME} {len(suggestions[PLAYED_NAME])}  "
             f"{NPBS_FOLDER}/ {NEGLECTED} {len(suggestions[NEGLECTED])}  "
             f"{RANDOM} {len(suggestions[RANDOM])}  "
-            f"{FAVORITES_MATCH} {len(suggestions[FAVORITES_MATCH])}"
+            f"{FAVORITES_MATCH} {len(suggestions[FAVORITES_MATCH])}  "
+            f"held out of random {len(suggestions[ACAPELLA_NAME])}"
         )
     return "\n".join(lines)
 
@@ -784,7 +849,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--playlists",
         action="store_true",
-        help="Write Played + Not Played But Should into Music / NML / xml when plays changed.",
+        help=(
+            "Write Played, Not Played But Should, MUSIC/GENRES, and "
+            "MUSIC/ACAPELLAS into NML / xml when plays changed."
+        ),
     )
     parser.add_argument(
         "--snapshot",

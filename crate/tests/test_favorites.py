@@ -140,7 +140,17 @@ class HarvestTests(unittest.TestCase):
         self.assertEqual([r.title for r in first["Random"]], [r.title for r in again["Random"]])
         self.assertTrue(first["Neglected genres"])
         self.assertTrue(first["Favorites"])
+        self.assertEqual(first["Acapella"], [])
         self.assertEqual(play_fingerprint(played), play_fingerprint(played))
+
+    def test_acapella_crate_keeps_them_out_of_random(self) -> None:
+        rows = {
+            "a\tCap": PlayRow(artist="A", title="Cap", genre="Acapella"),
+            "b\tMix": PlayRow(artist="B", title="Mix", genre="House"),
+        }
+        suggestions = suggest_playlists(rows, "seed")
+        self.assertEqual([row.title for row in suggestions["Acapella"]], ["Cap"])
+        self.assertNotIn("Cap", [row.title for row in suggestions["Random"]])
 
     def test_quarterly_snapshot_drops_not_played(self) -> None:
         with TemporaryDirectory() as tmp:

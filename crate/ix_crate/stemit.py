@@ -71,6 +71,16 @@ def stem_sibling(mix: Path) -> Path:
     return mix.with_name(f"{mix.stem}.stem.m4a")
 
 
+def is_apple_drm(path: Path) -> bool:
+    """FairPlay ``drms`` in the m4a header. The separator cannot decode it."""
+    try:
+        with path.open("rb") as handle:
+            blob = handle.read(256 * 1024)
+    except OSError:
+        return False
+    return b"drms" in blob
+
+
 def skip_reason(row: RepairRow, *, stems_root: Path | None = None) -> str:
     loc = (row.location or "").strip()
     if not loc:
@@ -82,6 +92,8 @@ def skip_reason(row: RepairRow, *, stems_root: Path | None = None) -> str:
         return f"skip {src.suffix or 'unknown type'}"
     if not src.is_file():
         return "missing on disk"
+    if is_apple_drm(src):
+        return "apple drm"
     if is_role_file(src):
         return "role file"
     if is_acapella_row(row):

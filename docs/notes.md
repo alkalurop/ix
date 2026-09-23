@@ -257,7 +257,9 @@ PYTHONPATH=crate python3 -m ix_crate favorites --execute --playlists
 PYTHONPATH=crate python3 -m ix_crate favorites --execute --snapshot
 ```
 
-**Crates:** stable names. `Played` is the **100 most recent** (`last_played`). `Not Played But Should` has three subcrates of **12** each — neglected genres (genres you play that still have sitting tracks), random, favorites-match (genre + BPM ±6 + energy ±1). Skip playlist writes when the play fingerprint is unchanged (no new decks). Full 22k not-played stays in JSON only.
+**Crates:** stable names. `Played` is the **100 most recent** (`last_played`). `Not Played But Should` has three subcrates of **12** each — neglected genres (genres you play that still have sitting tracks), random, favorites-match (genre + BPM ±6 + energy ±1). Library tracks whose genre or title says acapella stay out of those picks. Skip playlist writes when the play fingerprint is unchanged (no new decks). Full 22k not-played stays in JSON only.
+
+**2026-09-23 genres.** The same `--playlists` write adds `MUSIC/GENRES/<Genre>` from the shared iTunes library XML (file on disk, `.m4p` skipped) and `MUSIC/ACAPELLAS/<Genre>` for STEMIT vocals (`Song_vocals.m4a`, `vocals.m4a`) matched to that library. Artist + title first, then the title with mix and feat tails removed. When several rows share the title, the folder artist picks. No Untagged playlist. Vocals the library does not name are finished by `follow_unmatched()` in `library_genres` (MusicBrainz, then Shazam) and written back to `ACAPELLAS` only. Quit Rekordbox for xml, Traktor for NML. Apple Music media is never written. FairPlay `drms` files skip in the factory as `apple drm`. Process: `docs/crate.md`.
 
 **Patterns for the local LLM:** `configs/play-patterns.json` — genre / BPM band / energy / vibe histograms from played mixes. Vibe is `{genre}|{bpm-band}|e{energy}|{key}`, from tags (MiK `06A - Energy 5`), not invented. Ollama stays on `127.0.0.1:11434`. Do not farm this to the cloud.
 
