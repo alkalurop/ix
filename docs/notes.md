@@ -32,7 +32,15 @@ First mirror of then-current ixamal `main` (2026-09-15):
 | [blackhole](https://github.com/alkalurop/blackhole) | `83cf17a` |
 | [music_migration](https://github.com/alkalurop/music_migration) | `7e8768c` |
 
-**2026-09-24 publish.** Rock STEMIT genre batch closed; **CRATER** daily pass shipped; conversion ≈ **23%** of `MUSIC/GENRES`. Mirror current ixamal `main` onto alkalurop (this tip). Org profile: [alkalurop/.github](https://github.com/alkalurop/.github). Issues/milestones stay on ixamal — bridge is git only.
+**2026-09-24 publish.** Rock STEMIT genre batch closed; **CRATER** daily pass shipped; conversion ≈ **23%** of `MUSIC/GENRES`. Mirrored current ixamal `main` onto alkalurop. Org profile: [alkalurop/.github](https://github.com/alkalurop/.github). Issues/milestones stay on ixamal — bridge is git only.
+
+| alkalurop | 2026-09-24 `main` |
+| --- | --- |
+| [ix](https://github.com/alkalurop/ix) | `692dc26` |
+| [stems](https://github.com/alkalurop/stems) | `1dd7790` |
+| [blackhole](https://github.com/alkalurop/blackhole) | `29a5bc0` |
+| [ix_bangers](https://github.com/alkalurop/ix_bangers) | up-to-date |
+| [music_migration](https://github.com/alkalurop/music_migration) | up-to-date |
 
 ## Crate status
 
