@@ -22,6 +22,7 @@ class DispatchTest(unittest.TestCase):
         self.assertIn("traktor-nml", text)
         self.assertIn("crates", text)
         self.assertIn("favorites", text)
+        self.assertIn("crater", text)
 
     def test_traktor_nml_help(self) -> None:
         from ix_crate.__main__ import main

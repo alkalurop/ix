@@ -82,6 +82,10 @@ def main(argv: list[str] | None = None) -> int:
         from ix_crate.favorites import main as favorites_main
 
         return favorites_main(argv[1:])
+    if argv and argv[0] == "crater":
+        from ix_crate.crater import main as crater_main
+
+        return crater_main(argv[1:])
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -105,6 +109,7 @@ def main(argv: list[str] | None = None) -> int:
             "traktor-nml",
             "crates",
             "favorites",
+            "crater",
         ),
         help=(
             "Scan Unknown Album, re-ID Inbox, sort mashups, drop Music.app "
@@ -113,9 +118,10 @@ def main(argv: list[str] | None = None) -> int:
             "from the iTunes XML, pull audio into ~/Music, fill a playlist's "
             "identity, name Media.localized files from Music.app metadata, "
             "STEMIT a playlist into stems_audio, repair Traktor NML "
-            "playlist dupes and missing artwork IDs, or sync playlist "
+            "playlist dupes and missing artwork IDs, sync playlist "
             "membership between Music.app, Traktor NML, and rekordbox.xml, "
-            "or record play counts into configs/favorites.json."
+            "record play counts into configs/favorites.json, or run CRATER "
+            "(daily celestial crate pass)."
         ),
     )
     parser.add_argument(

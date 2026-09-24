@@ -2,7 +2,7 @@
 
 Parking lot for crate, tagging, and hardware ideas. Ordered checklist: `docs/TODO.md`. Agents: read both, then stop unless David asks to act. Off-repo tools and library paths stay off git.
 
-Last update: 2026-09-23. **16ch Channel D + 11a live.** A/B/C sample into Maschine → S88 → D. **11b parked** (FLX10 native). **13 on hold** (S8 pads). **Next: Floor 10** ([issue #9](https://github.com/ixamal/ix/issues/9)). Hardware leftover: **40**. 2ch rollback: `~/Music/blackhole_2ch/`. Alkalurop bridge monthly 15th 15:00 local; benchmark mirror this afternoon. Open queue: [ixamal/ix milestones](https://github.com/ixamal/ix/milestones?state=all) (`docs/tracker.md`). `favorites` still recording (TODO 41); reviews **2026-09-16** / **2026-10-09**. Toolkit: README. How/why: `docs/crate.md`.
+Last update: 2026-09-24. **Rock STEMIT done** (~**23%** of `MUSIC/GENRES` converted). **CRATER** daily crate pass. **16ch Channel D + 11a live.** A/B/C sample into Maschine → S88 → D. **11b parked** (FLX10 native). **13 on hold** (S8 pads). **Next: Floor 10** ([issue #9](https://github.com/ixamal/ix/issues/9)). Hardware leftover: **40**. 2ch rollback: `~/Music/blackhole_2ch/`. Alkalurop bridge: publish this tip (Rock + CRATER). Open queue: [ixamal/ix milestones](https://github.com/ixamal/ix/milestones?state=all) (`docs/tracker.md`). `favorites` / CRATER still recording (TODO 41); reviews **2026-09-16** / **2026-10-09**. Toolkit: README. How/why: `docs/crate.md`.
 
 ## Alkalurop org bridge (2026-09-15)
 
@@ -31,6 +31,8 @@ First mirror of then-current ixamal `main` (2026-09-15):
 | [ix_bangers](https://github.com/alkalurop/ix_bangers) | `8b17f46` |
 | [blackhole](https://github.com/alkalurop/blackhole) | `83cf17a` |
 | [music_migration](https://github.com/alkalurop/music_migration) | `7e8768c` |
+
+**2026-09-24 publish.** Rock STEMIT genre batch closed; **CRATER** daily pass shipped; conversion ≈ **23%** of `MUSIC/GENRES`. Mirror current ixamal `main` onto alkalurop (this tip). Org profile: [alkalurop/.github](https://github.com/alkalurop/.github). Issues/milestones stay on ixamal — bridge is git only.
 
 ## Crate status
 
@@ -73,12 +75,13 @@ The `IndustryStems/` tree is not unfinished work. Official `drums/bass/other/voc
 ### Resume next
 
 1. Reload Rekordbox xml (`<>`) and reopen Traktor if needed — analyze new DJ Sets rows. First glance 2026-09-10 was good.
-2. Leftover same-title copies in STEMIT. Alternative stems 1–3 (TODO 17) unless David names another playlist.
+2. **Rock STEMIT done (2026-09-24).** Off open list. Library conversion ≈ **23%** of `MUSIC/GENRES` (3,691 mixes / 15,881). Alternative stems 1–3 (TODO 17) only when David names it.
 3. **11 + 11a done.** 16ch Channel D. A, B, and C sample into Maschine, S88 on D. **11b parked** (FLX10). **13 on hold** (S8 pads → S88).
 4. **40** Investigate Traktor → FLX10 Channel 2 as a digital feed (today: analog master). Leftover after Floor.
 5. **Next: Floor 10.** OSC `127.0.0.1:9000` → UE Niagara.
-6. **41** Played / Not Played But Should — harvest + patterns live; crates via `--playlists`. Load the 5am LaunchAgent only when David asks. Quarterly `--snapshot` into git, not nightly. Reviews **2026-09-16**, **2026-10-09**.
+6. **41** Played / NPBS — daily uber is **CRATER**. Load the 5am LaunchAgent only when David asks. Quarterly `--snapshot` into git, not nightly. Reviews **2026-09-16**, **2026-10-09**.
 7. Items 5 / 5b / 6 stay omitted. Do not Discogs-blast. Targeted one-album Discogs from a screenshot is OK (TODO 22 / `docs/crate.md`).
+8. **Publish:** alkalurop mirror with this tip (`docs/examples/alkalurop-bridge.sh`).
 
 ```bash
 PYTHONPATH=crate python3 -m ix_crate unknown-album
@@ -265,7 +268,7 @@ PYTHONPATH=crate python3 -m ix_crate favorites --execute --snapshot
 
 **Git:** `configs/favorites.json` and `play-patterns.json` are gitignored. Once a quarter: `favorites --execute --snapshot` → `configs/quarterly/favorites-YYYYQn.json` (played + stats, no 22k sitting list) + `play-patterns-YYYYQn.json`, then commit those two. Not nightly.
 
-**Nightly 5am:** LaunchAgent example `docs/examples/ai.ixamal.crate-favorites.plist` + `favorites-nightly.sh`. Not loaded until David asks. Skips NML/XML if Traktor/Rekordbox are open.
+**Nightly 5am:** LaunchAgent example `docs/examples/ai.ixamal.crater.plist` + `crater-nightly.sh` (**CRATER**). Not loaded until David asks. Skips NML/XML if Traktor/Rekordbox are open. `favorites-nightly.sh` wraps the same pass.
 
 **When the LLM gets its own repo:** keep it in crate + `~/local_tools/ollama` until a quarterly review says it outgrew this tree — fine-tune weights, an eval set, or a pattern corpus that is a product. Then [ixamal](https://github.com/ixamal) (e.g. `crate-oracle`), still loopback-only, no collection paths. Quarterly is the right cadence; do not split early.
 

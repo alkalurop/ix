@@ -28,6 +28,7 @@ Skip the repository **Agents** tab (GitHub Copilot cloud agent). Cursor / Codex 
 | [Tagging cleanup](https://github.com/ixamal/ix/milestone/2) | 4–9 |
 | [Music.app library hygiene](https://github.com/ixamal/ix/milestone/7) | 16, 18–22, 24–26 |
 | [STEMIT prove + Afro House](https://github.com/ixamal/ix/milestone/11) | 14–16b |
+| [STEMIT Rock genre](https://github.com/ixamal/ix/milestone/12) | 16c ([#21](https://github.com/ixamal/ix/issues/21)) |
 | [STEMIT crates + IndustryStems](https://github.com/ixamal/ix/milestone/8) | 23, 27, 29–36, 39a |
 | [Playlist bridge night](https://github.com/ixamal/ix/milestone/9) | 37–39 |
 | [16ch Channel D live](https://github.com/ixamal/ix/milestone/10) | 11, 11a |
@@ -36,7 +37,7 @@ Skip the repository **Agents** tab (GitHub Copilot cloud agent). Cursor / Codex 
 
 | Milestone | Meaning |
 | --- | --- |
-| [STEMIT factory live](https://github.com/ixamal/ix/milestone/3) | Leftovers: role titles [#7](https://github.com/ixamal/ix/issues/7), Alternative [#8](https://github.com/ixamal/ix/issues/8); Rock batch local |
+| [STEMIT factory live](https://github.com/ixamal/ix/milestone/3) | Leftovers: role titles [#7](https://github.com/ixamal/ix/issues/7), Alternative [#8](https://github.com/ixamal/ix/issues/8). Rock closed (milestone 12). Library conversion ≈ **23%** of `MUSIC/GENRES`. |
 | [Floor / Elysium](https://github.com/ixamal/ix/milestone/4) | **Next** — OSC → UE [#9](https://github.com/ixamal/ix/issues/9) |
 | [Hardware leftover](https://github.com/ixamal/ix/milestone/5) | FLX10 CH2 / S8 pads parked |
 | [Play history](https://github.com/ixamal/ix/milestone/6) | favorites + GENRES / ACAPELLAS reviews [#13](https://github.com/ixamal/ix/issues/13) |
@@ -50,6 +51,8 @@ Sibling: [stems STEMIT factory](https://github.com/ixamal/stems/milestone/1), [b
 ## Project board
 
 Public board: **[ixamal project — ix](https://github.com/users/ixamal/projects/2)** — columns **Now**, **Parked**, **Done**. Linked to `ix`, `stems`, and `blackhole`. (Project #1 was a first attempt and is closed.)
+
+**Publish note (2026-09-24):** Rock STEMIT era stamped Done ([#21](https://github.com/ixamal/ix/issues/21), stems [#1](https://github.com/ixamal/stems/issues/1)). Mirror this tip to [alkalurop](https://github.com/alkalurop) with `docs/examples/alkalurop-bridge.sh` so the org git carries CRATER + Rock-done docs. Issues/milestones stay on ixamal only.
 
 `TODO.md` remains the full ledger. This board is the glance view.
 

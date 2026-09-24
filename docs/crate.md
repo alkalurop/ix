@@ -255,6 +255,8 @@ The mix is a **hardlink**, not a copy: one set of bytes, two paths (Apple Music 
 
 First run, 2026-09-03 — Music playlist `Never Forget 50th v01`, **21 tracks**: 21 `.stem.m4a`, 20 full Rekordbox pairs, 42/42 factory writes, **0 fail**, 1.50 GB, **78 min** (3.7 min/track, ~38 s per audio minute). Lords Of Acid *Undress and Possess* hit `we found none` — Mel found no separable vocal, so **both** pair files dropped and the container still muxed. That is correct: the mix already is the instrumental.
 
+**2026-09-24 — Rock genre batch done.** `--genre Rock` pages + catch-up finished. FairPlay `drms` skips as `apple drm`. Off the open TODO ([milestone 12](https://github.com/ixamal/ix/milestone/12)). Library conversion ≈ **23%** of `MUSIC/GENRES` (**3,691** mixes / **15,881** genre-crate files). Daily playlist refresh is **CRATER** (never the factory).
+
 The shell can look like it ran for hours after the batch ends — the Aqua HUD stays open until **Close**. Read `summary.wall_s_total` in the run JSON for real time, not shell elapsed.
 
 `music-dupes` only deletes extra Music.app *rows* that share one existing file. It does not unlink audio. If a delete would trash the file, it restores from Trash and stops.
@@ -301,7 +303,21 @@ PYTHONPATH=crate python3 -m ix_crate crates --from nml --to music --playlist "Hu
 
 2026-09-10 ingest: Music → NML + xml **111** playlists. **DJ Sets 0 → 230** (6 `.m4p` skipped). MUSIC empties **28 → 5**. IndustryStems **209/209**, xml/NML artist **0**. Analyze new rows in-app. TODO **39**.
 
+## CRATER (daily celestial crate pass)
+
+**CRATER** is the one daily command: play harvest + `MUSIC/GENRES` + `MUSIC/ACAPELLAS` + STEMIT four crates + `STEMIT/Genres`, then Music.app user playlists when Music is open. Never runs the stem factory. Never writes Apple Music media.
+
+```bash
+PYTHONPATH=crate python3 -m ix_crate crater
+PYTHONPATH=crate python3 -m ix_crate crater --execute
+```
+
+Nightly 5:00: `docs/examples/crater-nightly.sh` + `ai.ixamal.crater.plist`. Quit Traktor for NML; quit Rekordbox for xml. `favorites-nightly.sh` still works as a thin wrapper to CRATER.
+
+Steps (see `crate/ix_crate/crater.py`): favorites playlists (force on `--execute`), follow unmatched ACAPELLAS (MusicBrainz then Shazam), `stemit --sync-playlists`, `stemit --genres --nml`, optional `crates --from music --all` when Music.app is open.
+
 ## favorites (play history)
+
 
 `favorites` reads Traktor NML + rekordbox.xml and writes a **local** inventory (`configs/favorites.json`, gitignored) plus compact **play-patterns.json** for the local LLM: genre, BPM band, energy, vibe. Artist/title only — no disk paths. Mixes count; STEMIT roles skipped. `Played` crate = 100 most recent. Daily `Not Played But Should` / Neglected genres / Random / Favorites (12 each); skipped if you have not played since last run. Library tracks whose genre or title says acapella stay out of those three picks. `--playlists` also writes `MUSIC/GENRES/<Genre>` for every Apple Music genre, and `MUSIC/ACAPELLAS/<Genre>` for STEMIT vocals matched to that library (`crate/ix_crate/library_genres.py`, `crate/ix_crate/acapella_crates.py`). Music.app (if open) gets the flat played / NPBS lists. NML and xml get those plus the two folders. `--snapshot` is the quarterly git copy in `configs/quarterly/` (played + patterns only — the 22k sitting tracks stay local). Dry-run default.
 
