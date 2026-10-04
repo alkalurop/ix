@@ -27,6 +27,7 @@ from .music_dupes import _run_osascript, count_file_tracks
 from .music_repair import RIFF_NO_ID3, _quote_as
 from .paths import REPORTS
 from .stems_playlists import REKORDBOX_XML, rekordbox_is_running
+from .xml_io import write_tree
 
 PREFIX = "EDM,"
 BATCH = 200
@@ -264,7 +265,7 @@ def apply_rekordbox_xml(xml: Path | None = None) -> int:
     if patched:
         backup = path.with_suffix(path.suffix + ".genre.bak")
         shutil.copy2(path, backup)
-        tree.write(path, encoding="UTF-8", xml_declaration=True)
+        write_tree(tree, path)
     return patched
 
 

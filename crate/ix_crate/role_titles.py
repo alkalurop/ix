@@ -20,6 +20,7 @@ import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
+from ix_crate.xml_io import write_tree
 from ix_crate.families import (
     ROLE_NAMES,
     STEM_SUFFIXES,
@@ -279,7 +280,7 @@ def patch_nml_titles(
                 entry.set("TITLE", stripped)
             patched += 1
     if execute and patched:
-        tree.write(nml_path, encoding="UTF-8", xml_declaration=True)
+        write_tree(tree, nml_path)
     return patched
 
 
@@ -379,7 +380,7 @@ def apply_nml_store_titles(
             import shutil
 
             shutil.copy2(nml_path, backup)
-        tree.write(nml_path, encoding="UTF-8", xml_declaration=True)
+        write_tree(tree, nml_path)
     return titled, dropped
 
 

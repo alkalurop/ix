@@ -25,6 +25,7 @@ from pathlib import Path
 from urllib.parse import unquote
 
 from ix_crate.music_dupes import MusicDupesError, _run_osascript, music_running
+from ix_crate.xml_io import write_tree
 from ix_crate.paths import APPLE_MUSIC, AUDIO_EXTS, REPORTS
 from ix_crate.stems_playlists import (
     KIND,
@@ -66,6 +67,12 @@ class TrackRef:
     label: str = ""
     artist: str = ""
     title: str = ""
+    album: str = ""
+    genre: str = ""
+    bpm: str = ""
+    key: str = ""
+    total_time: str = ""
+    comments: str = ""
 
 
 @dataclass
@@ -575,15 +582,29 @@ def ingest_xml_collection(collection: ET.Element, plan: SyncPlan) -> int:
             tid = str(next_id)
             used.add(next_id)
             next_id += 1
+            from ix_crate.dj_metadata import xml_track_attrs
+
+            filing = TrackRef(
+                path=miss.path,
+                artist=artist,
+                title=title,
+                album=miss.album,
+                genre=miss.genre,
+                bpm=miss.bpm,
+                key=miss.key,
+                total_time=miss.total_time,
+                comments=miss.comments,
+            )
             ET.SubElement(
                 collection,
                 "TRACK",
-                TrackID=tid,
-                Name=title,
-                Artist=artist,
-                Kind=kind,
-                Size=str(miss.path.stat().st_size),
-                Location=_rb_location(miss.path),
+                **xml_track_attrs(
+                    filing,
+                    tid=tid,
+                    kind=kind,
+                    size=miss.path.stat().st_size,
+                    location=_rb_location(miss.path),
+                ),
             )
             if tid not in seen:
                 item.matched.append(Hit(path=miss.path, dest_key=tid, via="ingest"))
@@ -612,7 +633,22 @@ def ingest_nml_collection(collection: ET.Element, plan: SyncPlan) -> int:
             directory, file_attr = _traktor_dir_file(miss.path.resolve())
             pk_type = "STEM" if ".stem." in miss.path.name.lower() else "TRACK"
             key = f"Macintosh HD{directory}{file_attr}"
-            entry = ET.SubElement(collection, "ENTRY", TITLE=title, ARTIST=artist)
+            from ix_crate.dj_metadata import append_nml_analysis
+
+            filing = TrackRef(
+                path=miss.path,
+                artist=artist,
+                title=title,
+                album=miss.album,
+                genre=miss.genre,
+                bpm=miss.bpm,
+                key=miss.key,
+                total_time=miss.total_time,
+                comments=miss.comments,
+            )
+            entry = ET.SubElement(
+                collection, "ENTRY", TITLE=filing.title, ARTIST=filing.artist
+            )
             ET.SubElement(
                 entry,
                 "LOCATION",
@@ -621,6 +657,7 @@ def ingest_nml_collection(collection: ET.Element, plan: SyncPlan) -> int:
                 VOLUME="Macintosh HD",
                 VOLUMEID="Macintosh HD",
             )
+            append_nml_analysis(entry, filing)
             if key not in seen:
                 item.matched.append(
                     Hit(path=miss.path, dest_key=key, via="ingest", extra=pk_type)
@@ -724,7 +761,7 @@ def apply_xml(plan: SyncPlan, xml: Path) -> int:
         written += 1
     backup = xml.with_suffix(xml.suffix + ".crates.bak")
     shutil.copy2(xml, backup)
-    tree.write(xml, encoding="UTF-8", xml_declaration=True)
+    write_tree(tree, xml)
     return written
 
 
@@ -763,7 +800,7 @@ def apply_nml(plan: SyncPlan, nml: Path) -> int:
         written += 1
     backup = nml.with_suffix(nml.suffix + ".crates.bak")
     shutil.copy2(nml, backup)
-    tree.write(nml, encoding="UTF-8", xml_declaration=True)
+    write_tree(tree, nml)
     return written
 
 

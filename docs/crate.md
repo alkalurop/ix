@@ -314,7 +314,20 @@ PYTHONPATH=crate python3 -m ix_crate crater --execute
 
 Nightly 5:00: `docs/examples/crater-nightly.sh` + `ai.ixamal.crater.plist`. Quit Traktor for NML; quit Rekordbox for xml. `favorites-nightly.sh` still works as a thin wrapper to CRATER.
 
-Steps (see `crate/ix_crate/crater.py`): favorites playlists (force on `--execute`), follow unmatched ACAPELLAS (MusicBrainz then Shazam), `stemit --sync-playlists`, `stemit --genres --nml`, optional `crates --from music --all` when Music.app is open, then `xml-prune`.
+End to end: `docs/examples/stemit-crater.sh` opens Music, stems the next `BUDGET` tracks (default 200) via `ix_crate stemit-chain`, asks Traktor and Rekordbox to quit, then runs CRATER with `--skip-follow`. `SKIP_STEMIT=1` is CRATER only. `FOLLOW=1` adds MusicBrainz and Shazam. A factory failure still continues into CRATER. NML and `rekordbox.xml` are replaced with `xml_io.write_tree` (temp file, then rename). A reboot during an older in-place write left `rekordbox.xml` truncated on 2026-10-02; CRATER now stops and names `rekordbox.xml.prune.bak` instead of parsing that file.
+
+Steps (see `crate/ix_crate/crater.py`): favorites playlists (force on `--execute`), follow unmatched ACAPELLAS (MusicBrainz then Shazam), `stemit --sync-playlists`, `stemit --genres --nml`, optional `crates --from music --all` when Music.app is open, then `xml-prune`, then **rekordbox-sample-crate** (Pioneer `Sampler/Capture` → `Saved`, playlist `SAMPLES/Samplers` in NML + xml), then **traktor-remix-crate** (all NML remix sets → `SAMPLES/Remixes/<set>/`, deck captures → `SAMPLES/Remixes/Deck Captures`; metadata copied both ways on ingest).
+
+Standalone (quit decks first for `--execute`):
+
+```bash
+PYTHONPATH=crate python3 -m ix_crate rekordbox-sample-crate
+PYTHONPATH=crate python3 -m ix_crate rekordbox-sample-crate --execute
+PYTHONPATH=crate python3 -m ix_crate traktor-remix-crate
+PYTHONPATH=crate python3 -m ix_crate traktor-remix-crate --execute
+docs/examples/rekordbox-sample-crate.sh --execute
+docs/examples/traktor-remix-crate.sh --execute
+```
 
 **xml-prune (2026-09-30).** Rekordbox re-reads every `rekordbox.xml` row on each `<>` reload and writes `~/Documents/rekordbox/Import Log - <date>.txt` (UTF-16) for the ones it rejects. The same 29 files had repeated since 09-16: moved or renamed `.m4a` / `.stem.m4a` / `.wav`, plus DRM `.m4p`. Ingest already skipped those for new rows, but stale rows never left. `xml-prune` drops `.m4p` and missing-file rows plus their playlist `TRACK Key` refs, keeps `/Volumes` rows (unplugged drive ≠ dead file), and backs up to `rekordbox.xml.prune.bak`. It runs last in every CRATER pass. First run: **9,179 of 55,247** rows (15 `.m4p`).
 

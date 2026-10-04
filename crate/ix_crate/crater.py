@@ -14,6 +14,10 @@ One command that refreshes the DJ-facing crates from the live library:
    ``crates --from music --all`` into NML and xml under ``MUSIC/``.
 6. **xml prune** — drop rekordbox.xml rows Rekordbox cannot import
    (missing files, ``.m4p``) so the Import Log dialog stops repeating.
+7. **rekordbox sample crate** — Pioneer ``Sampler/Capture`` → ``Saved``,
+   playlist ``SAMPLES/Samplers`` in NML + xml.
+8. **traktor remix crate** — every NML remix set → ``SAMPLES/Remixes/<set>``;
+   ``~/Music/Traktor/Samples`` → ``SAMPLES/Remixes/Deck Captures``.
 
 Never writes Apple Music media. Never runs the stem factory. Quit Traktor
 before NML. Quit Rekordbox before xml. Dry-run default.
@@ -22,10 +26,31 @@ before NML. Quit Rekordbox before xml. Dry-run default.
 from __future__ import annotations
 
 import argparse
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from ix_crate.stems_playlists import REKORDBOX_XML, TRAKTOR_NML, rekordbox_is_running
 from ix_crate.traktor_nml import traktor_is_running
+
+
+def require_xml(xml: Path) -> int:
+    """0 when the file parses. A truncated write must not start CRATER."""
+    if not xml.is_file():
+        print(f"rekordbox.xml not found: {xml}", flush=True)
+        return 2
+    try:
+        ET.parse(xml)
+    except ET.ParseError as exc:
+        bak = xml.with_suffix(xml.suffix + ".prune.bak")
+        print(
+            f"rekordbox.xml is not valid XML ({exc}).\n"
+            f"  {xml}\n"
+            "The file was cut off mid-write. Move it aside and copy the newest "
+            f"backup that still parses ({bak.name} is the usual one), then run CRATER again.",
+            flush=True,
+        )
+        return 2
+    return 0
 
 
 def run_favorites(*, execute: bool, force: bool, nml: Path, xml: Path) -> int:
@@ -126,6 +151,18 @@ def run_music_crates(*, execute: bool) -> int:
     return crates_main(["--from", "music", "--to", "xml", "--all", "--execute"])
 
 
+def run_rekordbox_sample_crate(*, execute: bool, nml: Path, xml: Path) -> int:
+    from ix_crate.rekordbox_sample_crate import run as sample_run
+
+    return sample_run(execute=execute, nml=nml, xml=xml)
+
+
+def run_traktor_remix_crate(*, execute: bool, nml: Path, xml: Path) -> int:
+    from ix_crate.traktor_remix_crate import run as remix_run
+
+    return remix_run(execute=execute, nml=nml, xml=xml)
+
+
 def run_xml_prune(*, execute: bool, xml: Path) -> int:
     from ix_crate.xml_prune import format_plan, prune_xml
 
@@ -168,6 +205,9 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     print("CRATER  celestial crate pass", flush=True)
+    code = require_xml(args.xml)
+    if code:
+        return code
     if rekordbox_is_running():
         print("note: Rekordbox is open — xml writes will skip.", flush=True)
     if traktor_is_running():
@@ -201,6 +241,15 @@ def main(argv: list[str] | None = None) -> int:
 
     print("CRATER prune dead rekordbox.xml rows", flush=True)
     run_xml_prune(execute=args.execute, xml=args.xml)
+
+    print("CRATER rekordbox Capture → SAMPLES/Samplers", flush=True)
+    code = run_rekordbox_sample_crate(execute=args.execute, nml=args.nml, xml=args.xml)
+    if code:
+        return code
+    print("CRATER Traktor remix sets → SAMPLES/Remixes/*", flush=True)
+    code = run_traktor_remix_crate(execute=args.execute, nml=args.nml, xml=args.xml)
+    if code:
+        return code
 
     print("CRATER done.", flush=True)
     return 0

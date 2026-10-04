@@ -25,6 +25,7 @@ from ix_crate.families import ROLE_NAMES, STEM_SUFFIXES, family_key, is_role_fil
 from ix_crate.identify import is_placeholder_artist, normalize_title, parse_filename
 from ix_crate.paths import AUDIO_EXTS, STEMS_AUDIO
 from ix_crate.riff_repair import finder_copy_number
+from ix_crate.xml_io import write_tree
 
 PLAYLISTS = ("Mixes", "Stems", "Acapellas", "Instrumentals")
 TRAKTOR_NML = (
@@ -544,7 +545,7 @@ def write_traktor(
     )
     backup = nml.with_suffix(nml.suffix + ".stemit.bak")
     shutil.copy2(nml, backup)
-    tree.write(nml, encoding="UTF-8", xml_declaration=True)
+    write_tree(tree, nml)
     return added
 
 
@@ -651,7 +652,7 @@ def write_rekordbox(
     folder.set("Count", str(len(folder.findall("NODE"))))
     backup = xml.with_suffix(xml.suffix + ".stemit.bak")
     shutil.copy2(xml, backup)
-    tree.write(xml, encoding="UTF-8", xml_declaration=True)
+    write_tree(tree, xml)
     return added
 
 

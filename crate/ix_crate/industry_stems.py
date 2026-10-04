@@ -22,6 +22,7 @@ from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
+from ix_crate.xml_io import write_tree
 from ix_crate.identify import (
     is_placeholder_artist,
     is_placeholder_title,
@@ -515,7 +516,7 @@ def patch_nml_industry(
         stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
         backup = nml_path.with_suffix(nml_path.suffix + f".pre-industry-{stamp}")
         shutil.copy2(nml_path, backup)
-        tree.write(nml_path, encoding="UTF-8", xml_declaration=True)
+        write_tree(tree, nml_path)
     return patched
 
 
@@ -576,7 +577,7 @@ def patch_xml_industry(
         stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
         backup = xml_path.with_suffix(xml_path.suffix + f".pre-industry-{stamp}")
         shutil.copy2(xml_path, backup)
-        tree.write(xml_path, encoding="UTF-8", xml_declaration=True)
+        write_tree(tree, xml_path)
     return patched
 
 

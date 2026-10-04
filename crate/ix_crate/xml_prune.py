@@ -23,6 +23,7 @@ from pathlib import Path
 from urllib.parse import unquote
 
 from ix_crate.stems_playlists import REKORDBOX_XML, rekordbox_is_running
+from ix_crate.xml_io import write_tree
 
 NEVER_IMPORTS = {".m4p"}
 
@@ -112,7 +113,7 @@ def prune_xml(xml: Path = REKORDBOX_XML, *, execute: bool = False) -> PrunePlan:
     if execute and plan.dead:
         apply_prune(tree.getroot(), plan)
         shutil.copy2(xml, xml.with_suffix(xml.suffix + ".prune.bak"))
-        tree.write(xml, encoding="UTF-8", xml_declaration=True)
+        write_tree(tree, xml)
     return plan
 
 

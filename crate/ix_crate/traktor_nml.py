@@ -33,6 +33,7 @@ from ix_crate.paths import REPORTS, STEMS_AUDIO
 from ix_crate.riff_repair import copy_number
 from ix_crate.safety import CrateSafetyError, assert_under_stems
 from ix_crate.stems_playlists import TRAKTOR_NML
+from ix_crate.xml_io import write_tree
 
 COVERART = TRAKTOR_NML.parent / "Coverart"
 TOOL_ID = "ix.crate.traktor-nml"
@@ -403,7 +404,7 @@ def write_nml(tree: ET.ElementTree, nml: Path) -> Path:
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     backup = nml.with_suffix(nml.suffix + f".pre-nml-repair-{stamp}")
     shutil.copy2(nml, backup)
-    tree.write(nml, encoding="UTF-8", xml_declaration=True)
+    write_tree(tree, nml)
     return backup
 
 

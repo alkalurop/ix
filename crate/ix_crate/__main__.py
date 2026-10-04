@@ -54,6 +54,10 @@ def main(argv: list[str] | None = None) -> int:
         from ix_crate.stemit import main as stemit_main
 
         return stemit_main(argv[1:])
+    if argv and argv[0] == "stemit-chain":
+        from ix_crate.stemit_chain import main as stemit_chain_main
+
+        return stemit_chain_main(argv[1:])
     if argv and argv[0] == "riff-repair":
         from ix_crate.riff_repair import main as riff_repair_main
 
@@ -90,6 +94,14 @@ def main(argv: list[str] | None = None) -> int:
         from ix_crate.xml_prune import main as xml_prune_main
 
         return xml_prune_main(argv[1:])
+    if argv and argv[0] == "rekordbox-sample-crate":
+        from ix_crate.rekordbox_sample_crate import main as rekordbox_sample_main
+
+        return rekordbox_sample_main(argv[1:])
+    if argv and argv[0] == "traktor-remix-crate":
+        from ix_crate.traktor_remix_crate import main as traktor_remix_main
+
+        return traktor_remix_main(argv[1:])
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -105,6 +117,7 @@ def main(argv: list[str] | None = None) -> int:
             "music-replicants",
             "music-fix",
             "stemit",
+            "stemit-chain",
             "consolidate",
             "riff-repair",
             "music-cull",

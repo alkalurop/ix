@@ -39,6 +39,7 @@ from pathlib import Path
 from typing import Iterable
 
 from ix_crate.crates import Hit, PlaylistPlan, TrackRef, itunes_library_xml
+from ix_crate.xml_io import write_tree
 from ix_crate.identify import normalize_title
 from ix_crate.music_genre import clean_genre
 from ix_crate.paths import STEMS_AUDIO
@@ -302,7 +303,7 @@ def clear_music_folders(
                 _drop_xml_playlists(folder, None)
     else:
         raise ValueError(f"unknown library kind {kind}")
-    tree.write(path, encoding="UTF-8", xml_declaration=True)
+    write_tree(tree, path)
 
 
 def clear_acapella_playlists(path: Path, *, kind: str) -> None:

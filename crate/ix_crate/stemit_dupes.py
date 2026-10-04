@@ -23,6 +23,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 from ix_crate.families import ROLE_NAMES, basename_without_container, family_key, is_audio
+from ix_crate.xml_io import write_tree
 from ix_crate.identify import duration_close, normalize_title
 from ix_crate.music_repair import SKIP_SUFFIX
 from ix_crate.music_replicants import _byte_digest, same_audio
@@ -475,6 +476,6 @@ def rebuild_after_dedupe(
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     backup = nml.with_suffix(nml.suffix + f".pre-dedupe-{stamp}")
     shutil.copy2(nml, backup)
-    tree.write(nml, encoding="UTF-8", xml_declaration=True)
+    write_tree(tree, nml)
     files = prefer_crate_files(walk_stems(root), root)
     return write_traktor(files, traktor_index(nml), nml, stems_root=root)
