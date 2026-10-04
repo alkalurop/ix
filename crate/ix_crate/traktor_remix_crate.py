@@ -232,8 +232,10 @@ def write_report(plan: RemixCratePlan, extra: dict | None = None) -> Path:
         "tool": TOOL_ID,
         "samples_folder": SAMPLES_FOLDER,
         "remixes_subfolder": REMIXES_SUBFOLDER,
-        "remix_sets": plan.remix_sets,
-        "flat_samples": plan.flat_samples,
+        "remix_sets": {
+            name: [str(p) for p in paths] for name, paths in plan.remix_sets.items()
+        },
+        "flat_samples": [str(p) for p in plan.flat_samples],
         **(extra or {}),
     }
     dest = REPORTS / f"traktor-remix-crate-{stamp}.json"
