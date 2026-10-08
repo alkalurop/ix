@@ -81,7 +81,9 @@ Not a product. A crate that got sick of being a warehouse job. If yours looks li
 | --- | --- |
 | `music-dupes` | Two Songs rows, **one file**. Delete the extra *row*. If Music.app bins the file, restore from Trash and stop. |
 | `music-replicants` | Two Songs rows, **two files**, same *sound*. Decode, then drop. Alternate takes stay. |
-| `music-genre` | `EDM, House` → `House`. File **and** library. Slash genres are real. |
+| `music-genre` | `clean_genre`: `EDM, House, Deep` → `Deep House`, etc. File **and** library. Slash genres are real. |
+| `crater` | Daily pass: favorites, GENRES/ACAPELLAS, STEMIT crates, Music → NML/xml, sample/remix/MiK crates, xml-prune. |
+| `mixed-in-crate` | Mixed In Key playlists → `MIXED IN KEY` in Traktor + Rekordbox (cues, energy, Camelot key). |
 | `music-repair` | Locate `!` by a unique artist/title hit on disk. Fill empty identity only. |
 | `music-reconcile` | Same `!`, from the iTunes XML persistent-ID map. Exact, not a guess. Copy into `~/Music` before you relink. |
 | `consolidate` | Pull a migration tree home as Artist / Album. Tags decide the folder. `Track 1` is a duplicate marker. |
@@ -96,6 +98,8 @@ If you adapt this: dry-run first. Music.app is a database. Title-only match will
 cd ~/github/ixamal/ix
 PYTHONPATH=crate python3 -m ix_crate music-cull          # dry-run
 PYTHONPATH=crate python3 -m ix_crate music-cull --execute
+docs/examples/library-hygiene.sh                         # EDM + xml-prune + CRATER (detached)
+HYGIENE=1 BUDGET=100 docs/examples/stemit-crater.sh      # hygiene, then stems, then CRATER
 ```
 
 ### Still ahead (not done)

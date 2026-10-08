@@ -58,8 +58,8 @@ class PromoteTest(unittest.TestCase):
 
 class RowTest(unittest.TestCase):
     def test_row_exposes_its_promoted_genre(self) -> None:
-        row = GenreRow(index=1, persistent_id="A1", name="x", genre="EDM, House", path="")
-        self.assertEqual(row.promoted, "House")
+        row = GenreRow(index=1, persistent_id="A1", name="x", genre="EDM, House, Deep", path="")
+        self.assertEqual(row.promoted, "Deep House")
 
 
 class WriteFileGenreTest(unittest.TestCase):

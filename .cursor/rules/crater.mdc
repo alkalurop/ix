@@ -12,7 +12,7 @@ When David says **CRATER** (alone, or "run CRATER"), do the whole pass without a
 3. Make sure Music.app is open (`open -a Music`) so user playlists bridge.
 4. Run detached, logging to `~/local_tools/crate/reports/crater-<utc>.log` (own session, file output — not a pipe to the agent shell):
    `PYTHONPATH=crate python3 -u -m ix_crate crater --execute --skip-follow`
-5. Report: GENRES / ACAPELLAS counts, STEMIT on-disk vs added rows, STEMIT/Genres count, Music playlists written, xml-prune rows dropped, rekordbox Capture archive moves (→ Saved / SAMPLES/Samplers), Traktor remix sets + Samples → Remixes counts. Remind: reload rekordbox xml (`<>`), Don't ask again + No on tag overwrite.
+5. Report: GENRES / ACAPELLAS counts, STEMIT on-disk vs added rows, STEMIT/Genres count, Music playlists written, xml-prune rows dropped, rekordbox Capture archive moves (→ Saved / SAMPLES/Samplers), Traktor remix sets + Samples → Remixes counts, Mixed In Key playlists written (`MIXED IN KEY`, cues / energy / key / notes). Remind: reload rekordbox xml (`<>`), Don't ask again + No on tag overwrite.
 
 **CRATER full** drops `--skip-follow` (MusicBrainz + Shazam for unmatched ACAPELLAS; hours).
 

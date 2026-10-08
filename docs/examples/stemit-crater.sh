@@ -8,6 +8,9 @@
 #   SKIP_STEMIT=1 docs/examples/stemit-crater.sh   # CRATER only
 #   SKIP_CRATER=1 docs/examples/stemit-crater.sh   # stems only
 #   FOLLOW=1 docs/examples/stemit-crater.sh        # CRATER also runs MusicBrainz + Shazam
+#   HYGIENE=1 docs/examples/stemit-crater.sh       # library-hygiene before STEMIT + CRATER
+#
+# Preflight (Rekordbox can stay open): PREFLIGHT=1 docs/examples/library-hygiene.sh
 #
 # The stems factory is the separate repo at ~/github/ixamal/stems
 # (Homebrew Python 3.12 .venv; see that repo's RUNBOOK). Tracks that
@@ -42,7 +45,7 @@ if [[ "${FOREGROUND:-}" != 1 ]]; then
     echo "STEMIT factory already running (py.exec.separate). Stop it first." >&2
     exit 1
   fi
-  export BUDGET SKIP_CRATER SKIP_STEMIT FOLLOW ROOT LOG
+  export BUDGET SKIP_CRATER SKIP_STEMIT FOLLOW HYGIENE ROOT LOG
   python3 -c '
 import os, sys
 log, script = sys.argv[1], sys.argv[2]
@@ -67,6 +70,12 @@ fi
 
 cd "$ROOT"
 export PYTHONPATH=crate
+HYGIENE_SCRIPT="${ROOT}/docs/examples/library-hygiene.sh"
+
+if [[ "${HYGIENE:-}" == 1 ]]; then
+  echo "HYGIENE music phase $(date)"
+  FOREGROUND=1 LOG="$LOG" MUSIC_ONLY=1 bash "$HYGIENE_SCRIPT"
+fi
 
 if [[ "${SKIP_STEMIT:-}" != 1 ]]; then
   echo "STEMIT ${BUDGET} start $(date)"
@@ -84,6 +93,14 @@ fi
 if [[ "${SKIP_CRATER:-}" == 1 ]]; then
   echo "SKIP_CRATER=1; done."
   exit 0
+fi
+
+if [[ "${HYGIENE:-}" == 1 ]]; then
+  echo "HYGIENE decks phase + CRATER $(date)"
+  FOREGROUND=1 LOG="$LOG" DECKS_ONLY=1 bash "$HYGIENE_SCRIPT"
+  crater_code=$?
+  echo "HYGIENE+CRATER exit ${crater_code} $(date)"
+  exit "${crater_code}"
 fi
 
 echo "Quitting Traktor and Rekordbox. If a dialog is up, click through. $(date)"

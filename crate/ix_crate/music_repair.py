@@ -803,11 +803,14 @@ def run_with_hud(
 ) -> int:
     ensure_stems_path()
     from py.utils.notify import notify_complete, resolve_charts, summary_from_payload
-    from py.utils.progress import ProgressPanel
     from py.utils.runlog import RunLogger, is_verbose, want_notify
 
     want_panel = True if getattr(args, "gui", None) is None else bool(args.gui)
-    panel = ProgressPanel.try_open(title) if want_panel else None
+    panel = None
+    if want_panel:
+        from py.utils.progress import ProgressPanel
+
+        panel = ProgressPanel.try_open(title)
     logger = RunLogger(
         tool_id,
         verbose=is_verbose(args),

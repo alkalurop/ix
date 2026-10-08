@@ -18,6 +18,8 @@ One command that refreshes the DJ-facing crates from the live library:
    playlist ``SAMPLES/Samplers`` in NML + xml.
 8. **traktor remix crate** — every NML remix set → ``SAMPLES/Remixes/<set>``;
    ``~/Music/Traktor/Samples`` → ``SAMPLES/Remixes/Deck Captures``.
+9. **mixed-in-crate** — Mixed In Key user playlists → ``MIXED IN KEY`` in
+   NML + xml, with cues, energy, Camelot key, and file notes.
 
 Never writes Apple Music media. Never runs the stem factory. Quit Traktor
 before NML. Quit Rekordbox before xml. Dry-run default.
@@ -163,6 +165,12 @@ def run_traktor_remix_crate(*, execute: bool, nml: Path, xml: Path) -> int:
     return remix_run(execute=execute, nml=nml, xml=xml)
 
 
+def run_mixed_in_crate(*, execute: bool, nml: Path, xml: Path) -> int:
+    from ix_crate.mixed_in_crate import run as mixed_run
+
+    return mixed_run(execute=execute, nml=nml, xml=xml)
+
+
 def run_xml_prune(*, execute: bool, xml: Path) -> int:
     from ix_crate.xml_prune import format_plan, prune_xml
 
@@ -248,6 +256,11 @@ def main(argv: list[str] | None = None) -> int:
         return code
     print("CRATER Traktor remix sets → SAMPLES/Remixes/*", flush=True)
     code = run_traktor_remix_crate(execute=args.execute, nml=args.nml, xml=args.xml)
+    if code:
+        return code
+
+    print("CRATER Mixed In Key → MIXED IN KEY", flush=True)
+    code = run_mixed_in_crate(execute=args.execute, nml=args.nml, xml=args.xml)
     if code:
         return code
 

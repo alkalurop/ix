@@ -66,7 +66,8 @@ class GenreRow:
 
     @property
     def promoted(self) -> str:
-        return promote(self.genre)
+        """Target genre for file + library rows (``clean_genre``, not ``promote`` alone)."""
+        return clean_genre(self.genre)
 
 
 @dataclass
@@ -137,7 +138,8 @@ end tell
                 continue
             parts = (line.split("\t") + [""] * 4)[:4]
             pid, genre, name, path = (p.strip() for p in parts)
-            if pid and genre.upper().startswith(PREFIX):
+            cleaned = clean_genre(genre)
+            if pid and genre and cleaned != genre:
                 plan.rows.append(
                     GenreRow(
                         index=offset,
@@ -147,7 +149,7 @@ end tell
                         path=path,
                     )
                 )
-                label = f"{genre} -> {promote(genre)}"
+                label = f"{genre} -> {cleaned}"
                 plan.by_change[label] = plan.by_change.get(label, 0) + 1
             offset += 1
         if on_progress:

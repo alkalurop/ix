@@ -47,13 +47,21 @@ PYTHONPATH=crate python3 -m ix_crate favorites
 PYTHONPATH=crate python3 -m ix_crate favorites --execute
 PYTHONPATH=crate python3 -m ix_crate favorites --execute --playlists
 PYTHONPATH=crate python3 -m ix_crate favorites --execute --snapshot
+PYTHONPATH=crate python3 -m ix_crate crater
+PYTHONPATH=crate python3 -m ix_crate crater --execute
+PYTHONPATH=crate python3 -m ix_crate mixed-in-crate
+PYTHONPATH=crate python3 -m ix_crate mixed-in-crate --execute
+docs/examples/library-hygiene.sh
+docs/examples/stemit-crater.sh
 ```
+
+**CRATER** is the daily celestial crate pass (`docs/crate.md`). **Library hygiene** (`docs/examples/library-hygiene.sh`) runs `music-reconcile`, `music-repair`, `music-genre`, `music-genre --xml`, `xml-prune`, then CRATER — use `HYGIENE=1` on `stemit-crater.sh` to chain before STEMIT. **mixed-in-crate** mirrors Mixed In Key user playlists into `MIXED IN KEY` (included in CRATER).
 
 Leftovers after lookup go to `Compilations/Mashups/Miscellaneous/`. Dry-run is the default; pass `--execute` to move.
 
 `music-dupes` finds Music.app Songs rows that share one file on disk (Show in Finder opens the same path). Dry-run is the default. `--execute` deletes the extra *library rows* only — the audio stays. Uses the stems factory Aqua HUD (`py.utils.progress`). `--no-gui` stays in the terminal.
 
-`music-repair` relinks Songs rows with no file (Locate / !) to a unique match on disk, then fills empty artist/album/title (crate cascade) and empty genre (iTunes only). It does not move Media.localized.
+`music-repair` relinks Songs rows with no file (Locate / !) to a unique match on disk, then fills empty artist/album/title (crate cascade) and empty genre (iTunes only). It does not move Media.localized. `--no-gui` skips the Aqua HUD (batch scripts, Python without python-tk).
 
 `music-fix` fills artist / album / title / genre on a Music.app playlist (default `Fix`). Default is aggressive: AcoustID fingerprints, Shazam, duration-matched iTunes/Deezer. Unidentified leftovers are skipped (not labeled Various Artists). `--library-va` targets library rows whose artist is Various Artists. `--strict` is the old dual-catalog path. Does not rename files. Screenshot-driven one-album Discogs (not a crate command): `docs/crate.md`.
 
