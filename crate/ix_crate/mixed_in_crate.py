@@ -12,6 +12,7 @@ BPM stay. Comment becomes ``5A - Energy 6`` plus the file note, which is
 the shape ``favorites`` already reads.
 
 Dry-run default. Quit Rekordbox before xml. Quit Traktor before NML.
+Mixed In Key may stay open — ``Collection11.mikdb`` is opened read-only.
 """
 
 from __future__ import annotations

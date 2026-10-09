@@ -27,45 +27,15 @@ LOG="${LOG:-${REPORTS}/library-hygiene-$(date -u +%Y%m%dT%H%M%SZ).log}"
 
 notify_hygiene() {
   local status="$1"
-  HYGIENE_NOTIFY_STATUS="$status" \
-  HYGIENE_NOTIFY_LOG="$LOG" \
-  HYGIENE_NOTIFY_TO="$EMAIL_TO" \
-  python3 -u <<'PY'
-import json
-import os
-import subprocess
-from pathlib import Path
-
-status = os.environ["HYGIENE_NOTIFY_STATUS"]
-log = Path(os.environ["HYGIENE_NOTIFY_LOG"])
-to_addr = os.environ["HYGIENE_NOTIFY_TO"]
-subject = (
-    "ix library hygiene finished"
-    if status == "ok"
-    else "ix library hygiene FAILED"
-)
-tail = ""
-if log.is_file():
-    lines = log.read_text(encoding="utf-8", errors="replace").splitlines()
-    tail = "\n".join(lines[-35:])
-body = f"Library hygiene {status}.\n\nLog: {log}\n\n---\n{tail}"
-script = (
-    'tell application "Mail"\n'
-    f"set msg to make new outgoing message with properties "
-    f"{{subject:{json.dumps(subject)}, content:{json.dumps(body[:3500])}, visible:false}}\n"
-    "tell msg\n"
-    f"make new to recipient at end of to recipients with properties "
-    f"{{address:{json.dumps(to_addr)}}}\n"
-    "send\n"
-    "end tell\n"
-    "end tell\n"
-)
-r = subprocess.run(["osascript", "-e", script], capture_output=True, text=True, timeout=45)
-if r.returncode != 0:
-    print("mail failed:", (r.stderr or r.stdout or "").strip(), flush=True)
-else:
-    print(f"mail sent to {to_addr}", flush=True)
-PY
+  [[ "${SKIP_NOTIFY:-}" == 1 ]] && return 0
+  local summary="Library hygiene ${status}."
+  PYTHONPATH=crate python3 -u -m ix_crate.batch_notify \
+    --tool-id ix.crate.hygiene \
+    --title "Library hygiene" \
+    --log "$LOG" \
+    --status "$status" \
+    --started-at "${HYGIENE_STARTED_AT:-$(python3 -c 'import time; print(time.time())')}" \
+    --summary "$summary"
 }
 
 if [[ "${FOREGROUND:-}" != 1 && "${PREFLIGHT:-}" != 1 ]]; then
@@ -213,6 +183,7 @@ if [[ "${PREFLIGHT:-}" == 1 ]]; then
   exit 0
 fi
 
+HYGIENE_STARTED_AT="$(python3 -c 'import time; print(time.time())')"
 echo "LIBRARY HYGIENE start $(date)  log=$LOG"
 trap 'notify_hygiene fail; exit 1' ERR
 

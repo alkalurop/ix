@@ -19,3 +19,5 @@ When David says **CRATER** (alone, or "run CRATER"), do the whole pass without a
 Never runs the stem factory. Never writes Apple Music media. How/why: `docs/crate.md` (CRATER).
 
 When David says **STEMIT 200 + CRATER** (or any budget), run detached via `docs/examples/stemit-crater.sh` (or `BUDGET=N …`). Same quit-decks-then-CRATER behavior as the script. Do not pipe factory output through the agent shell.
+
+When David says **BABYLON**, run detached via `docs/examples/babylon.sh` (default `BUDGET=0`: full library hygiene + CRATER with Mixed In Key; optional `BUDGET=N` or `STEMIT_BATCHES="50 100"`). Mixed In Key may stay open. Rekordbox and Traktor must quit before the decks phase. Log: `~/local_tools/crate/reports/babylon-<utc>.log`; completion uses `ix_crate.batch_notify` (Mail.app via stems `notify_complete`). Report same CRATER metrics as step 5.

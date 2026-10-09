@@ -9,6 +9,7 @@
 #   SKIP_CRATER=1 docs/examples/stemit-crater.sh   # stems only
 #   FOLLOW=1 docs/examples/stemit-crater.sh        # CRATER also runs MusicBrainz + Shazam
 #   HYGIENE=1 docs/examples/stemit-crater.sh       # library-hygiene before STEMIT + CRATER
+#   docs/examples/babylon.sh                       # HYGIENE + CRATER; BUDGET=0 default
 #
 # Preflight (Rekordbox can stay open): PREFLIGHT=1 docs/examples/library-hygiene.sh
 #
@@ -74,7 +75,7 @@ HYGIENE_SCRIPT="${ROOT}/docs/examples/library-hygiene.sh"
 
 if [[ "${HYGIENE:-}" == 1 ]]; then
   echo "HYGIENE music phase $(date)"
-  FOREGROUND=1 LOG="$LOG" MUSIC_ONLY=1 bash "$HYGIENE_SCRIPT"
+  FOREGROUND=1 LOG="$LOG" SKIP_NOTIFY=1 MUSIC_ONLY=1 bash "$HYGIENE_SCRIPT"
 fi
 
 if [[ "${SKIP_STEMIT:-}" != 1 ]]; then
@@ -97,7 +98,7 @@ fi
 
 if [[ "${HYGIENE:-}" == 1 ]]; then
   echo "HYGIENE decks phase + CRATER $(date)"
-  FOREGROUND=1 LOG="$LOG" DECKS_ONLY=1 bash "$HYGIENE_SCRIPT"
+  FOREGROUND=1 LOG="$LOG" SKIP_NOTIFY=1 DECKS_ONLY=1 bash "$HYGIENE_SCRIPT"
   crater_code=$?
   echo "HYGIENE+CRATER exit ${crater_code} $(date)"
   exit "${crater_code}"
