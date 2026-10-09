@@ -16,7 +16,8 @@
 # thousands of rows need clean_genre). Each stem budget ~3.5–4.5 min/track. FOLLOW=1 adds hours.
 #
 # Log: ~/local_tools/crate/reports/babylon-<utc>.log
-# JSON + Mail.app notify via ix_crate.batch_notify (stems progress utils).
+# Progress: ix_crate babylon (RunLogger + optional HUD); JSON/charts under stems log/
+# and a copy next to the shell log. Mail via notify_complete when the run ends.
 #
 set -euo pipefail
 export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH:-/usr/bin:/bin}"
@@ -81,20 +82,6 @@ BUDGET="${BUDGET:-0}"
 HYGIENE_SCRIPT="${ROOT}/docs/examples/library-hygiene.sh"
 mkdir -p "$REPORTS"
 LOG="${LOG:-${REPORTS}/babylon-$(date -u +%Y%m%dT%H%M%SZ).log}"
-STARTED_AT="$(python3 -c 'import time; print(time.time())')"
-
-notify_babylon() {
-  local status="$1"
-  local summary="${2:-BABYLON ${status}.}"
-  PYTHONPATH=crate python3 -u -m ix_crate.batch_notify \
-    --tool-id ix.crate.babylon \
-    --title BABYLON \
-    --log "$LOG" \
-    --status "$status" \
-    --started-at "$STARTED_AT" \
-    --summary "$summary" \
-    ${BABYLON_NO_NOTIFY:+--no-notify}
-}
 
 print_eta() {
   PYTHONPATH=crate python3 -u <<'PY'
@@ -111,38 +98,6 @@ print(f"ETA (rough): {lo}–{hi} min wall clock")
 PY
 }
 
-run_stemit_batches() {
-  if [[ "${SKIP_STEMIT:-}" == 1 ]]; then
-    echo "SKIP_STEMIT=1 $(date)"
-    return 0
-  fi
-  local batches=()
-  if [[ -n "${STEMIT_BATCHES:-}" ]]; then
-    read -r -a batches <<< "${STEMIT_BATCHES}"
-  elif [[ "${BUDGET:-0}" -gt 0 ]]; then
-    batches=("$BUDGET")
-  else
-    echo "STEMIT=0 (no BUDGET / STEMIT_BATCHES) $(date)"
-    return 0
-  fi
-  open -a Music 2>/dev/null || true
-  local total=0
-  for n in "${batches[@]}"; do
-    total=$((total + n))
-  done
-  echo "STEMIT batches (${#batches[@]} runs, ${total} tracks max) $(date)"
-  local i=0
-  for n in "${batches[@]}"; do
-    i=$((i + 1))
-    echo "STEMIT batch ${i}/${#batches[@]} budget=${n} $(date)"
-    set +e
-    nice -n 10 python3 -u -m ix_crate stemit-chain --execute --budget "$n"
-    local code=$?
-    set -e
-    echo "STEMIT batch ${i} exit ${code} $(date)"
-  done
-}
-
 if [[ "${PREFLIGHT:-}" == 1 ]]; then
   export PYTHONPATH=crate
   cd "$ROOT"
@@ -156,7 +111,9 @@ if [[ "${FOREGROUND:-}" != 1 ]]; then
     exit 1
   fi
   maybe_force_quit_decks
-  export ROOT LOG REPORTS BUDGET SKIP_STEMIT SKIP_HYGIENE FOLLOW STEMIT_BATCHES STARTED_AT BABYLON_NO_NOTIFY BABYLON_FORCE BABYLON_FORCE_QUIT_DONE
+  export ROOT LOG REPORTS BUDGET SKIP_STEMIT SKIP_HYGIENE SKIP_CRATER FOLLOW STEMIT_BATCHES BABYLON_NO_NOTIFY BABYLON_FORCE BABYLON_FORCE_QUIT_DONE
+  # Detached runs skip Tk (system python3 often lacks _tkinter); use FOREGROUND=1 for HUD.
+  export BABYLON_NO_GUI="${BABYLON_NO_GUI:-1}"
   python3 -c '
 import os, sys
 log, script = sys.argv[1], sys.argv[2]
@@ -182,47 +139,18 @@ fi
 
 cd "$ROOT"
 export PYTHONPATH=crate
-trap 'notify_babylon fail "BABYLON failed — see log."; exit 1' ERR
 
 echo "BABYLON start $(date)  log=$LOG"
 print_eta
-echo "Mixed In Key: quit optional (CRATER reads mikdb read-only). Quit Rekordbox + Traktor before deck writes."
 maybe_force_quit_decks
-echo ""
 
-if [[ "${SKIP_HYGIENE:-}" != 1 ]]; then
-  echo "=== hygiene music phase $(date) ==="
-  FOREGROUND=1 LOG="$LOG" SKIP_NOTIFY=1 MUSIC_ONLY=1 bash "$HYGIENE_SCRIPT"
-fi
-
-run_stemit_batches
-
-if [[ "${SKIP_CRATER:-}" == 1 ]]; then
-  echo "SKIP_CRATER=1; BABYLON done $(date)"
-  notify_babylon ok "BABYLON finished (CRATER skipped)."
-  exit 0
-fi
-
-if [[ "${SKIP_HYGIENE:-}" != 1 ]]; then
-  echo "=== hygiene decks phase + CRATER (MiK, GENRES, samples, remix) $(date) ==="
-  FOREGROUND=1 LOG="$LOG" SKIP_NOTIFY=1 DECKS_ONLY=1 bash "$HYGIENE_SCRIPT"
-else
-  echo "=== CRATER only $(date) ==="
-  for app in rekordbox Traktor; do
-    osascript -e "tell application \"$app\" to quit" 2>/dev/null || true
-  done
-  while pgrep -f 'rekordbox.app/Contents/MacOS' >/dev/null \
-     || pgrep -f 'Traktor.app/Contents/MacOS' >/dev/null; do
-    sleep 15
-  done
-  open -a Music 2>/dev/null || true
-  sleep 5
-  args=(crater --execute)
-  [[ "${FOLLOW:-}" != 1 ]] && args+=(--skip-follow)
-  nice -n 10 python3 -u -m ix_crate "${args[@]}"
-fi
-
-echo ""
-echo "BABYLON done $(date)"
-echo "Reload rekordbox xml (<>). Don't ask again + No on tag overwrite."
-notify_babylon ok "BABYLON finished — hygiene + CRATER (MiK mashups/playlists)."
+args=(babylon --execute --log "$LOG" --budget "$BUDGET")
+[[ "${SKIP_HYGIENE:-}" == 1 ]] && args+=(--skip-hygiene)
+[[ "${SKIP_CRATER:-}" == 1 ]] && args+=(--skip-crater)
+[[ "${SKIP_STEMIT:-}" == 1 ]] && args+=(--skip-stemit)
+[[ "${FOLLOW:-}" == 1 ]] && args+=(--follow)
+[[ -n "${STEMIT_BATCHES:-}" ]] && args+=(--stemit-batches "$STEMIT_BATCHES")
+[[ "${BABYLON_NO_NOTIFY:-}" == 1 ]] && args+=(--no-notify)
+[[ "${BABYLON_NO_GUI:-}" == 1 ]] && args+=(--no-gui)
+nice -n 10 python3 -u -m ix_crate "${args[@]}"
+exit $?

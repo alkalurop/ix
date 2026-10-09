@@ -99,6 +99,7 @@ cd ~/github/ixamal/ix
 PYTHONPATH=crate python3 -m ix_crate music-cull          # dry-run
 PYTHONPATH=crate python3 -m ix_crate music-cull --execute
 docs/examples/library-hygiene.sh                         # EDM + xml-prune + CRATER (detached)
+docs/examples/babylon.sh                                 # hygiene + CRATER (BUDGET=0); RunLogger phases
 HYGIENE=1 BUDGET=100 docs/examples/stemit-crater.sh      # hygiene, then stems, then CRATER
 ```
 

@@ -55,7 +55,7 @@ docs/examples/library-hygiene.sh
 docs/examples/stemit-crater.sh
 ```
 
-**CRATER** is the daily celestial crate pass (`docs/crate.md`). **Library hygiene** (`docs/examples/library-hygiene.sh`) runs `music-reconcile`, `music-repair`, `music-genre`, `music-genre --xml`, `xml-prune`, then CRATER — use `HYGIENE=1` on `stemit-crater.sh` to chain before STEMIT. **mixed-in-crate** mirrors Mixed In Key user playlists into `MIXED IN KEY` (included in CRATER).
+**CRATER** is the daily celestial crate pass (`docs/crate.md`). **BABYLON** (`docs/examples/babylon.sh` → `ix_crate babylon --execute`) is hygiene + optional STEMIT batches + CRATER with stems **RunLogger** (phase JSON under `stems/log/`, copy beside `babylon-*.log`). **Library hygiene** (`docs/examples/library-hygiene.sh`) runs the same music/decks steps without the orchestrated progress wrapper — use `HYGIENE=1` on `stemit-crater.sh` to chain before STEMIT. **mixed-in-crate** mirrors Mixed In Key user playlists into `MIXED IN KEY` (included in CRATER); Rekordbox still needs **`<>`** on the xml crate after writes.
 
 Leftovers after lookup go to `Compilations/Mashups/Miscellaneous/`. Dry-run is the default; pass `--execute` to move.
 

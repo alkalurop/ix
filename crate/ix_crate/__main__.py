@@ -106,6 +106,14 @@ def main(argv: list[str] | None = None) -> int:
         from ix_crate.mixed_in_crate import main as mixed_in_main
 
         return mixed_in_main(argv[1:])
+    if argv and argv[0] == "babylon":
+        from ix_crate.babylon import main as babylon_main
+
+        return babylon_main(argv[1:])
+    if argv and argv[0] == "batch-notify":
+        from ix_crate.batch_notify import main as batch_notify_main
+
+        return batch_notify_main(argv[1:])
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
