@@ -10,6 +10,7 @@
 #   FOLLOW=1 docs/examples/babylon.sh                        # MusicBrainz + Shazam (hours)
 #   SKIP_HYGIENE=1 docs/examples/babylon.sh                # CRATER only (still quits decks)
 #   PREFLIGHT=1 docs/examples/babylon.sh                     # counts; decks may stay open
+#   docs/examples/babylon.sh --force                         # confirm, then quit Rekordbox + Traktor
 #
 # Time (rough): STEMIT=0 hygiene + CRATER ~20–45 min (music-genre can run 1–2 h if
 # thousands of rows need clean_genre). Each stem budget ~3.5–4.5 min/track. FOLLOW=1 adds hours.
@@ -19,6 +20,60 @@
 #
 set -euo pipefail
 export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH:-/usr/bin:/bin}"
+
+BABYLON_FORCE=0
+for arg in "$@"; do
+  case "$arg" in
+    --force) BABYLON_FORCE=1 ;;
+    -h|--help)
+      sed -n '2,19p' "$0" | sed 's/^# \?//'
+      exit 0
+      ;;
+  esac
+done
+export BABYLON_FORCE
+
+babylon_confirm_quit_decks() {
+  echo ""
+  echo "BABYLON --force: will ask Rekordbox and Traktor to quit (AppleScript quit, never force-kill)."
+  echo "If a save or unsaved-set dialog appears, click through in those apps."
+  local ans=""
+  if [[ -t 0 ]]; then
+    read -r -p "Quit Rekordbox and Traktor now? [y/N] " ans
+  elif [[ -r /dev/tty ]]; then
+    read -r -p "Quit Rekordbox and Traktor now? [y/N] " ans </dev/tty
+  else
+    echo "No TTY for confirmation; use FOREGROUND=1 in a terminal or quit decks manually." >&2
+    exit 1
+  fi
+  case "$ans" in
+    [yY]|[yY][eE][sS]) ;;
+    *)
+      echo "Aborted (--force requires yes)."
+      exit 1
+      ;;
+  esac
+}
+
+babylon_quit_decks() {
+  echo "Quitting Traktor and Rekordbox. If a dialog is up, click through. $(date)"
+  for app in rekordbox Traktor; do
+    osascript -e "tell application \"$app\" to quit" 2>/dev/null || true
+  done
+  while pgrep -f 'rekordbox.app/Contents/MacOS' >/dev/null \
+     || pgrep -f 'Traktor.app/Contents/MacOS' >/dev/null; do
+    sleep 15
+  done
+  echo "decks closed $(date)"
+  export BABYLON_FORCE_QUIT_DONE=1
+}
+
+maybe_force_quit_decks() {
+  [[ "${BABYLON_FORCE:-}" == 1 ]] || return 0
+  [[ "${BABYLON_FORCE_QUIT_DONE:-}" == 1 ]] && return 0
+  babylon_confirm_quit_decks
+  babylon_quit_decks
+}
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 REPORTS="${HOME}/local_tools/crate/reports"
@@ -100,7 +155,8 @@ if [[ "${FOREGROUND:-}" != 1 ]]; then
     echo "STEMIT factory already running (py.exec.separate). Stop it first." >&2
     exit 1
   fi
-  export ROOT LOG REPORTS BUDGET SKIP_STEMIT SKIP_HYGIENE FOLLOW STEMIT_BATCHES STARTED_AT BABYLON_NO_NOTIFY
+  maybe_force_quit_decks
+  export ROOT LOG REPORTS BUDGET SKIP_STEMIT SKIP_HYGIENE FOLLOW STEMIT_BATCHES STARTED_AT BABYLON_NO_NOTIFY BABYLON_FORCE BABYLON_FORCE_QUIT_DONE
   python3 -c '
 import os, sys
 log, script = sys.argv[1], sys.argv[2]
@@ -131,6 +187,7 @@ trap 'notify_babylon fail "BABYLON failed — see log."; exit 1' ERR
 echo "BABYLON start $(date)  log=$LOG"
 print_eta
 echo "Mixed In Key: quit optional (CRATER reads mikdb read-only). Quit Rekordbox + Traktor before deck writes."
+maybe_force_quit_decks
 echo ""
 
 if [[ "${SKIP_HYGIENE:-}" != 1 ]]; then
