@@ -106,6 +106,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--skip-stemit", action="store_true")
     parser.add_argument("--follow", action="store_true", help="CRATER runs MusicBrainz + Shazam.")
     parser.add_argument(
+        "--confirm-deck-quit",
+        action="store_true",
+        help="Prompt [y/N] before AppleScript-quitting Rekordbox/Traktor (default: quit when running).",
+    )
+    parser.add_argument(
         "--log",
         type=Path,
         default=None,

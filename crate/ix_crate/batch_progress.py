@@ -198,6 +198,12 @@ def build_babylon_phases(
     return phases
 
 
+def decks_running() -> bool:
+    from ix_crate.deck_quit import decks_running as _running
+
+    return _running()
+
+
 def open_music() -> None:
     subprocess.run(
         ["open", "-a", "Music"],
@@ -208,29 +214,9 @@ def open_music() -> None:
 
 
 def quit_decks() -> None:
-    print("Quitting Traktor and Rekordbox. If a dialog is up, click through.", flush=True)
-    for app in ("rekordbox", "Traktor"):
-        subprocess.run(
-            ["osascript", "-e", f'tell application "{app}" to quit'],
-            check=False,
-            capture_output=True,
-            timeout=30,
-        )
-    while True:
-        rb = subprocess.run(
-            ["pgrep", "-f", "rekordbox.app/Contents/MacOS"],
-            capture_output=True,
-            text=True,
-        )
-        tr = subprocess.run(
-            ["pgrep", "-f", "Traktor.app/Contents/MacOS"],
-            capture_output=True,
-            text=True,
-        )
-        if rb.returncode != 0 and tr.returncode != 0:
-            break
-        time.sleep(15)
-    print("decks closed", flush=True)
+    from ix_crate.deck_quit import quit_decks as _quit
+
+    _quit()
 
 
 def run_with_runlog(
@@ -274,7 +260,11 @@ def run_with_runlog(
             if spec.name == "quit-decks":
                 t0 = time.perf_counter()
                 print("\n=== phase quit-decks ===", flush=True)
-                quit_decks()
+                from ix_crate.deck_quit import ensure_decks_closed
+
+                ensure_decks_closed(
+                    confirm=bool(getattr(log_args, "confirm_deck_quit", False)),
+                )
                 append_phase(logger, spec.name, wall_s=time.perf_counter() - t0, result="pass")
                 continue
             if spec.name.startswith("stemit-chain"):
