@@ -57,8 +57,15 @@ def quit_decks() -> None:
     print("decks closed", flush=True)
 
 
-def ensure_decks_closed(*, confirm: bool = False) -> None:
+def ensure_decks_closed(
+    *,
+    confirm: bool = False,
+    always_confirm: bool | None = None,
+    skip_prompt: bool | None = None,  # noqa: ARG001 — removed API; ignored
+) -> None:
     """Default: quit nicely when either deck app is running. ``confirm=True`` prompts first."""
+    if always_confirm is not None:
+        confirm = bool(always_confirm)
     if not decks_running():
         return
     if confirm:
