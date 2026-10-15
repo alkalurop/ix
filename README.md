@@ -1,8 +1,10 @@
 # ix
 
-Open-source DJ library tooling — names, folders, playlists, stems, and the boring glue between Apple Music, Traktor, and Rekordbox. **`crate/`** is that work in code. The longer arc is [Alkalurops](https://www.alkalurops.org/about-us): live visuals driven by the music, built locally, Apache core — this repo is the **Ix** side (crate + OSC path toward Unreal / the floor).
+Open-source DJ library tooling — names, folders, playlists, stems, and the boring glue between Apple Music, Traktor, and Rekordbox. **`crate/`** is what ships here today.
 
-Public git: [github.com/ixamal/ix](https://github.com/ixamal/ix) · Mac: `~/github/ixamal/ix` · Monthly mirror: [github.com/alkalurop](https://github.com/alkalurop)
+**Alkalurops** (the wider company) is live generative stage visuals — local edge AI + Unreal compositing, driven by OSC from the decks. Product and market strategy live in Google Docs, not in this README: [`docs/alkalurops-strategy.md`](docs/alkalurops-strategy.md).
+
+Public git: [github.com/ixamal/ix](https://github.com/ixamal/ix) · Mac: `~/github/ixamal/ix` · Mirror: [github.com/alkalurop](https://github.com/alkalurop) · [alkalurops.org](https://www.alkalurops.org)
 
 **Vibe coding.** Cursor for agents. Git commits are David — no bot co-author trailers.
 
@@ -184,6 +186,7 @@ Point Cursor Models at `http://127.0.0.1:11434/v1`. Full steps: `docs/local-setu
 - `docs/examples/traktor-master-class-notes.md` — S8, Maschine, and Rekordbox sampler gestures. Sample-bank drag dies if Traktor or Maschine opens while Rekordbox is already up: quit Maschine, then Traktor, then Rekordbox, and reopen Rekordbox on **DDJ-FLX10**
 - [ixamal/blackhole](https://github.com/ixamal/blackhole) — S8 / S88 / BlackHole routing (off this repo)
 - [ixamal/ix_bangers](https://github.com/ixamal/ix_bangers) — Bangers MCP catalog, dry mode (off this repo)
-- [github.com/alkalurop](https://github.com/alkalurop) — org profile is the main bridge; monthly 15th snapshot of the ixamal repos
+- [github.com/alkalurop](https://github.com/alkalurop) — monthly mirror of ixamal repos; org profile links strategy docs
+- `docs/alkalurops-strategy.md` — pointers to Alkalurops Google Docs (source of truth for platform copy)
 
 Apache-2.0. See `LICENSE`.
