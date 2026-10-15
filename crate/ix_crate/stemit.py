@@ -199,12 +199,14 @@ def factory_env() -> dict[str, str]:
     return env
 
 
-def run_factory(queue: Path, *, execute: bool) -> int:
+def run_factory(queue: Path, *, execute: bool, gui: bool = True) -> int:
     python = factory_python()
     env = factory_env()
     cmd = [str(python), "-m", "py.exec.separate", "--path", str(queue)]
     if execute:
         cmd.append("--execute")
+    if execute and not gui:
+        cmd.extend(["--no-gui", "--no-notify"])
     print("factory", " ".join(cmd), flush=True)
     completed = subprocess.run(cmd, cwd=STEMS_REPO, env=env, check=False)
     return completed.returncode

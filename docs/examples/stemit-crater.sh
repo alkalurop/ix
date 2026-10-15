@@ -105,10 +105,11 @@ if [[ "${HYGIENE:-}" == 1 ]]; then
 fi
 
 echo "Quitting Traktor and Rekordbox. If a dialog is up, click through. $(date)"
-for app in rekordbox Traktor; do
+for app in rekordbox "Traktor Pro 4" "Traktor Pro 3" Traktor; do
   osascript -e "tell application \"$app\" to quit" 2>/dev/null || true
 done
 while pgrep -f 'rekordbox.app/Contents/MacOS' >/dev/null \
+   || pgrep -f 'Traktor Pro [0-9].app/Contents/MacOS' >/dev/null \
    || pgrep -f 'Traktor.app/Contents/MacOS' >/dev/null; do
   sleep 15
 done

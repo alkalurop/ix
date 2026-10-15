@@ -47,6 +47,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--start", default="African")
     parser.add_argument("--budget", type=int, default=200)
     parser.add_argument("--execute", action="store_true")
+    parser.add_argument(
+        "--no-gui",
+        action="store_true",
+        help="STEM factory in terminal only (BABYLON keeps one HUD).",
+    )
     args = parser.parse_args(argv)
 
     try:
@@ -118,7 +123,7 @@ def main(argv: list[str] | None = None) -> int:
         encoding="utf-8",
     )
     print(f"linked {payload.get('linked', 0)}  queue {queue}", flush=True)
-    return run_factory(queue, execute=True)
+    return run_factory(queue, execute=True, gui=not args.no_gui)
 
 
 if __name__ == "__main__":

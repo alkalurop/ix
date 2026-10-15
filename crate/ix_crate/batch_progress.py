@@ -14,6 +14,8 @@ from typing import Any, Callable
 from ix_crate.stems_path import ensure_stems_path
 
 SCAN_PROGRESS = re.compile(r"(?:scan|library) (\d+)/(\d+)", re.I)
+STEM_OK_PROGRESS = re.compile(r"^ok (\d+)/(\d+)\s", re.I)
+DUMP_PROGRESS = re.compile(r"^dump (\d+)/(\d+)\s", re.I)
 TOOL_ID = "ix.crate.babylon"
 HUD_TITLE = "BABYLON"
 
@@ -73,11 +75,26 @@ def append_phase(
 def _parse_progress_line(line: str, phase: str, panel: Any | None) -> None:
     if panel is None:
         return
-    m = SCAN_PROGRESS.search(line.strip())
-    if not m:
-        return
-    done, total = int(m.group(1)), max(1, int(m.group(2)))
-    panel.set_job(done, total, phase, "scan")
+    stripped = line.strip()
+    for pattern, action in (
+        (SCAN_PROGRESS, "scan"),
+        (STEM_OK_PROGRESS, "stem"),
+        (DUMP_PROGRESS, "dump"),
+    ):
+        m = pattern.search(stripped)
+        if m:
+            done, total = int(m.group(1)), max(1, int(m.group(2)))
+            panel.set_job(done, total, phase, action)
+            return
+    if stripped.startswith("CRATER "):
+        panel.set_job(0, 1, stripped, "crater")
+
+
+def _phase_argv(spec: PhaseSpec, panel: Any | None) -> list[str]:
+    argv = list(spec.argv)
+    if panel is not None and spec.name.startswith("stemit-chain") and "--no-gui" not in argv:
+        argv.append("--no-gui")
+    return argv
 
 
 def run_phase(
@@ -91,9 +108,10 @@ def run_phase(
         panel.set_job(index, total_phases, spec.name, "start")
     print(f"\n=== phase {index}/{total_phases}: {spec.name} ===", flush=True)
     t0 = time.perf_counter()
+    argv = _phase_argv(spec, panel)
     try:
         proc = subprocess.Popen(
-            spec.argv,
+            argv,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
@@ -102,6 +120,8 @@ def run_phase(
         assert proc.stdout is not None
         for line in proc.stdout:
             print(line, end="", flush=True)
+            if panel is not None:
+                panel.write(line)
             _parse_progress_line(line, spec.name, panel)
         code = proc.wait()
     except Exception as exc:
@@ -156,6 +176,9 @@ def build_babylon_phases(
             ]
         )
 
+    if not skip_crater:
+        phases.append(PhaseSpec("quit-decks", []))
+
     if not skip_stemit:
         batches: list[int] = []
         if stemit_batches:
@@ -175,7 +198,6 @@ def build_babylon_phases(
         return phases
 
     if not skip_hygiene:
-        phases.append(PhaseSpec("quit-decks", []))
         phases.extend(
             [
                 PhaseSpec(
@@ -188,8 +210,6 @@ def build_babylon_phases(
                 ),
             ]
         )
-    else:
-        phases.append(PhaseSpec("quit-decks", []))
 
     crater = ix_argv("crater", "--execute")
     if not follow:
@@ -251,25 +271,37 @@ def run_with_runlog(
     )
     if panel is not None:
         panel.set_totals(len(phases), len(phases))
+        if hasattr(panel, "set_phase_plan"):
+            panel.set_phase_plan([p.name for p in phases])
+            for n in range(1, len(phases) + 1):
+                panel.set_phase_state(n, "pending")
 
     def work() -> int:
         failed = False
         for i, spec in enumerate(phases, start=1):
             if on_phase:
                 on_phase(spec)
+            if panel is not None and hasattr(panel, "set_phase_state"):
+                panel.set_phase_state(i, "running")
             if spec.name == "quit-decks":
                 t0 = time.perf_counter()
                 print("\n=== phase quit-decks ===", flush=True)
+                if panel is not None:
+                    panel.set_job(i, len(phases), spec.name, "quit")
                 from ix_crate.deck_quit import ensure_decks_closed
 
                 ensure_decks_closed(
                     confirm=bool(getattr(log_args, "confirm_deck_quit", False)),
                 )
                 append_phase(logger, spec.name, wall_s=time.perf_counter() - t0, result="pass")
+                if panel is not None and hasattr(panel, "set_phase_state"):
+                    panel.set_phase_state(i, "done")
                 continue
             if spec.name.startswith("stemit-chain"):
                 open_music()
             code = run_phase(logger, panel, i, len(phases), spec)
+            if panel is not None and hasattr(panel, "set_phase_state"):
+                panel.set_phase_state(i, "fail" if code != 0 and not spec.allow_fail else "done")
             if code != 0 and not spec.allow_fail:
                 failed = True
                 break

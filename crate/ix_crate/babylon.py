@@ -39,7 +39,8 @@ def run(args: argparse.Namespace) -> int:
 
     print(f"ETA (rough): {lo}–{hi} min wall clock", flush=True)
     print(
-        "Mixed In Key may stay open. Rekordbox + Traktor must quit before deck writes.",
+        "Mixed In Key may stay open. After hygiene, BABYLON AppleScript-quits "
+        "Rekordbox + Traktor (before STEMIT/CRATER deck writes).",
         flush=True,
     )
 

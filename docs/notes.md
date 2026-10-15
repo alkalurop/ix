@@ -2,7 +2,7 @@
 
 Parking lot for crate, tagging, and hardware ideas. Ordered checklist: `docs/TODO.md`. Agents: read both, then stop unless David asks to act. Off-repo tools and library paths stay off git.
 
-Last update: 2026-09-24. **Rock STEMIT done** (~**23%** of `MUSIC/GENRES` converted). **CRATER** daily crate pass. **16ch Channel D + 11a live.** A/B/C sample into Maschine → S88 → D. **11b parked** (FLX10 native). **13 on hold** (S8 pads). **Next: Floor 10** ([issue #9](https://github.com/ixamal/ix/issues/9)). Hardware leftover: **40**. 2ch rollback: `~/Music/blackhole_2ch/`. Alkalurop bridge: publish this tip (Rock + CRATER). Open queue: [ixamal/ix milestones](https://github.com/ixamal/ix/milestones?state=all) (`docs/tracker.md`). `favorites` / CRATER still recording (TODO 41); reviews **2026-09-16** / **2026-10-09**. Toolkit: README. How/why: `docs/crate.md`.
+Last update: 2026-10-15 (alkalurop mirror + DJ-facing README intros). Prior: 2026-10-11 sample-bank drop; 2026-09-24 Rock STEMIT. **Rock STEMIT done** (~**23%** of `MUSIC/GENRES` converted). **CRATER** daily crate pass. **16ch Channel D + 11a live.** A/B/C sample into Maschine → S88 → D. **11b parked** (FLX10 native). **13 on hold** (S8 pads). **Next: Floor 10** ([issue #9](https://github.com/ixamal/ix/issues/9)). Hardware leftover: **40**. 2ch rollback: `~/Music/blackhole_2ch/`. Alkalurop bridge: publish this tip (Rock + CRATER). Open queue: [ixamal/ix milestones](https://github.com/ixamal/ix/milestones?state=all) (`docs/tracker.md`). `favorites` / CRATER still recording (TODO 41); reviews **2026-09-16** / **2026-10-09**. Toolkit: README. How/why: `docs/crate.md`.
 
 ## Alkalurop org bridge (2026-09-15)
 
@@ -41,6 +41,18 @@ First mirror of then-current ixamal `main` (2026-09-15):
 | [blackhole](https://github.com/alkalurop/blackhole) | `29a5bc0` |
 | [ix_bangers](https://github.com/alkalurop/ix_bangers) | up-to-date |
 | [music_migration](https://github.com/alkalurop/music_migration) | up-to-date |
+
+**2026-10-15 publish.** BABYLON deck quit (Traktor Pro 4), phase HUD rail, Apache on `music_migration`, DJ-facing README intros on all public ixamal repos. Mirrored ixamal `main` → [alkalurop](https://github.com/alkalurop) via `docs/examples/alkalurop-bridge.sh`. Issues/milestones stay on ixamal only.
+
+| alkalurop | 2026-10-15 `main` |
+| --- | --- |
+| [ix](https://github.com/alkalurop/ix) | see `git log -1` on ixamal after bridge |
+| [stems](https://github.com/alkalurop/stems) | same |
+| [blackhole](https://github.com/alkalurop/blackhole) | same |
+| [ix_bangers](https://github.com/alkalurop/ix_bangers) | same |
+| [music_migration](https://github.com/alkalurop/music_migration) | same |
+| [grid](https://github.com/alkalurop/grid) | same |
+| [stage](https://github.com/alkalurop/stage) | same |
 
 ## Crate status
 
@@ -252,6 +264,10 @@ Prefs were already the live rig (Traktor `Traktor S8 + BlackHole`, D = In 10/11,
 This is the working rig. Archive (off git): `~/Music/blackhole_16ch_2026-09-23_1311/`. Traktor, Maschine, and Rekordbox were open. On-disk TSI already says **Traktor S8 + BlackHole**. Maschine plist already says **BlackHole 16ch**.
 
 Traktor: 48 kHz, buffer 512, Internal, master **1/2**, phones **3/4**, record **7/8**, Deck D **In 10/In 11**. Maschine: Out 1 = **Out 0/Out 1**, In 1 off, In 2 = **In 2/In 3**, In 3 = **In 4/In 5**. Rekordbox: native **DDJ-FLX10**, 44.1 kHz, PC MASTER OUT off, master and phones on the FLX10, booth empty. One FLX10 was in Core Audio. Mac default output was External Headphones. Channel 2 **LINE** is still the S8 RCA. Boot: **S8 → S88 → Traktor → Maschine**.
+
+## Sampler drop after Traktor + Maschine (2026-10-11)
+
+Opening Traktor and Maschine while Rekordbox was already up restarted Core Audio. The deck kept playing. Dragging a blue CAPTURE loop onto the sample bank did nothing. Quit **Maschine**, then **Traktor**, then **Rekordbox**, then open Rekordbox again. **Preferences → Audio** stayed native **DDJ-FLX10**. The drop worked. Do not retarget Rekordbox at BlackHole. A full bank still ignores a drop while **Do not overwrite the loaded Slot** is on — **ERASE** a pad first. If the quit order does not restore the drop, reboot (same class as the 2026-09-23 silence). Procedure: `docs/examples/traktor-master-class-notes.md`. Also noted in [ixamal/blackhole](https://github.com/ixamal/blackhole) `docs/RUNBOOK.md`.
 
 ## MCP bridges live (2026-09-30)
 

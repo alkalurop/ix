@@ -1,5 +1,7 @@
 # ix
 
+**If you DJ:** this is the command center for a crate that has to work on a Saturday night — same track, same folder in Apple Music, Traktor, and Rekordbox, playlists that reload instead of breaking, and optional stem files when you want four-deck Traktor sets. It exists because years of iTunes tags, USB crates, and one big drive migration left thousands of misnamed files and ghost playlists; fixing that by hand does not scale.
+
 Primary planetary code base for machines and humans. This is Valhalla: Cursor, a local Ollama oracle, Unreal Engine 5, DCC, DAW, and DJ tools meet here. The destination is **Elysium**.
 
 Public git: [github.com/ixamal/ix](https://github.com/ixamal/ix)
@@ -181,6 +183,7 @@ Point Cursor Models at `http://127.0.0.1:11434/v1`. Full steps: `docs/local-setu
 - `docs/TODO.md` — ordered checklist (crate, tagging, Floor, NI); links to GitHub issues
 - `docs/tracker.md` — ixamal Issues + milestones (alkalurop gets the git docs only)
 - `docs/notes.md` — crate / tagging / hardware parking lot (do not execute from it)
+- `docs/examples/traktor-master-class-notes.md` — S8, Maschine, and Rekordbox sampler gestures. Sample-bank drag dies if Traktor or Maschine opens while Rekordbox is already up: quit Maschine, then Traktor, then Rekordbox, and reopen Rekordbox on **DDJ-FLX10**
 - [ixamal/blackhole](https://github.com/ixamal/blackhole) — S8 / S88 / BlackHole routing (off this repo)
 - [ixamal/ix_bangers](https://github.com/ixamal/ix_bangers) — Bangers MCP catalog, dry mode (off this repo)
 - [github.com/alkalurop](https://github.com/alkalurop) — org profile is the main bridge; monthly 15th snapshot of the ixamal repos

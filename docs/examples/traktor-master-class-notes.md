@@ -2,7 +2,7 @@
 
 David · Traktor Pro 4.5.x · Kontrol S8 · DDJ-FLX10 · BlackHole 16ch rig (`ix` / [blackhole](https://github.com/ixamal/blackhole))
 
-Last updated: 2026-10-04 (Cursor session — Rekordbox sampler → disk, ix SAMPLES crates, metadata)
+Last updated: 2026-10-11 (Rekordbox sample-bank drop dies if Traktor or Maschine open while Rekordbox is already up)
 
 ---
 
@@ -12,6 +12,7 @@ Last updated: 2026-10-04 (Cursor session — Rekordbox sampler → disk, ix SAMP
 - **BlackHole 16ch** = internal bus so **Maschine + KK S88** can land on **Channel D only** without stealing A/B/C (proven 2026-09-19). Details: `blackhole/docs/RUNBOOK.md`.
 - **Remix decks** = live sample grids (64 cells) for loops/one-shots; **capture** from track decks or Loop Recorder — not a substitute for the STEMIT factory or Apple Music writes.
 - **S8 hardware** = primary performance surface; some F1-only gestures (delete mode) are **not** on factory S8 mapping.
+- **Rekordbox sample bank** stops taking a drop if Traktor or Maschine is launched while Rekordbox is already open. Quit **Maschine → Traktor → Rekordbox**, then open Rekordbox on native **DDJ-FLX10**. Detail in the sampler section below.
 
 ---
 
@@ -177,6 +178,10 @@ Rekordbox keeps **three different things**. Confusing them is why War Pig showed
 Rekordbox then adds a collection row **`…_capture`**, lists it under **Sampler → Capture** in the tree, and writes WAVs to **`~/Music/PioneerDJ/Sampler/Capture`** (rekordbox 7 manual: *“stored at [Capture] in [Sampler] of [Media Browser]”*).
 
 **Preferences → Controller → Sampler → SLOT:** if **Do not overwrite the loaded Slot** is on, use **empty** slots or turn it off before drag.
+
+**Proved 2026-10-11:** Opening Traktor and Maschine while Rekordbox is already running restarts Core Audio. The deck can keep playing, and the sample bank still refuses the drop. Those apps do not own the pads. Traktor stays on **Traktor S8 + BlackHole**, Maschine on **BlackHole 16ch**, Rekordbox on native **DDJ-FLX10**.
+
+**Repair:** quit **Maschine**, then **Traktor**, then **Rekordbox**. Open Rekordbox again. **Preferences → Audio** must still say **DDJ-FLX10**. Then drag the blue loop onto an empty slot. A loaded slot still ignores the drop while overwrite protection is on — **ERASE** a pad first. If that quit order does not bring the drop back, reboot (same class as the 2026-09-23 aggregate silence). Do not point Rekordbox at BlackHole to fix it.
 
 **After disk write:** quit Rekordbox + Traktor → `docs/examples/rekordbox-sample-crate.sh --execute` → reload xml (`<>`), **Don't ask again** + **No** on tag overwrite.
 
