@@ -1,6 +1,6 @@
 # ix
 
-Home base for my DJ crate scripts plus the side quest (Unreal fluids, OSC, local LLM on loopback). The DJ part is **`crate/`** — fix names, genres, playlists, and kick off stems. The rest is rehearsal for visuals that follow the music.
+Open-source DJ library tooling — names, folders, playlists, stems, and the boring glue between Apple Music, Traktor, and Rekordbox. **`crate/`** is that work in code. The longer arc is [Alkalurops](https://www.alkalurops.org/about-us): live visuals driven by the music, built locally, Apache core — this repo is the **Ix** side (crate + OSC path toward Unreal / the floor).
 
 Public git: [github.com/ixamal/ix](https://github.com/ixamal/ix) · Mac: `~/github/ixamal/ix` · Monthly mirror: [github.com/alkalurop](https://github.com/alkalurop)
 
