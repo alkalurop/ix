@@ -46,7 +46,7 @@ First mirror of then-current ixamal `main` (2026-09-15):
 
 | alkalurop | 2026-10-15 `main` |
 | --- | --- |
-| [ix](https://github.com/alkalurop/ix) | `25d074d` |
+| [ix](https://github.com/alkalurop/ix) | `8456d09` |
 | [stems](https://github.com/alkalurop/stems) | `255a79d` |
 | [blackhole](https://github.com/alkalurop/blackhole) | `71a2a6e` |
 | [ix_bangers](https://github.com/alkalurop/ix_bangers) | `e72b0c0` |
