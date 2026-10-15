@@ -2,9 +2,9 @@
 
 Open-source DJ library tooling — names, folders, playlists, stems, and the boring glue between Apple Music, Traktor, and Rekordbox. **`crate/`** is what ships here today.
 
-**Alkalurops** (the wider company) is live generative stage visuals — local edge AI + Unreal compositing, driven by OSC from the decks. Product and market strategy live in Google Docs, not in this README: [`docs/alkalurops-strategy.md`](docs/alkalurops-strategy.md).
+**Alkalurops** is the wider live-visual direction; **`crate/`** is what we ship in this repo today. High-level platform summary (no internal strategy links): [github.com/alkalurop](https://github.com/alkalurop) org profile · [alkalurops.org](https://www.alkalurops.org)
 
-Public git: [github.com/ixamal/ix](https://github.com/ixamal/ix) · Mac: `~/github/ixamal/ix` · Mirror: [github.com/alkalurop](https://github.com/alkalurop) · [alkalurops.org](https://www.alkalurops.org)
+Public git: [github.com/ixamal/ix](https://github.com/ixamal/ix) · Mac: `~/github/ixamal/ix`
 
 **Vibe coding.** Cursor for agents. Git commits are David — no bot co-author trailers.
 
@@ -186,7 +186,6 @@ Point Cursor Models at `http://127.0.0.1:11434/v1`. Full steps: `docs/local-setu
 - `docs/examples/traktor-master-class-notes.md` — S8, Maschine, and Rekordbox sampler gestures. Sample-bank drag dies if Traktor or Maschine opens while Rekordbox is already up: quit Maschine, then Traktor, then Rekordbox, and reopen Rekordbox on **DDJ-FLX10**
 - [ixamal/blackhole](https://github.com/ixamal/blackhole) — S8 / S88 / BlackHole routing (off this repo)
 - [ixamal/ix_bangers](https://github.com/ixamal/ix_bangers) — Bangers MCP catalog, dry mode (off this repo)
-- [github.com/alkalurop](https://github.com/alkalurop) — monthly mirror of ixamal repos; org profile links strategy docs
-- `docs/alkalurops-strategy.md` — pointers to Alkalurops Google Docs (source of truth for platform copy)
+- [github.com/alkalurop](https://github.com/alkalurop) — monthly mirror; org profile has public platform summary (internal strategy docs stay private)
 
 Apache-2.0. See `LICENSE`.
