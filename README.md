@@ -1,14 +1,12 @@
 # ix
 
-**If you DJ:** this is the command center for a crate that has to work on a Saturday night — same track, same folder in Apple Music, Traktor, and Rekordbox, playlists that reload instead of breaking, and optional stem files when you want four-deck Traktor sets. It exists because years of iTunes tags, USB crates, and one big drive migration left thousands of misnamed files and ghost playlists; fixing that by hand does not scale.
+Home base for my DJ crate scripts plus the side quest (Unreal fluids, OSC, local LLM on loopback). The DJ part is **`crate/`** — fix names, genres, playlists, and kick off stems. The rest is rehearsal for visuals that follow the music.
 
-Primary planetary code base for machines and humans. This is Valhalla: Cursor, a local Ollama oracle, Unreal Engine 5, DCC, DAW, and DJ tools meet here. The destination is **Elysium**.
+Public git: [github.com/ixamal/ix](https://github.com/ixamal/ix) · Mac: `~/github/ixamal/ix` · Monthly mirror: [github.com/alkalurop](https://github.com/alkalurop)
 
-Public git: [github.com/ixamal/ix](https://github.com/ixamal/ix)
+**Vibe coding.** Cursor for agents. Git commits are David — no bot co-author trailers.
 
-Mac clone path: `~/github/ixamal/ix`
-
-**Vibe coding.** Cursor and Codex only. Git commits are David — no Cursor or Codex co-author trailers.
+Not sure where to start? **DJs:** read **Where we are** below, then `docs/crate.md`. **Devs:** `docs/architecture.md` and `npm run dev`.
 
 ## Where we are
 
