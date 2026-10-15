@@ -46,13 +46,13 @@ First mirror of then-current ixamal `main` (2026-09-15):
 
 | alkalurop | 2026-10-15 `main` |
 | --- | --- |
-| [ix](https://github.com/alkalurop/ix) | see `git log -1` on ixamal after bridge |
-| [stems](https://github.com/alkalurop/stems) | same |
-| [blackhole](https://github.com/alkalurop/blackhole) | same |
-| [ix_bangers](https://github.com/alkalurop/ix_bangers) | same |
-| [music_migration](https://github.com/alkalurop/music_migration) | same |
-| [grid](https://github.com/alkalurop/grid) | same |
-| [stage](https://github.com/alkalurop/stage) | same |
+| [ix](https://github.com/alkalurop/ix) | `25d074d` |
+| [stems](https://github.com/alkalurop/stems) | `255a79d` |
+| [blackhole](https://github.com/alkalurop/blackhole) | `71a2a6e` |
+| [ix_bangers](https://github.com/alkalurop/ix_bangers) | `e72b0c0` |
+| [music_migration](https://github.com/alkalurop/music_migration) | `5a7ecde` |
+| [grid](https://github.com/alkalurop/grid) | `9f53645` |
+| [stage](https://github.com/alkalurop/stage) | `6ea0ae9` |
 
 ## Crate status
 
