@@ -1,0 +1,47 @@
+---
+description: Alkalurops & ixamal copy — tone, ecosystem truth, README layout
+alwaysApply: true
+---
+
+# Alkalurops copy & README
+
+Full guidelines: David's personal agent store `alkalurops-copy-guidelines.md`.
+
+## Frozen
+
+Do **not** edit **alkalurop/.github** `profile/README.md` unless David asks (Gemini org profile, Oct 2026).
+
+## Voice
+
+- Practitioner / system architect: direct, grounded, specs over hype.
+- No corporate fluff, no slang that undermines professionalism.
+- Booth constraints first: local latency, single-laptop rigs, no audio dropouts, loopback OSC (`127.0.0.1`).
+- **Resolume, TouchDesigner, VDMX:** respect; Alkalurops **integrates** (Syphon/Spout/NDI), does not claim to replace them.
+
+## Dual audience (tooling READMEs)
+
+For each repo/feature when describing outward-facing copy:
+
+- **For Performers** — set prep, crates, stems, beatgrids, live visuals.
+- **For Developers** — stack, licenses, OSC/ANLZ/NML, Python/Rust boundaries.
+
+## Ecosystem truth (per-repo READMEs)
+
+| Repo | Say this, not fiction |
+| --- | --- |
+| **ix** | `crate/` + `runtime/` inside ix — CRATER, BABYLON, `ix_crate`, `ix_runtime` |
+| **stems** | Batch stem factory (Mel, `.stem.m4a`) |
+| **blackhole** | 16ch routing + S8/S88/Maschine runbooks |
+| **ix_bangers** | MCP catalog / peak-time index |
+| **grid** | GPL beatgrid engine (Rekordbox ANLZ, Traktor NML) |
+| **Alkalurops** | Local ComfyUI + UE5 + OSC/MIDI; Apache open core |
+
+Org profile may be aspirational; **repo docs must match git.**
+
+## README layout (when writing new or major rewrites)
+
+Value prop → industry context → features → comparison table → ASCII architecture → ecosystem repos (dual audience) → licensing → phased roadmap.
+
+## Security (copy in git)
+
+No private strategy doc URLs, no `.env`, no `~/.cursor/mcp.json`, no absolute home paths for adapters.
