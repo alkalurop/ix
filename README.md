@@ -6,8 +6,6 @@ Open-source DJ library tooling — names, folders, playlists, stems, and the bor
 
 Public git: [github.com/ixamal/ix](https://github.com/ixamal/ix) · Mac: `~/github/ixamal/ix`
 
-**Vibe coding.** Cursor for agents. Git commits are David — no bot co-author trailers.
-
 Not sure where to start? **DJs:** read **Where we are** below, then `docs/crate.md`. **Devs:** `docs/architecture.md` and `npm run dev`.
 
 ## Where we are
