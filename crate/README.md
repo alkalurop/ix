@@ -51,6 +51,9 @@ PYTHONPATH=crate python3 -m ix_crate crater
 PYTHONPATH=crate python3 -m ix_crate crater --execute
 PYTHONPATH=crate python3 -m ix_crate mixed-in-crate
 PYTHONPATH=crate python3 -m ix_crate mixed-in-crate --execute
+PYTHONPATH=crate python3 -m ix_crate dj-set-remaster-release --path ~/path/to/REC.aiff
+PYTHONPATH=crate python3 -m ix_crate dj-set-remaster-release --path ~/REC.aiff --compare-presets --waveforms --execute
+PYTHONPATH=crate python3 -m ix_crate dj-set-remaster-release --path ~/REC.aiff --preset standard_plus --dest ~/REC_remastered.wav --execute
 docs/examples/library-hygiene.sh
 docs/examples/stemit-crater.sh
 ```
@@ -69,7 +72,9 @@ Leftovers after lookup go to `Compilations/Mashups/Miscellaneous/`. Dry-run is t
 
 `music-playlist` refills a Music.app playlist from `~/Downloads` filenames (Beatport ids + `Artist - Title`). Matches existing Songs rows. Does not copy Downloads in. After a reorg empties a playlist, run this instead of dragging files again.
 
-`crates` copies playlist **membership** between Music.app, Traktor NML, and `rekordbox.xml`. It does not rewrite cues, energy, comments, or beatgrids. Match by file path or hardlink. Missing files that exist on disk get a Location row so empty crates (DJ Sets) fill; skip `.m4p`. Unmatched missing/DRM stay skipped. Music → xml lands under `MUSIC/`; NML → xml under `TRAKTOR/`. STEMIT stays `stemit --genres`. Cues on new tracks: DJCU2 / in-app Analyze. Quit Rekordbox for `--to xml`. Dry-run default.
+`dj-set-remaster-release` remasters DJ set recordings for listening (loudnorm, optional preset compare, dry/wet blend, peak ceiling). See `docs/crate.md`.
+
+`crates` copies playlist **membership** between Music.app, Traktor NML, and `rekordbox.xml`. It does not rewrite cues, energy, comments, or beatgrids. Match by file path or hardlink. Missing files that exist on disk get a Location row so empty crates (DJ Sets) fill; skip `.m4p`. Unmatched missing/DRM stay skipped. Music → xml lands under `MUSIC/`; NML → xml under `TRAKTOR/`. STEMIT stays `stemit --genres`. Cues on new tracks: in-app Analyze. Quit Rekordbox for `--to xml`. Dry-run default.
 
 `favorites` records Traktor + Rekordbox plays (genre/BPM/energy/vibe) into local `configs/favorites.json` (gitignored) and compact `play-patterns.json` for the local LLM. `Played` is the 100 most recent. `--playlists` writes `Not Played But Should` (neglected / random / favorites). `--snapshot` is the quarterly git copy. Dry-run default.
 

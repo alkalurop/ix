@@ -114,6 +114,10 @@ def main(argv: list[str] | None = None) -> int:
         from ix_crate.batch_notify import main as batch_notify_main
 
         return batch_notify_main(argv[1:])
+    if argv and argv[0] == "dj-set-remaster-release":
+        from ix_crate.dj_set_remaster_release import main as dj_set_remaster_main
+
+        return dj_set_remaster_main(argv[1:])
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
