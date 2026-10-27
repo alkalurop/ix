@@ -94,6 +94,34 @@ def base_title(title: str) -> str:
     return " ".join(words).strip()
 
 
+def library_genre_by_path(path: Path | None = None) -> dict[Path, str]:
+    """Resolved audio path → cleaned genre from Share iTunes Library XML."""
+    library = path or itunes_library_xml()
+    if not library.is_file():
+        return {}
+    with library.open("rb") as handle:
+        payload = plistlib.load(handle)
+    tracks = payload.get("Tracks") or {}
+    rows = tracks.values() if isinstance(tracks, dict) else tracks
+    out: dict[Path, str] = {}
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        genre = clean_genre(str(row.get("Genre") or ""))
+        if not genre:
+            continue
+        location = parse_rb_location(str(row.get("Location") or ""))
+        if location is None:
+            continue
+        try:
+            resolved = location.resolve()
+        except OSError:
+            resolved = location
+        if resolved not in out:
+            out[resolved] = genre
+    return out
+
+
 def load_library(path: Path | None = None) -> list[LibraryTrack]:
     """Every Apple Music row that has a genre. ``path`` is set when the file is here."""
     library = path or itunes_library_xml()

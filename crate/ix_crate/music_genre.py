@@ -23,10 +23,11 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from .crates import parse_rb_location
 from .music_dupes import _run_osascript, count_file_tracks
 from .music_repair import RIFF_NO_ID3, _quote_as
 from .paths import REPORTS
-from .stems_playlists import REKORDBOX_XML, rekordbox_is_running
+from .stems_playlists import REKORDBOX_XML, TRAKTOR_NML, rekordbox_is_running
 from .xml_io import write_tree
 
 PREFIX = "EDM,"
@@ -219,8 +220,10 @@ end tell
     return done, skipped
 
 
-def scan_rekordbox_xml(xml: Path | None = None) -> GenrePlan:
-    """TRACK Genre attributes that still need ``clean_genre``."""
+def scan_rekordbox_xml(xml: Path | None = None, *, nml: Path | None = None) -> GenrePlan:
+    """TRACK Genre rows to clean or fill from Traktor / Apple Music library."""
+    from .dj_metadata import _genre_lookup_indexes, genre_for_path
+
     path = xml or REKORDBOX_XML
     plan = GenrePlan()
     if not path.is_file():
@@ -230,45 +233,141 @@ def scan_rekordbox_xml(xml: Path | None = None) -> GenrePlan:
         return plan
     tracks = collection.findall("TRACK")
     plan.scanned = len(tracks)
+    nml_by_path, music_by_path, by_inode = _genre_lookup_indexes(
+        nml=nml or TRAKTOR_NML
+    )
     for index, track in enumerate(tracks, 1):
         old = (track.get("Genre") or "").strip()
-        new = clean_genre(old)
-        if not old or old == new:
+        if old:
+            new = clean_genre(old)
+            if old == new:
+                continue
+            plan.rows.append(
+                GenreRow(
+                    index=index,
+                    persistent_id=track.get("TrackID") or "",
+                    name=track.get("Name") or "",
+                    genre=old,
+                    path=track.get("Location") or "",
+                )
+            )
+            label = f"{old} -> {new}"
+            plan.by_change[label] = plan.by_change.get(label, 0) + 1
+            continue
+        loc = track.get("Location") or ""
+        parsed = parse_rb_location(loc) if loc else None
+        if parsed is None:
+            continue
+        fill = genre_for_path(
+            parsed,
+            nml_by_path=nml_by_path,
+            music_by_path=music_by_path,
+            by_inode=by_inode,
+        )
+        if not fill:
             continue
         plan.rows.append(
             GenreRow(
                 index=index,
                 persistent_id=track.get("TrackID") or "",
                 name=track.get("Name") or "",
-                genre=old,
-                path=track.get("Location") or "",
+                genre="",
+                path=loc,
             )
         )
-        label = f"{old} -> {new}"
+        label = f"(empty) -> {fill}"
         plan.by_change[label] = plan.by_change.get(label, 0) + 1
     return plan
 
 
-def apply_rekordbox_xml(xml: Path | None = None) -> int:
+def apply_rekordbox_xml(xml: Path | None = None, *, nml: Path | None = None) -> tuple[int, int]:
     """Patch TRACK Genre in rekordbox.xml. Other playlists and cues stay."""
+    from .dj_metadata import sync_xml_collection_genres
+
     path = xml or REKORDBOX_XML
     tree = ET.parse(path)
     collection = tree.getroot().find("COLLECTION")
     if collection is None:
-        return 0
-    patched = 0
-    for track in collection.findall("TRACK"):
-        old = (track.get("Genre") or "").strip()
-        new = clean_genre(old)
-        if not old or old == new:
-            continue
-        track.set("Genre", new)
-        patched += 1
-    if patched:
+        return 0, 0
+    filled, cleaned = sync_xml_collection_genres(
+        collection, nml=nml or TRAKTOR_NML
+    )
+    if filled or cleaned:
         backup = path.with_suffix(path.suffix + ".genre.bak")
         shutil.copy2(path, backup)
         write_tree(tree, path)
-    return patched
+    return filled, cleaned
+
+
+def _read_file_genre(path: Path) -> str:
+    suffix = path.suffix.lower()
+    if suffix == ".m4p" or suffix in RIFF_NO_ID3 or not path.is_file():
+        return ""
+    try:
+        from mutagen import File as MutagenFile
+    except ImportError:
+        return ""
+    try:
+        audio = MutagenFile(path, easy=True)
+        if audio is None or not audio.get("genre"):
+            return ""
+        value = audio.get("genre")
+        if isinstance(value, (list, tuple)):
+            value = value[0] if value else ""
+        return clean_genre(str(value or ""))
+    except Exception:
+        return ""
+
+
+def backfill_rekordbox_file_genres(
+    xml: Path | None = None,
+    *,
+    nml: Path | None = None,
+    execute: bool = False,
+) -> tuple[int, int]:
+    """Copy catalog Genre onto files when the tag is empty.
+
+    Rekordbox's collection grid often reads **file** genre, not only xml
+    ``TRACK Genre``. Uses xml attribute first, then Traktor / Apple Music XML.
+    """
+    from .dj_metadata import _genre_lookup_indexes, genre_for_path
+
+    path = xml or REKORDBOX_XML
+    if not path.is_file():
+        return 0, 0
+    collection = ET.parse(path).getroot().find("COLLECTION")
+    if collection is None:
+        return 0, 0
+    nml_by_path, music_by_path, by_inode = _genre_lookup_indexes(
+        nml=nml or TRAKTOR_NML
+    )
+    would = written = skipped = 0
+    for track in collection.findall("TRACK"):
+        loc = parse_rb_location(track.get("Location") or "")
+        if loc is None:
+            continue
+        try:
+            if not loc.is_file():
+                continue
+        except OSError:
+            continue
+        if _read_file_genre(loc):
+            skipped += 1
+            continue
+        genre = clean_genre(track.get("Genre") or "")
+        if not genre:
+            genre = genre_for_path(
+                loc,
+                nml_by_path=nml_by_path,
+                music_by_path=music_by_path,
+                by_inode=by_inode,
+            )
+        if not genre:
+            continue
+        would += 1
+        if execute and write_file_genre(loc, genre):
+            written += 1
+    return (written if execute else would), skipped
 
 
 def write_report(payload: dict[str, Any]) -> Path:
@@ -288,7 +387,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--xml",
         action="store_true",
-        help="Clean TRACK Genre on PioneerDJ/rekordbox.xml (quit Rekordbox first).",
+        help="Fill empty TRACK Genre from Traktor/Music XML and clean EDM compounds (quit Rekordbox).",
+    )
+    parser.add_argument(
+        "--no-file-tags",
+        action="store_true",
+        help="With --xml --execute, skip writing empty file genre tags (Rekordbox grid reads files).",
     )
     parser.add_argument(
         "--passes",
@@ -322,9 +426,14 @@ def main(argv: list[str] | None = None) -> int:
             }
         )
         print(f"report {report}", flush=True)
+        file_would, file_skip = backfill_rekordbox_file_genres(execute=False)
+        print(
+            f"file tags: would write {file_would}  already tagged {file_skip}",
+            flush=True,
+        )
         if not args.execute:
             print(
-                "dry-run. pass --xml --execute to patch TRACK Genre. "
+                "dry-run. pass --xml --execute to patch TRACK Genre + file tags. "
                 "Quit Rekordbox first. Playlists stay.",
                 flush=True,
             )
@@ -332,11 +441,22 @@ def main(argv: list[str] | None = None) -> int:
         if rekordbox_is_running():
             print("Rekordbox is open. Quit it before --execute writes rekordbox.xml.", flush=True)
             return 2
-        patched = apply_rekordbox_xml()
+        filled, cleaned = apply_rekordbox_xml()
+        file_would, file_skip = backfill_rekordbox_file_genres(execute=False)
+        file_written = 0
+        if not args.no_file_tags:
+            file_written, _ = backfill_rekordbox_file_genres(execute=True)
         print(
-            f"patched {patched} TRACK Genre rows. Reload rekordbox xml (<>).",
+            f"genre: filled {filled} empty  cleaned {cleaned} TRACK rows. "
+            f"file tags written {file_written} (skipped {file_skip} already tagged). "
+            "Reload rekordbox xml (<>).",
             flush=True,
         )
+        if file_would and args.no_file_tags:
+            print(
+                f"  {file_would} files still lack genre tags; omit --no-file-tags to write them.",
+                flush=True,
+            )
         return 0
 
     total_lib = total_files = 0

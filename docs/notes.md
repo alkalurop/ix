@@ -56,7 +56,7 @@ First mirror of then-current ixamal `main` (2026-09-15):
 
 ## Crate status
 
-- ATGR installed (ReCK, DJCU2, Mixed in Key).
+- Mixed in Key is on the decks (key, BPM, energy, cues).
 - [ixamal/stems](https://github.com/ixamal/stems) processed `~/Music/stems_audio`.
 - Identity tool lives in this repo: `crate/`, `docs/crate.md`.
 - Cascade: filename → tags → iTunes/Deezer → MusicBrainz → Ollama `qwen2.5:7b` on `127.0.0.1:11434` → `Compilations/Mashups/Miscellaneous/`.
@@ -65,7 +65,7 @@ First mirror of then-current ixamal `main` (2026-09-15):
 
 Reports (off git): `~/local_tools/crate/reports/`. Cache: `~/local_tools/crate/lookup-cache.json`.
 
-Traktor (2026-08-30): NML remapped, then [ATGR DJCU2](https://atgr.nl/) converted the collection to Rekordbox. It works. ix does not reimplement that bridge. Snapshots: `databases/` (off git). Steps: `docs/djcu2.md`.
+Traktor (2026-08-30): NML remapped. The same paths are in Rekordbox. Playlist membership is `crates`. Snapshots: `databases/` (off git).
 
 ### Milestone (2026-09-08)
 
@@ -86,7 +86,7 @@ PYTHONPATH=crate python3 -m ix_crate crates --from music --to xml --all --execut
 - `crates --all` Music → NML **111** playlists (~58 s dump+write). Music → xml **111** (~41 s after NML dump cached in the same session shape).
 - **DJ Sets 0 → 230** (6 Apple DRM skipped). MUSIC empties **28 → 5** (`Feel it`, `Internet Songs`, `Kum Baja`, `Ringtones`, extra Social Network list — empty or DRM-only in Music).
 - Played / NPBS Favorites / Neglected / Random now under **MUSIC/** on both decks.
-- New collection rows have no grid until Rekordbox Analyze (or DJCU2 later). Reload xml `<>`. Don't ask again + **No** on tag overwrite.
+- New collection rows have no grid until Rekordbox Analyze. Reload xml `<>`. Don't ask again + **No** on tag overwrite.
 
 ### IndustryStems folder kept (2026-09-19)
 
@@ -146,22 +146,16 @@ PYTHONPATH=crate python3 -m ix_crate favorites --execute --snapshot
 
 ## Tagging
 
-Path-stable crate done 2026-08-30. Accapella + `EDM, …` genre pass done 2026-08-30 (files + Music.app AppleScript). Step log: `docs/onetagger.md`.
+Path-stable crate done 2026-08-30. Accapella + `EDM, …` genre pass done 2026-08-30 (files + Music.app AppleScript).
 
-1. **OneTagger** 1.7.0 Beatport is dead (API v4). Discogs is unsafe for the old Apple `EDM, …` compounds (flattened to Electronic; one compilation → Hip Hop).
-2. **TODO 5 omitted (2026-09-01).** Not viable on this Mac. David is happy enough with the TODO 4 catalog to play in Rekordbox. Do not compile community PRs unless he asks.
-    - [OneTagger 1.7.0](https://github.com/Marekkon5/onetagger/releases/tag/1.7.0) — last official Mac release, 2023-08-03. Beatport scrape in that build is dead.
-    - [Beatport API v4](https://api.beatport.com/v4/docs/) — current catalog API (OAuth). 1.7.0 does not speak it.
-    - [Issue #486](https://github.com/Marekkon5/onetagger/issues/486) — Beatport/Traxsource/Juno break after the v3→v4 cut.
-    - [Issue #518](https://github.com/Marekkon5/onetagger/issues/518) / [#520](https://github.com/Marekkon5/onetagger/issues/520) — `__NEXT_DATA__` scrape gone.
-    - [PR #526](https://github.com/Marekkon5/onetagger/pull/526) (rosgr100) — v4 OAuth + catalog search. Open since 2026-05, last activity 2026-06, **not merged**. Linux CLI testers say it works. No official Mac asset.
-    - [PR #523](https://github.com/Marekkon5/onetagger/pull/523) — earlier Beatport v4 search attempt after `__NEXT_DATA__` removal.
+1. Discogs is unsafe for the old Apple `EDM, …` compounds (flattened to Electronic; one compilation → Hip Hop). Do not Discogs-blast.
+2. **TODO 5 omitted (2026-09-01).** Beatport store lookup is not viable on this Mac. David is happy enough with the TODO 4 catalog to play in Rekordbox.
 2a. Music.app genre is the library DB, not the file. After file writes, AppleScript `set genre` (one track at a time). Specimen: `docs/examples/music-set-genre.applescript` (do not run). Sync Library is Off — keep it off for the DJ crate. Copy-on-add is On. **Keep Music Media folder organized** is Off — `music-organize` is the mover, so the artist-root crate is not hoisted into `Music/`. New files land in `Media.localized/Music/Artist/Album/`; the existing crate stays at `Media.localized/Artist/`. Never recreate `Media.localized/Music` as a symlink to `.` (breaks drag-and-drop). Details: `docs/crate.md`.
-2b. **TODO 5b omitted (2026-09-01).** Same blocker as 5: embed-while-processing was store lookups (Beatport / Traxsource / Discogs). Those stores are not viable here. If this ever reopens: owned `.mp3` / `.wav` / `.m4a` only; never `.m4p`; never mutagen `save()` on `.stem.m4a` (strips NI stem atom); sidecar `{name}.stem.json` beside the file, not in git.
-3. Never overwrite ReCK/MiK fields: Camelot/key, BPM, comments, cues.
-4. **TODO 6 omitted (2026-09-01).** Ollama (`qwen2.5:7b` on `127.0.0.1:11434`) was reviewer-after-stores, not a catalog. 5 never runs, so 6 would invent genres. Reopen only if Rekordbox leftovers bother David: JSON/CSV proposals, human approve, allowlisted write. Never the coder.
+2b. **TODO 5b omitted (2026-09-01).** Embed-while-processing was store lookups (Beatport / Traxsource / Discogs). Those stores are not viable here. If this ever reopens: owned `.mp3` / `.wav` / `.m4a` only; never `.m4p`; never mutagen `save()` on `.stem.m4a` (strips NI stem atom); sidecar `{name}.stem.json` beside the file, not in git.
+3. Never overwrite Mixed in Key fields: Camelot/key, BPM, comments, cues.
+4. **TODO 6 omitted (2026-09-01).** Ollama (`qwen2.5:7b` on `127.0.0.1:11434`) was reviewer-after-stores, not a catalog. Store lookup never runs, so 6 would invent genres. Reopen only if Rekordbox leftovers bother David: JSON/CSV proposals, human approve, allowlisted write. Never the coder.
 5. Do not use `qwen2.5-coder:7b` as the musicologist. Crate ID already uses `qwen2.5:7b`.
-6. **Beets** is not the library of record. If used at all: `copy: no`, `move: no`, `write: no`, DB under `~/local_tools/beets`. Default `beet import` copies files and would break DJCU2/ReCK/Music.app paths. Gemini’s `item.write()` plugin is rejected. Crate fingerprinting is AcoustID (`fpcalc`) plus Shazam (`shazamio`; optional `songrec`). `music-fix --library-va` writes tags in place and does not move Media.localized.
+6. Crate fingerprinting is AcoustID (`fpcalc`) plus Shazam (`shazamio`; optional `songrec`). `music-fix --library-va` writes tags in place and does not move Media.localized. Gemini’s `item.write()` plugin is rejected.
 
 ix Floor stays live OSC (`/rekordbox/bpm`, `/fader`, `/beat_phase`). It does not convert libraries or write ID3.
 
@@ -271,7 +265,7 @@ Opening Traktor and Maschine while Rekordbox was already up restarted Core Audio
 
 ## MCP bridges live (2026-09-30)
 
-**Blender** and **Rekordbox** MCP both load in Cursor. Blender updated to **5.2.2 LTS** (5.2.0 backed up off git; there is no 5.4, only a 5.3 alpha). Blender bridge proven with a read-only scene call. Rekordbox adapter replaced the placeholder stub with a real read-only server over `ix_runtime`, which now keeps the latest value per OSC address. Setup and gotchas: `docs/local-setup.md` → MCP bridges. Houdini and Ableton adapters are still stubs.
+**Rekordbox** MCP loads in Cursor (read-only over `ix_runtime`). Blender MCP and all `bpy` scripts live in **[ixamal/stage](https://github.com/ixamal/stage)** — never in ix (GPL). Houdini and Ableton adapters are still stubs. Setup: `docs/local-setup.md` → MCP bridges.
 
 ## Parked in siblings (not this repo)
 
@@ -306,9 +300,7 @@ First harvest 2026-09-09: **812** played, **22,266** not played, **9** star-rate
 
 ## Do not do until asked
 
-- Re-run DJCU2 on the whole library unless David asks.
-- Run OneTagger Discogs against the whole library (wrong compilation matches; flattens to Electronic).
-- Run OneTagger against Apple Music streams (`.m4p`).
+- Discogs-blast the library (wrong compilation matches; flattens to Electronic).
 - Turn on Music.app **Sync Library** on this DJ crate (still matches/replaces local files; not a hybrid keep-local mode).
 - Convert NI/Traktor audio to WAV/AIFF.
 - Wire BlackHole 16ch / Traktor A/B/C → Maschine (11 / 11a) except in a dedicated blackhole session.

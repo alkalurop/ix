@@ -6,7 +6,7 @@ This is the working memory from the Gemini thread that defined IX. Full chat sta
 Desktop Composer history is local SQLite under workspaceStorage. The iPhone app does not see it. Cloud Agents do. Persist architecture in `.cursor/` and `docs/` so phone-spawned agents and the Mac share a brain.
 
 ## MCP + Ollama + DCCs
-Cursor is the orchestrator. Frontier models (Claude / Codex) plan and call MCP. Ollama stays on loopback for local inference. Blender / Maya / Houdini / Unreal MCP servers are configured **globally**, not in-repo.
+Cursor is the orchestrator. Frontier models (Claude / Codex) plan and call MCP. Ollama stays on loopback for local inference. Maya / Houdini / Unreal MCP servers are configured **globally**, not in-repo. Blender (`bpy`) is **stage** only (GPL).
 
 ## Open-source vs machine
 Do not keep MCP adapters in the git tree even behind gitignore. Accidental `git add .` is how Macs get compromised. Store them in `~/local_tools`.
@@ -25,4 +25,4 @@ Too far out. Stay on UE 5.x Blueprints + C++. Verse will be text-native and MCP-
 2. 15s Niagara smoke cache.
 3. Wire `/rekordbox/bpm` and `/rekordbox/fader`.
 
-Crate, OneTagger, Beets-rejection, and NI S8/S88 / BlackHole 16ch ideas live in `docs/TODO.md` and `docs/notes.md`. Do not treat this Gemini distill as the crate log.
+Crate and NI S8/S88 / BlackHole 16ch ideas live in `docs/TODO.md` and `docs/notes.md`. Do not treat this Gemini distill as the crate log.

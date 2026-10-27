@@ -83,11 +83,7 @@ Global MCP lives in `~/.cursor/mcp.json`, not in this workspace.
 
 Cursor launched from the Dock does not see `/opt/homebrew/bin` on its PATH. Use full command paths in `~/.cursor/mcp.json` (`/opt/homebrew/bin/uvx`, `/opt/homebrew/bin/node`) or the server fails at discovery. After editing, Cursor reloads the server on its own.
 
-**Blender (`blender-dcc`).** [djeada/blender-mcp-server](https://github.com/djeada/blender-mcp-server) v0.2.0, launched with `uvx blender-mcp-server` (`brew install uv`). The matching `blender_mcp_bridge.zip` add-on is saved in `~/local_tools/mcp_adapters/blender/` and installed as a Blender 5.2 extension (`Blender --background --command extension install-file -r user_default -e blender_mcp_bridge.zip`). The add-on listens on `127.0.0.1:9876` (hard-coded) and writes a shared token to `~/.blender-mcp/token`. Check in Blender: 3D Viewport → **N** → **MCP** tab → "Listening on 127.0.0.1:9876".
-
-- Add-ons are per Blender series (5.2), not per app. Updating 5.2.0 → 5.2.2 kept it.
-- Quit Blender before installing or enabling the add-on from the command line. A running Blender saves its preferences on quit and switches the add-on back off.
-- `blender_python_exec` runs arbitrary Python in Blender. Circuit-break it on unsaved scenes.
+**Blender.** Any `bpy` script or `.blend` pipeline belongs in **[ixamal/stage](https://github.com/ixamal/stage)** (GPL). Do not add Blender files or MCP examples to ix. Configure `blender-dcc` only in your personal `~/.cursor/mcp.json` if you use it; adapter zip under `~/local_tools/mcp_adapters/blender/`.
 
 **Rekordbox / Traktor (`dj-rekordbox`).** `~/local_tools/mcp_adapters/dj_bridge.js` is a dependency-free stdio MCP server run with Node. Read-only: `read_bpm`, `read_fader`, `read_beat_phase`, `read_track_id` (see `schemas/tools/rekordbox.json`), plus `dj_status`. It never sends OSC or binds a socket. It reads the latest value per OSC address from `ix_runtime` at `http://127.0.0.1:9100/status`, so start `npm run runtime` first. Something still has to send OSC to `127.0.0.1:9000`: Rekordbox does not emit it natively (Pro DJ Link / Traktor bridge not wired yet).
 

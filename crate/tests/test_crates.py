@@ -213,6 +213,40 @@ class XmlMembershipTests(unittest.TestCase):
             self.assertEqual(len(planned[0].missing), 1)
             self.assertEqual(planned[0].missing[0].label, "Ghost")
 
+    def test_apply_xml_fills_empty_genre_from_nml(self) -> None:
+        with TemporaryDirectory() as tmp:
+            audio = Path(tmp) / "Honey.m4a"
+            audio.write_bytes(b"mix")
+            directory, file_attr = _traktor_dir_file(audio.resolve())
+            nml = _nml(
+                Path(tmp) / "collection.nml",
+                f'<ENTRY TITLE="Honey" ARTIST="Moby">'
+                f'<LOCATION DIR="{directory}" FILE="{file_attr}" VOLUME="Macintosh HD"/>'
+                '<INFO GENRE="Deep House"/></ENTRY>',
+                "",
+            )
+            xml = Path(tmp) / "rekordbox.xml"
+            loc = _rb_location(audio)
+            _xml(
+                xml,
+                f'<TRACK TrackID="7" Name="Honey" Artist="Moby" Location="{loc}"/>',
+                "",
+            )
+            from ix_crate.crates import SyncPlan
+
+            plan = SyncPlan(
+                source="music",
+                dest="xml",
+                dest_folder="MUSIC",
+                playlists=plan_membership(
+                    [CratePlaylist(name="Set", tracks=[TrackRef(path=audio)])],
+                    xml_path_index(xml),
+                ),
+            )
+            apply_xml(plan, xml, nml=nml)
+            track = ET.parse(xml).find(".//COLLECTION/TRACK")
+            self.assertEqual(track.get("Genre"), "Deep House")
+
     def test_ingest_adds_location_row_not_stub(self) -> None:
         with TemporaryDirectory() as tmp:
             known = Path(tmp) / "Honey.m4a"

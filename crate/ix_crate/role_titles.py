@@ -3,10 +3,10 @@
 Traktor shows NML TITLE, not the filename. Factory pairs named ``vocals.m4a``
 or ``Everyday_vocals.m4a`` land as Title = vocals. This pass writes a real
 title onto owned ``.mp3`` / ``.m4a`` (never ``.wav``, never ``.stem.m4a``)
-and patches Traktor NML TITLE/ARTIST. Rekordbox gets the crate via DJCU2
-after Traktor is right — we do not rewrite rekordbox.xml here.
+and patches Traktor NML TITLE/ARTIST. Rekordbox folders follow
+``stemit --genres``. This pass does not rewrite rekordbox.xml.
 
-OneTagger Beatport is still dead. Discogs is not used. Sibling mix and
+Discogs is not used. Sibling mix and
 folder name are the catalog. MusicBrainz is not farmed: the title is
 already in the filename or the IndustryStems folder.
 """

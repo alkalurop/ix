@@ -50,7 +50,7 @@ class PromoteTest(unittest.TestCase):
             plan = scan_rekordbox_xml(xml)
             self.assertEqual(len(plan.rows), 1)
             self.assertEqual(plan.rows[0].genre, "EDM, House, Deep")
-            self.assertEqual(apply_rekordbox_xml(xml), 1)
+            self.assertEqual(apply_rekordbox_xml(xml), (0, 1))
             tree = __import__("xml.etree.ElementTree", fromlist=["ET"]).parse(xml)
             genres = [t.get("Genre") for t in tree.getroot().find("COLLECTION").findall("TRACK")]
             self.assertEqual(genres, ["Deep House", "House"])

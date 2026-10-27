@@ -5,8 +5,13 @@ Membership matches by resolved path or hardlink inode. Files that are
 in the source crate but not yet in the dest collection get a
 **location** row (Name / Artist / Location) so Rekordbox and Traktor can
 import and analyze — never a stub without a file (those load as 0.00
-BPM). Skip ``.m4p``. STEMIT stays owned by ``stemit --genres``. DJCU2
-still moves cues onto tracks Rekordbox does not already have.
+BPM). Skip ``.m4p``. STEMIT stays owned by ``stemit --genres``.
+
+When writing ``rekordbox.xml``, empty **Genre** on collection rows is
+filled from Traktor NML ``INFO GENRE`` first, then Apple Music library
+XML (Share iTunes Library XML), including hardlink matches. Existing
+non-empty Genre is only normalized (``music_genre.clean_genre``).
+Cues on tracks Rekordbox does not already have wait for in-app Analyze.
 
 Dry-run default. Quit Rekordbox for ``--to xml``. Quit Traktor for
 ``--to nml``. Music.app must be open for ``--from music`` / ``--to music``.
@@ -425,6 +430,7 @@ tell application "Music"
   if n is 0 then return ""
   set nms to name of file tracks of p
   set ars to artist of file tracks of p
+  set gns to genre of file tracks of p
   set locs to location of file tracks of p
   set out to ""
   repeat with i from 1 to n
@@ -432,7 +438,7 @@ tell application "Music"
     try
       set locText to POSIX path of (item i of locs)
     end try
-    set out to out & (item i of ars as text) & tab & (item i of nms as text) & tab & locText & linefeed
+    set out to out & (item i of ars as text) & tab & (item i of nms as text) & tab & (item i of gns as text) & tab & locText & linefeed
   end repeat
   return out
 end tell
@@ -442,16 +448,19 @@ end tell
     for line in text.splitlines():
         if not line.strip():
             continue
-        parts = (line.split("\t") + [""] * 3)[:3]
-        artist, name, location = (part.strip() for part in parts)
+        parts = (line.split("\t") + [""] * 4)[:4]
+        artist, name, genre, location = (part.strip() for part in parts)
         if not location:
             continue
+        from ix_crate.music_genre import clean_genre
+
         tracks.append(
             TrackRef(
                 path=Path(location).expanduser(),
                 label=f"{artist} — {name}".strip(" —"),
                 artist=artist,
                 title=name,
+                genre=clean_genre(genre),
             )
         )
     return tracks
@@ -550,9 +559,13 @@ def _next_xml_id(collection: ET.Element) -> int:
     return (max(used) + 1) if used else 900000000
 
 
-def ingest_xml_collection(collection: ET.Element, plan: SyncPlan) -> int:
+def ingest_xml_collection(collection: ET.Element, plan: SyncPlan, *, nml: Path | None = None) -> int:
     if not plan.ingest:
         return 0
+    from ix_crate.dj_metadata import _genre_lookup_indexes, enrich_track_genre
+
+    nml_path = nml or TRAKTOR_NML
+    nml_by_path, music_by_path, by_inode = _genre_lookup_indexes(nml=nml_path)
     added = 0
     next_id = _next_xml_id(collection)
     used = set()
@@ -570,6 +583,12 @@ def ingest_xml_collection(collection: ET.Element, plan: SyncPlan) -> int:
             if not ingestible(miss):
                 still.append(miss)
                 continue
+            miss = enrich_track_genre(
+                miss,
+                nml_by_path=nml_by_path,
+                music_by_path=music_by_path,
+                by_inode=by_inode,
+            )
             while next_id in used:
                 next_id += 1
             artist, title = _filing(miss)
@@ -735,7 +754,7 @@ def _rb_folder_path(root_node: ET.Element, dest_folder: str, parts: tuple[str, .
     return folder
 
 
-def apply_xml(plan: SyncPlan, xml: Path) -> int:
+def apply_xml(plan: SyncPlan, xml: Path, *, nml: Path | None = None) -> int:
     tree = ET.parse(xml)
     root = tree.getroot()
     playlists_el = root.find("PLAYLISTS")
@@ -751,7 +770,16 @@ def apply_xml(plan: SyncPlan, xml: Path) -> int:
     collection = root.find("COLLECTION")
     if collection is None:
         collection = ET.SubElement(root, "COLLECTION", Entries="0")
-    ingest_xml_collection(collection, plan)
+    nml_path = nml or TRAKTOR_NML
+    ingest_xml_collection(collection, plan, nml=nml_path)
+    from ix_crate.dj_metadata import sync_xml_collection_genres
+
+    filled, cleaned = sync_xml_collection_genres(collection, nml=nml_path)
+    if filled or cleaned:
+        print(
+            f"  genre: filled {filled} empty  cleaned {cleaned} existing TRACK rows",
+            flush=True,
+        )
     written = 0
     for item in plan.playlists:
         folder = _rb_folder_path(

@@ -13,6 +13,11 @@ You are working in **ix**, the planetary meeting place for Cursor, a local Ollam
 - Control plane: this repo (Next.js + Python OSC runtime)
 - Execution plane: **off-repo**. Ollama, MCP adapters, and hardware sockets live under `~/local_tools` and `~/.cursor/mcp.json`.
 
+## GPL boundary (non-negotiable)
+- **No Blender in ix.** No `bpy`, `.blend` pipelines, or Blender MCP examples in this repo (Apache 2.0).
+- All Blender scripts and scenes → **`~/github/ixamal/stage`** ([ixamal/stage](https://github.com/ixamal/stage), GPL-3.0-or-later).
+- Personal `blender-dcc` in `~/.cursor/mcp.json` is fine; do not copy that config into `schemas/mcp.example.json`.
+
 ## Security (non-negotiable)
 - Bind OSC, HTTP, WebSocket, and Ollama to `127.0.0.1` only. Never `0.0.0.0`.
 - Do not put MCP configs, Ollama weights, or adapter secrets in git.

@@ -1,6 +1,6 @@
 """AcoustID fingerprint lookup. fpcalc is local; API is api.acoustid.org.
 
-Application client key is Picard's public key unless ACOUSTID_API_KEY is set.
+Application client key is the public AcoustID client id unless ACOUSTID_API_KEY is set.
 Never submit fingerprints. Never Discogs.
 """
 
@@ -16,8 +16,8 @@ from pathlib import Path
 from ix_crate.identify import clean_text, duration_close
 
 ACOUSTID_URL = "https://api.acoustid.org/v2/lookup"
-# Public Picard application client id (not a user secret). Override with ACOUSTID_API_KEY.
-PICARD_CLIENT = "v8pQ6oyB"
+# Public AcoustID application client id (not a user secret). Override with ACOUSTID_API_KEY.
+ACOUSTID_CLIENT = "v8pQ6oyB"
 ACOUSTID_GAP = 0.4
 MIN_SCORE = 0.55
 FPCALC_TIMEOUT = 45
@@ -34,7 +34,7 @@ def fpcalc_bin() -> str | None:
 
 
 def client_key() -> str:
-    return os.environ.get("ACOUSTID_API_KEY") or PICARD_CLIENT
+    return os.environ.get("ACOUSTID_API_KEY") or ACOUSTID_CLIENT
 
 
 def fingerprint(path: Path) -> tuple[float, str] | None:

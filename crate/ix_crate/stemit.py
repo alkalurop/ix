@@ -552,9 +552,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"wrote {written} file tags.", flush=True)
         if args.nml:
             patched = patch_nml_titles(fixes, execute=True)
-            print(f"patched {patched} Traktor NML titles. Reopen Traktor, then DJCU2 to Rekordbox.", flush=True)
+            print(f"patched {patched} Traktor NML titles. Reopen Traktor.", flush=True)
         else:
-            print("disk tags only. Quit Traktor, then --fix-role-titles --nml --execute. Then DJCU2.", flush=True)
+            print("disk tags only. Quit Traktor, then --fix-role-titles --nml --execute.", flush=True)
         return 0
 
     if args.sync_playlists and not args.playlist:

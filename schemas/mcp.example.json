@@ -9,14 +9,6 @@
         "UE_PROJECT_PATH": "${HOME}/Documents/Unreal Projects/IX"
       }
     },
-    "blender-dcc": {
-      "command": "/opt/homebrew/bin/uvx",
-      "args": ["blender-mcp-server"],
-      "env": {
-        "BLENDER_MCP_HOST": "127.0.0.1",
-        "BLENDER_MCP_PORT": "9876"
-      }
-    },
     "comfyui": {
       "command": "${HOME}/local_tools/comfyui/.venv/bin/comfy-mcp",
       "env": {

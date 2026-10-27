@@ -31,7 +31,7 @@ export const halls: Array<{
     title: "Forge",
     epithet: "DCC",
     summary:
-      "Blender, Maya, Houdini HDAs. Optional OpenVDB when Niagara is not enough.",
+      "Maya, Houdini HDAs. Blender bpy lives in ixamal/stage (GPL), not ix.",
     href: "/bridges#forge",
   },
   {
@@ -79,16 +79,6 @@ export const bridges: Bridge[] = [
     listen: "127.0.0.1 only",
     mcpHint: "houdini (global MCP, adapter under ~/local_tools)",
     statusHint: "Not required for the first live slice.",
-  },
-  {
-    id: "blender",
-    hall: "forge",
-    name: "Blender",
-    role: "Mesh / lighting handoff into UE when a DCC pass is needed.",
-    protocol: "stdio MCP (bpy)",
-    listen: "127.0.0.1 only",
-    mcpHint: "blender (uvx blender-mcp-server)",
-    statusHint: "Keep the Blender process local. No WAN sockets.",
   },
   {
     id: "maya",

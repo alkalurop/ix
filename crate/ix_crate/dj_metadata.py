@@ -11,7 +11,9 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from ix_crate.crates import TrackRef, parse_rb_location
-from ix_crate.stems_playlists import _loc_to_path, _traktor_dir_file
+from ix_crate.library_genres import library_genre_by_path
+from ix_crate.music_genre import clean_genre
+from ix_crate.stems_playlists import TRAKTOR_NML, _loc_to_path, _traktor_dir_file
 
 
 @dataclass
@@ -199,6 +201,150 @@ def append_nml_analysis(entry: ET.Element, ref: TrackRef) -> None:
             ET.SubElement(entry, "TEMPO", BPM=ref.bpm, BPM_QUALITY="100.000000")
         else:
             tempo.set("BPM", ref.bpm)
+
+
+def _inode_key(path: Path) -> tuple[int, int] | None:
+    try:
+        if path.is_file():
+            stat = path.stat()
+            return (stat.st_dev, stat.st_ino)
+    except OSError:
+        return None
+    return None
+
+
+def _genre_lookup_indexes(
+    *,
+    nml: Path,
+    music_lib: Path | None = None,
+) -> tuple[dict[Path, NmlMeta], dict[Path, str], dict[tuple[int, int], str]]:
+    """Path maps plus inode → genre (Traktor wins over Apple Music on the same file)."""
+    nml_by_path = nml_meta_by_path(nml) if nml.is_file() else {}
+    music_by_path = library_genre_by_path(music_lib)
+    by_inode: dict[tuple[int, int], str] = {}
+    for path, genre in music_by_path.items():
+        inode = _inode_key(path)
+        if inode and inode not in by_inode:
+            by_inode[inode] = genre
+    for path, meta in nml_by_path.items():
+        if not meta.genre.strip():
+            continue
+        cleaned = clean_genre(meta.genre)
+        if not cleaned:
+            continue
+        inode = _inode_key(path)
+        if inode:
+            by_inode[inode] = cleaned
+    return nml_by_path, music_by_path, by_inode
+
+
+def genre_for_path(
+    path: Path,
+    *,
+    nml_by_path: dict[Path, NmlMeta],
+    music_by_path: dict[Path, str],
+    by_inode: dict[tuple[int, int], str],
+) -> str:
+    try:
+        resolved = path.expanduser().resolve()
+    except OSError:
+        resolved = path.expanduser()
+    meta = nml_by_path.get(resolved)
+    if meta and meta.genre.strip():
+        return clean_genre(meta.genre)
+    hit = music_by_path.get(resolved)
+    if hit:
+        return clean_genre(hit)
+    inode = _inode_key(resolved)
+    if inode:
+        hit = by_inode.get(inode)
+        if hit:
+            return clean_genre(hit)
+    return ""
+
+
+def enrich_track_genre(
+    ref: TrackRef,
+    *,
+    nml_by_path: dict[Path, NmlMeta],
+    music_by_path: dict[Path, str],
+    by_inode: dict[tuple[int, int], str],
+) -> TrackRef:
+    current = clean_genre(ref.genre) if ref.genre else ""
+    if current:
+        if current == ref.genre:
+            return ref
+        return TrackRef(
+            path=ref.path,
+            label=ref.label,
+            artist=ref.artist,
+            title=ref.title,
+            album=ref.album,
+            genre=current,
+            bpm=ref.bpm,
+            key=ref.key,
+            total_time=ref.total_time,
+            comments=ref.comments,
+        )
+    genre = genre_for_path(
+        ref.path,
+        nml_by_path=nml_by_path,
+        music_by_path=music_by_path,
+        by_inode=by_inode,
+    )
+    if not genre:
+        return ref
+    return TrackRef(
+        path=ref.path,
+        label=ref.label,
+        artist=ref.artist,
+        title=ref.title,
+        album=ref.album,
+        genre=genre,
+        bpm=ref.bpm,
+        key=ref.key,
+        total_time=ref.total_time,
+        comments=ref.comments,
+    )
+
+
+def sync_xml_collection_genres(
+    collection: ET.Element,
+    *,
+    nml: Path | None = None,
+    music_lib: Path | None = None,
+) -> tuple[int, int]:
+    """Fill empty Rekordbox TRACK Genre from Traktor NML, then Apple Music XML.
+
+    Returns ``(filled_empty, cleaned_existing)``. Non-empty Genre is only
+    normalized via ``clean_genre`` (EDM / House compounds); it is not replaced.
+    """
+    nml_path = nml or TRAKTOR_NML
+    nml_by_path, music_by_path, by_inode = _genre_lookup_indexes(
+        nml=nml_path, music_lib=music_lib
+    )
+    filled = cleaned = 0
+    for track in collection.findall("TRACK"):
+        old = (track.get("Genre") or "").strip()
+        if old:
+            new = clean_genre(old)
+            if new != old:
+                track.set("Genre", new)
+                cleaned += 1
+            continue
+        loc = parse_rb_location(track.get("Location") or "")
+        if loc is None:
+            continue
+        genre = genre_for_path(
+            loc,
+            nml_by_path=nml_by_path,
+            music_by_path=music_by_path,
+            by_inode=by_inode,
+        )
+        if genre:
+            track.set("Genre", genre)
+            filled += 1
+    return filled, cleaned
 
 
 def xml_track_attrs(ref: TrackRef, *, tid: str, kind: str, size: int, location: str) -> dict[str, str]:

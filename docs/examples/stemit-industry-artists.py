@@ -20,7 +20,7 @@ stay. Extra files do not stay on disk once audio or dump-family matches.
 Music.app does not re-read tags. If a Songs row still says Industry Stems, use
 ``music-set-industry-artist.applescript`` against the TSV in
 ``~/local_tools/crate/reports/`` (off git). Quit Traktor before --execute.
-Rekordbox follows via DJCU2, not a rekordbox.xml rewrite.
+Rekordbox folders follow ``stemit --genres``. This specimen does not rewrite rekordbox.xml.
 """
 
 from __future__ import annotations
