@@ -2,7 +2,7 @@
 
 Parking lot for crate, tagging, and hardware ideas. Ordered checklist: `docs/TODO.md`. Agents: read both, then stop unless David asks to act. Off-repo tools and library paths stay off git.
 
-Last update: 2026-10-15 (alkalurop mirror + DJ-facing README intros). Prior: 2026-10-11 sample-bank drop; 2026-09-24 Rock STEMIT. **Rock STEMIT done** (~**23%** of `MUSIC/GENRES` converted). **CRATER** daily crate pass. **16ch Channel D + 11a live.** A/B/C sample into Maschine → S88 → D. **11b parked** (FLX10 native). **13 on hold** (S8 pads). **Next: Floor 10** ([issue #9](https://github.com/ixamal/ix/issues/9)). Hardware leftover: **40**. 2ch rollback: `~/Music/blackhole_2ch/`. Alkalurop bridge: publish this tip (Rock + CRATER). Open queue: [ixamal/ix milestones](https://github.com/ixamal/ix/milestones?state=all) (`docs/tracker.md`). `favorites` / CRATER still recording (TODO 41); reviews **2026-09-16** / **2026-10-09**. Toolkit: README. How/why: `docs/crate.md`.
+Last update: 2026-10-27 (alkalurop mirror + org profile **Go** + `dj-set-remaster-release`). Prior: 2026-10-15 alkalurop mirror + DJ-facing README intros. Prior: 2026-10-11 sample-bank drop; 2026-09-24 Rock STEMIT. **Rock STEMIT done** (~**23%** of `MUSIC/GENRES` converted). **CRATER** daily crate pass. **16ch Channel D + 11a live.** A/B/C sample into Maschine → S88 → D. **11b parked** (FLX10 native). **13 on hold** (S8 pads). **Next: Floor 10** ([issue #9](https://github.com/ixamal/ix/issues/9)). Hardware leftover: **40**. 2ch rollback: `~/Music/blackhole_2ch/`. Alkalurop bridge: publish this tip (Rock + CRATER). Open queue: [ixamal/ix milestones](https://github.com/ixamal/ix/milestones?state=all) (`docs/tracker.md`). `favorites` / CRATER still recording (TODO 41); reviews **2026-09-16** / **2026-10-09**. Toolkit: README. How/why: `docs/crate.md`.
 
 ## Alkalurop org bridge (2026-09-15)
 
@@ -53,6 +53,18 @@ First mirror of then-current ixamal `main` (2026-09-15):
 | [music_migration](https://github.com/alkalurop/music_migration) | `5a7ecde` |
 | [grid](https://github.com/alkalurop/grid) | `9f53645` |
 | [stage](https://github.com/alkalurop/stage) | `6ea0ae9` |
+
+**2026-10-27 publish.** Crate playable (~21k tracks, paths aligned); **dj-set-remaster-release** (REC loudnorm, blend, peak ceiling); genre sync into Rekordbox; org profile **Progress** + **Go** on [alkalurop/.github](https://github.com/alkalurop/.github). Mirrored ixamal `main` → [alkalurop](https://github.com/alkalurop) via `docs/examples/alkalurop-bridge.sh`.
+
+| alkalurop | 2026-10-27 `main` |
+| --- | --- |
+| [ix](https://github.com/alkalurop/ix) | `2bd9b9a` |
+| [stems](https://github.com/alkalurop/stems) | `4c5adcb` |
+| [blackhole](https://github.com/alkalurop/blackhole) | `b98689e` |
+| [ix_bangers](https://github.com/alkalurop/ix_bangers) | `da1f2ba` |
+| [music_migration](https://github.com/alkalurop/music_migration) | `b12e981` |
+| [grid](https://github.com/alkalurop/grid) | `5aa79a8` |
+| [stage](https://github.com/alkalurop/stage) | `c03ae74` |
 
 ## Crate status
 
